@@ -13,7 +13,7 @@ import { useLocalStorageSetState } from './common/CommonHooks';
 import Auth from './pages/Auth/';
 import Terms from './pages/Terms/';
 import MyVote from './pages/MyVote/';
-import AboutMe from './pages/AboutMe/';
+import AboutTeam from './pages/AboutTeam/';
 import NotFound from './pages/NotFound/';
 import MainVote from './pages/MainVote/';
 import ContactUs from './pages/ContactUs/';
@@ -108,7 +108,7 @@ const App = () => {
             <Route exact path="/Auth" component={Auth} />
             <Route exact path="/Terms" component={Terms} />
             <Route exact path="/MyVote" component={MyVote} />
-            <Route exact path="/AboutMe" component={AboutMe} />
+            <Route exact path="/AboutTeam" component={AboutTeam} />
             <Route exact path="/ContactUs" component={ContactUs} />
             <Route exact path="/SearchVote" component={SearchVote} />
             <Route exact path="/not-found" component={NotFound} />
