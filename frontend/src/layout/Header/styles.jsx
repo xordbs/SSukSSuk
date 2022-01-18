@@ -12,6 +12,10 @@ const Wrapper = styled.div`
   & .logo {
     cursor: pointer;
     padding-left: 16px;
+    padding-top: 5px;
+  }
+  & .logo_img{
+    height: 50px;
   }
   & .logo_img{
     height: 35px;
@@ -63,8 +67,6 @@ const Wrapper = styled.div`
     width: 100%;
     transition: all 0.3s ease;
     box-sizing: border-box;
-
-    // background-color: #ffc74b;
 
     &.appbar-shift {
       width: 100%;
