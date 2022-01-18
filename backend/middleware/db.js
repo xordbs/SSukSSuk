@@ -3,7 +3,11 @@ const Sequelize = require("sequelize");
 const mybatisMapper = require("mybatis-mapper");
 const envType = process.env.ENV ? process.env.ENV : "dev";
 const version = process.env.VERSION ? process.env.VERSION : "base";
-const sequelize = new Sequelize("mysql://ssafy@127.0.0.1:3306");
+// DB connection 정보
+const sequelize = new Sequelize('jeans', 'ssafy','admin', {
+  host: '127.0.0.1',
+  dialect: 'mysql'
+  } );
 const sqlPath = path.join(__dirname, "..", ".", `/sql/${version}/`);
 
 mybatisMapper.createMapper([`${sqlPath}/base.xml`]);

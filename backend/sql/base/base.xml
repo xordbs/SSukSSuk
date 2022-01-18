@@ -7,12 +7,9 @@
   <select id="AUTH.SELECT.TB_VU.001">
   	/* 사용자, 유저 정보 조회 */
     SELECT  
-        vu_nick_name
-        ,vu_id        
-        ,vu_password 
-        ,vu_thumbnail 
-    FROM VOTEON.USERS 
-    WHERE VU_ID = #{id}
+        *
+    FROM user_T
+    WHERE user_id = #{id}
     LIMIT 1
   </select>
 

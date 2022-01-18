@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-const { sequelize } = require('./models');
 
 // --------------------------------------------
 // env
@@ -15,13 +14,6 @@ const port = envJson.port ? envJson.port : 3001;
 
 //----------------------------------
 // middleware
-sequelize.sync({force: false})
-.then(()=>{
-    console.log('데이터베이스 연결 성공');
-})
-.catch((err)=>{
-    console.error("??");
-});
 
 // cors
 app.use(
