@@ -96,10 +96,10 @@ const Header = props => {
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={onClickRedirectPathHandler('/MainVote')}
+                    onClick={onClickRedirectPathHandler('/Community')}
                     className="display-none header-button"
                   >
-                    Vote
+                    게시판
                   </Button>
                 </Grid>
                 <Grid item>
@@ -112,14 +112,14 @@ const Header = props => {
                     문의사항
                   </Button>
                 </Grid>
-                <Grid item onClick={onClickRedirectPathHandler('/CreateVote')}>
+                <Grid item onClick={onClickRedirectPathHandler('/MyFarm')}>
                   <Button
                     color="primary"
                     variant="contained"
                     onClick={window.scrollTo(0, 0)}
                     className="header-button"
                   >
-                    Create a Vote
+                    내 농장
                   </Button>
                 </Grid>
               </Grid>
