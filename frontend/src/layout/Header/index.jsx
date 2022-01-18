@@ -86,7 +86,7 @@ const Header = props => {
                 className="logo"
                 onClick={onClickRedirectPathHandler('/MainVote')}
               >
-                Logo
+                <img className='logo_img' src="images/ssug_orange.png" alt="logo"/>
               </Typography>
             </Grid>
 
@@ -106,10 +106,10 @@ const Header = props => {
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={onClickRedirectPathHandler('/MyVote')}
+                    onClick={onClickRedirectPathHandler('/Ask')}
                     className="display-none header-button"
                   >
-                    My Vote
+                    문의사항
                   </Button>
                 </Grid>
                 <Grid item onClick={onClickRedirectPathHandler('/CreateVote')}>

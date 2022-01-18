@@ -13,6 +13,9 @@ const Wrapper = styled.div`
     cursor: pointer;
     padding-left: 16px;
   }
+  & .logo_img{
+    height: 35px;
+  }
   & .menu-button {
     position: fixed;
     left: 12px;
@@ -60,6 +63,9 @@ const Wrapper = styled.div`
     width: 100%;
     transition: all 0.3s ease;
     box-sizing: border-box;
+
+    // background-color: #ffc74b;
+
     &.appbar-shift {
       width: 100%;
     }
@@ -75,6 +81,9 @@ const Wrapper = styled.div`
     text-transform: none;
     opacity: 0.7;
     transition: all 0.2s;
+
+    // background-color: #ffc74b;
+
     &:hover {
       opacity: 1;
       background: none;
