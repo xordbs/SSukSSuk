@@ -70,8 +70,7 @@ const DrawerHeaderGroup = () => {
       <Grid item>
         {user.status ? (
           <Button
-            variant="contained"
-            color="primary"
+            variant="outlined"
             className="up-cancel-fab"
             onClick={onClickSignOutOpenHandler}
           >

@@ -31,6 +31,11 @@ const Wrapper = styled.div`
   & .up-cancel-fab {
     border-radius: 30px;
     margin-right: 12px;
+
+    border-color: #a4a4a4;
+    color:#a4a4a4;
+    background: #ffffff;
+    box-shadow: none;
   }
   & .bg-unset {
     &:hover {

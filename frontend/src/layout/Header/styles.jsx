@@ -54,13 +54,13 @@ const Wrapper = styled.div`
         background: #ffc74b;
         /* transition: all 0.4s ease; */
         &:nth-child(1) {
-          transform: translateY(-8px) translateX(-8px) rotate(-315deg);
+          transform: translateY(-13px) translateX(-8px) rotate(-315deg);
         }
         &:nth-child(2) {
           opacity: 0;
         }
         &:nth-child(3) {
-          transform: translateY(-35px) translateX(-8px) rotate(315deg);
+          transform: translateY(-40px) translateX(-8px) rotate(315deg);
         }
       }
     }

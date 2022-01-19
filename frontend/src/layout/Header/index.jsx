@@ -39,6 +39,10 @@ const Header = props => {
     }
   };
 
+  const handleSignUpDialogOpen=()=>{
+    
+  }
+
   const onClickRedirectPathHandler = name => e => {
     window.scrollTo(0, 0);
     if (name === '/SearchVote') {
@@ -174,22 +178,10 @@ const Header = props => {
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={handleSignInDialogOpen}
+                    onClick={handleSignUpDialogOpen}
                     className="display-none header-button"
                   >
                     회원가입
-                  </Button>
-                </Grid>
-                }
-                {user.status&&
-                <Grid item>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={onClickSignOutOpenHandler}
-                    className="display-none header-button"
-                  >
-                    로그아웃
                   </Button>
                 </Grid>
                 }
@@ -203,6 +195,18 @@ const Header = props => {
                     {user.status === 'login' ? '내 정보' : '로그인'}
                   </Button>
                 </Grid>
+                {user.status&&
+                <Grid item>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={onClickSignOutOpenHandler}
+                    className="display-none header-button"
+                  >
+                    로그아웃
+                  </Button>
+                </Grid>
+                }
               </Grid>
             </Grid>
           </Grid>
