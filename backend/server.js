@@ -25,8 +25,14 @@ app.use(
 // bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const { swaggerUi, specs } = require("./swagger/swagger")
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
+
 // db
 app.use(require(`${__dirname}/middleware/db`));
+
 
 //----------------------------------
 // routes
