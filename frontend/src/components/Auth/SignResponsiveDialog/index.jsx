@@ -16,16 +16,35 @@ import {
   Divider,
   TextField,
 } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import PersonIcon from '@material-ui/icons/Person';
+import LockIcon from '@material-ui/icons/Lock';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 import Wrapper from './styles';
 
 import userData from './dump.json';
 
-const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+// 이메일 체크 정규식
+// const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 const DialogTitleComponent = () => {
   return (
     <Wrapper>
-      <h1 className="dialog-title-component">{'Logo'}</h1>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={1}
+        className="grid"
+      >
+        <Grid item xs={11}></Grid>
+        <Grid item xs={1}>
+          <HighlightOffIcon />
+        </Grid>
+      </Grid>
+      <h1 className="dialog-title-component">🥕</h1>
     </Wrapper>
   );
 };
@@ -64,10 +83,10 @@ const SignInSection01 = () => {
       return;
     }
 
-    if (!regExp.test(id)) {
-      alert('The email format is invalid.');
-      return;
-    }
+    // if (!regExp.test(id)) {
+    //   alert('The email format is invalid.');
+    //   return;
+    // }
 
     let respone = [];
     let hashPassword = '';
@@ -113,9 +132,16 @@ const SignInSection01 = () => {
           <TextField
             required
             id="outlined-required"
-            label="Email"
+            label="아이디"
             className="text-field"
             defaultValue={signInUserData.id}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonIcon />
+                </InputAdornment>
+              ),
+            }}
             variant="outlined"
             fullWidth={true}
             onChange={OnChangeHandler('id')}
@@ -128,11 +154,18 @@ const SignInSection01 = () => {
           <TextField
             required
             id="outlined-password-input"
-            label="Password"
+            label="비밀번호"
             className="text-field"
             type="password"
             autoComplete="current-password"
             defaultValue={signInUserData.password}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+            }}
             variant="outlined"
             fullWidth={true}
             onChange={OnChangeHandler('password')}
@@ -151,10 +184,10 @@ const SignInSection01 = () => {
             onClick={onSignInHandler}
             className="grid-item-button"
           >
-            login
+            로그인
           </Button>
         </Grid>
-        <Grid item xs={12} className="grid-item">
+        {/* <Grid item xs={12} className="grid-item">
           <Grid
             container
             direction="row"
@@ -176,7 +209,7 @@ const SignInSection01 = () => {
               <Divider />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12}>
           <Grid container direction="row" justify="center" alignItems="center">
@@ -185,7 +218,7 @@ const SignInSection01 = () => {
               onClick={onClickHandler}
             >
               <Typography className="grid-item-typography3">
-                {'Forgot Password?'}
+                {'비밀번호 찾기'}
               </Typography>
             </IconButton>
           </Grid>
@@ -217,7 +250,7 @@ const SignInSection02 = () => {
             onClick={onClickHandler}
             className="grid2-item-button"
           >
-            {`Don't have an account?`}
+            {`회원가입`}
           </Button>
         </Grid>
       </Grid>
@@ -247,11 +280,13 @@ const SignInGroupComponent = () => {
   );
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 const SignUpSection01 = () => {
   return (
     <Wrapper>
       <Typography align="center" className="sign-up1">
-        Sign up to see friends' photos and videos.
+        쑥쑥에 가입해서 당근 2만톤 키워보세요
       </Typography>
     </Wrapper>
   );
@@ -292,10 +327,10 @@ const SignUpSection02 = () => {
       return;
     }
 
-    if (!regExp.test(id)) {
-      alert('The email format is invalid.');
-      return;
-    }
+    // if (!regExp.test(id)) {
+    //   alert('The email format is invalid.');
+    //   return;
+    // }
 
     let respone = [];
     let hashPassword = 'test2';
@@ -339,7 +374,7 @@ const SignUpSection02 = () => {
           <TextField
             required
             id="outlined-required"
-            label="Email"
+            label="이메일"
             defaultValue={signUpUserData.id}
             className="text-field"
             variant="outlined"
@@ -352,7 +387,7 @@ const SignUpSection02 = () => {
           <TextField
             required
             id="outlined-required"
-            label="User Name"
+            label="이름"
             defaultValue={signUpUserData.name}
             className="text-field"
             variant="outlined"
@@ -365,7 +400,7 @@ const SignUpSection02 = () => {
           <TextField
             required
             id="outlined-password-input"
-            label="Password"
+            label="비밀번호"
             className="textField"
             type="password"
             autoComplete="current-password"
@@ -389,13 +424,14 @@ const SignUpSection02 = () => {
               fontWeight: 500,
             }}
           >
-            Sign up
+            회원가입
           </Button>
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item4">
           <Typography align="center" className="sign-up-grid-item4-typography">
-            By signing up, you agree to ssafy's terms, <b>data policy</b> and{' '}
-            <b>cookie policy.</b>
+            쑥쑥 시스템에 가입함으로써
+            <br /> 귀하께서는 저희의 약관과 <b>데이터 및 쿠키 정책</b>에
+            동의하시게 됩니다.
           </Typography>
         </Grid>
       </Grid>
@@ -415,20 +451,20 @@ const SignUpSection03 = () => {
           spacing={1}
           className="sign-up3-grid-item"
         >
-          <Grid item xs={5}>
+          {/* <Grid item xs={5}>
             <Divider />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={2}>
+          {/* <Grid item xs={2}>
             <Typography
               align="center"
               className="sign-up3-grid-item-typography"
             >
               or
             </Typography>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={5}>
+          <Grid item xs={12}>
             <Divider />
           </Grid>
         </Grid>
@@ -453,19 +489,19 @@ const SignUpSection04 = () => {
         alignItems="center"
         className="sign-up4-grid"
       >
-        <Grid item xs={2} />
-        <Grid item xs={5}>
+        <Grid item xs={1} />
+        <Grid item xs={6}>
           <Typography align="center" className="sign-up4-grid-item-typography">
-            {'Do you have an account?'}
+            {'이미 계정이 있습니까?'}
           </Typography>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={3}>
           <Button
             fullWidth={true}
             onClick={onClickHandler}
             className="sign-up4-grid-item-button"
           >
-            {'login'}
+            {'로그인하기'}
           </Button>
         </Grid>
       </Grid>
@@ -501,6 +537,8 @@ const SignUpGroupComponent = () => {
   );
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 // ForgotPw
 const ForgotPwGroupComponent = () => {
   const { serverUrl } = useContext(CommonContext);
@@ -513,16 +551,15 @@ const ForgotPwGroupComponent = () => {
     setIsSignUp(whichGroup);
   };
   const sendSearchWordHandler = async searchWord => {
-    if (!regExp.test(searchWord)) {
-      alert('The email format is invalid.');
-      return;
-    } else {
-      alert('Not implemented yet.');
-
-      // setRecoverPwUserData({ ...recoverPwUserData, email: searchWord });
-      // alert('Authentication code has been sent to you by email');
-      // setIsSignUp('RecoverPw');
-    }
+    // if (!regExp.test(searchWord)) {
+    //   alert('The email format is invalid.');
+    //   return;
+    // } else {
+    //   alert('Not implemented yet.');
+    //   // setRecoverPwUserData({ ...recoverPwUserData, email: searchWord });
+    //   // alert('Authentication code has been sent to you by email');
+    //   // setIsSignUp('RecoverPw');
+    // }
   };
   return (
     <Wrapper>
@@ -534,12 +571,12 @@ const ForgotPwGroupComponent = () => {
         spacing={1}
         className="forgot-pw"
       >
-        <h2>Having trouble signing in?</h2>
+        <h2>비밀번호를 잊어버리셨나요?</h2>
         <h3>
           Enter the user ID and the verification code will be sent to the
           registered email.
         </h3>
-        <input type="text" placeholder="User ID" ref={inputRef} />
+        <input type="text" placeholder="아이디" ref={inputRef} />
         <button
           type="button"
           className="btn-link"
@@ -550,7 +587,7 @@ const ForgotPwGroupComponent = () => {
           Send Login Link
         </button>
         <h4 className="divider">
-          <span>or</span>
+          <span>계정이 없다면 바로 가입하세요!</span>
         </h4>
         <h5
           className="btn-to-sign-up"
@@ -558,7 +595,7 @@ const ForgotPwGroupComponent = () => {
             onClickHandler(`SignUp`);
           }}
         >
-          Create new account
+          회원가입
         </h5>
         <button
           type="button"
@@ -567,8 +604,11 @@ const ForgotPwGroupComponent = () => {
             onClickHandler(`SignIn`);
           }}
         >
-          Back to login
+          로그인하기
         </button>
+        <Grid item xs={12}>
+          <div>&nbsp;</div>
+        </Grid>
       </Grid>
     </Wrapper>
   );
@@ -684,6 +724,8 @@ const RecoverPwGroupComponent = () => {
   );
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 const ResponsiveDialogSign = () => {
   const fullScreen = useMediaQuery(theme => theme.breakpoints.down('xs'));
   let history = useHistory();
@@ -692,11 +734,11 @@ const ResponsiveDialogSign = () => {
     CommonContext,
   );
 
-  const handleClose = () => {
-    setSignDialogOpen(false);
+  // const handleClose = () => {
+  //   setSignDialogOpen(false);
 
-    history.goBack();
-  };
+  //   history.goBack();
+  // };
 
   const [isSignUp, setIsSignUp] = useState('SignIn');
   const [signInUserData, setSignInUserData] = useState({
@@ -731,7 +773,7 @@ const ResponsiveDialogSign = () => {
         fullScreen={fullScreen}
         maxWidth={'xs'}
         open={signDialogOpen}
-        onClose={handleClose}
+        // onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
         PaperProps={{
           style: {
