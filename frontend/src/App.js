@@ -10,6 +10,7 @@ import { CommonContext } from './context/CommonContext';
 import { useLocalStorageSetState } from './common/CommonHooks';
 
 // page
+import Main from './pages/Main/';
 import Auth from './pages/Auth/';
 import Terms from './pages/Terms/';
 import MyVote from './pages/MyVote/';
@@ -103,7 +104,7 @@ const App = () => {
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={MainVote} />
+            <Route exact path="/" component={Main} />
             <Route exact path="/MainVote" component={MainVote} />
             <Route exact path="/Auth" component={Auth} />
             <Route exact path="/Terms" component={Terms} />
