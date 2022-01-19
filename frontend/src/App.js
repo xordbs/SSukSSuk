@@ -21,6 +21,7 @@ import CreateVote from './pages/CreateVote/';
 import SearchVote from './pages/SearchVote/';
 import Ask from './pages/Ask/';
 import Community from './pages/Community/';
+import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
 
 // css
@@ -119,6 +120,7 @@ const App = () => {
             <Route exact path="/Ask" component={Ask} />
             <Route exact path="/Community" component={Community} />
             <Route exact path="/MyFarm" component={MyFarm} />
+            <Route exact path="/Admin" component={Admin} />
             <Redirect to="/not-found" />
           </Switch>
         </BrowserRouter>

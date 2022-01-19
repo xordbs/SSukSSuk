@@ -68,6 +68,7 @@ const Wrapper = styled.div`
     transition: all 0.3s ease;
     box-sizing: border-box;
 
+    background-color: #ffc74b;
     &.appbar-shift {
       width: 100%;
     }
@@ -84,7 +85,7 @@ const Wrapper = styled.div`
     opacity: 0.7;
     transition: all 0.2s;
 
-    // background-color: #ffc74b;
+    background-color: #ffc74b;
 
     &:hover {
       opacity: 1;
