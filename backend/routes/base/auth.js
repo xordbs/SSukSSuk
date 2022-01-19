@@ -1,36 +1,7 @@
 var express = require("express");
 var app = express.Router();
 
-/**
- * @swagger
- * /base/auth/users/{id}:
- *  get:
- *    summary: "특정 유저조회 Path 방식"
- *    description: "요청 경로에 값을 담아 서버에 보낸다."
- *    tags: [User]
- *    parameters:
- *      - in: path
- *        name: user_id
- *        required: true
- *        description: 유저 아이디
- *        schema:
- *          type: string
- *    responses:
- *      "200":
- *        description: 사용자가 서버로 전달하는 값에 따라 결과 값은 다릅니다. (유저 조회)
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                ok:
- *                  type: boolean
- *                users:
- *                  type: object
- *                  example: [{ "id": 1, "name": "유저1" }]
- */
-
-app.get("/users/:id", async (req, res) => {
+app.get("/:id", async (req, res) => {
   if (!req.params || !req.params.id) {
     res.status(403).send({ msg: "잘못된 파라미터입니다." });
     return;
