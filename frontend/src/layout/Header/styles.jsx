@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
+  
   height: 48px;
   & .display-none {
     display: none;
@@ -12,25 +13,29 @@ const Wrapper = styled.div`
   & .logo {
     cursor: pointer;
     padding-left: 16px;
-    padding-top: 5px;
   }
   & .logo_img{
     height: 50px;
+    transform: translateY( 40% );
   }
   & .menu-button {
     position: fixed;
-    left: 12px;
-    top: 14px;
+    left: 20px;
     z-index: 1300;
     margin-left: 0;
     width: 40px;
     height: 30px;
     cursor: pointer;
+    margin-top:30px;
+
+    transform: translateY( 10% );
+
     & div {
       width: 100%;
       height: 3px;
-      background: #000;
+      background: #ffc74b;
       border-radius: 30px;
+
       /* transition: all 0.4s ease; */
       &:nth-child(1) {
         /* transition: all 0.4s ease; */
@@ -44,17 +49,18 @@ const Wrapper = styled.div`
     }
     &.on {
       z-index: 99999;
+      
       & div {
-        background: #000;
+        background: #ffc74b;
         /* transition: all 0.4s ease; */
         &:nth-child(1) {
-          transform: translateY(8.5px) rotate(-315deg);
+          transform: translateY(-8px) translateX(-8px) rotate(-315deg);
         }
         &:nth-child(2) {
           opacity: 0;
         }
         &:nth-child(3) {
-          transform: translateY(-8.5px) rotate(315deg);
+          transform: translateY(-35px) translateX(-8px) rotate(315deg);
         }
       }
     }
@@ -68,7 +74,7 @@ const Wrapper = styled.div`
     box-sizing: border-box;
 
     background-color: #ffffff;
-    box-shadow: none;
+    // box-shadow: none;
 
     border-bottom: 1px solid grey;
 
@@ -80,7 +86,7 @@ const Wrapper = styled.div`
     }
   }
   & .header-button {
-    margin-right: 12px;
+    margin-right: 15px;
     font-weight: normal;
     box-shadow: none;
     letter-spacing: 1px;
@@ -88,7 +94,8 @@ const Wrapper = styled.div`
     opacity: 0.7;
     transition: all 0.2s;
 
-    // transform: translateY( -50% );
+    font-size: 17px;
+    transform: translateY( 40% );
 
     color:#000000;
     background-color: #ffffff;

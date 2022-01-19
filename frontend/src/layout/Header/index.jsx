@@ -24,6 +24,7 @@ const Header = props => {
 
   const {
     user,
+    setUser,
     drawerOpen,
     setDrawerOpen,
     setSignDialogOpen,
@@ -31,9 +32,11 @@ const Header = props => {
     setInfoDetailDialogOpen,
   } = useContext(CommonContext);
 
-
-  const handleSignInDialogOpen = () => {
-    history.push('/Auth');
+  const handleSignInDialogOpen = name => e => {
+    if(name==='me')
+    {
+      history.push('/Auth');
+    }
   };
 
   const onClickRedirectPathHandler = name => e => {
@@ -48,6 +51,24 @@ const Header = props => {
     } else {
       history.push(name);
     }
+  };
+
+  const onClickSignOutOpenHandler = () => {
+    setDrawerOpen(false);
+    setUser({
+      user_no: 0,
+      user_id: '',
+      user_nm: '',
+      user_pwd: '',
+      user_img_url: '',
+      status: '',
+      web_site: '',
+      token: '',
+    });
+
+    alert('You are logged out.');
+
+    history.push('/');
   };
 
   useEffect(() => {
@@ -78,6 +99,8 @@ const Header = props => {
         )}
         <AppBar
           position="fixed"
+          align-content="center"
+          align-items="center"
           className={drawerOpen ? 'appbar appbar-shift' : 'appbar'}
         >
           <Grid container justify="space-between" alignItems="center">
@@ -87,7 +110,11 @@ const Header = props => {
                 className="logo"
                 onClick={onClickRedirectPathHandler('/')}
               >
-                <img className='logo_img' src="images/ssug_orange.png" alt="logo"/>
+                <img
+                  className="logo_img"
+                  src="images/ssug_orange.png"
+                  alt="logo"
+                />
               </Typography>
             </Grid>
 
@@ -113,50 +140,67 @@ const Header = props => {
                     문의사항
                   </Button>
                 </Grid>
-
-                {/* 로그인 해야지만 내 농장 페이지 보임 ==================== */}
-                { user.status === "login"?
-                <Grid item onClick={onClickRedirectPathHandler('/MyFarm')}>
+                {user.status &&
+                <Grid item>
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={window.scrollTo(0, 0)}
-                    className="header-button"
+                    onClick={onClickRedirectPathHandler('/Ask')}
+                    className="display-none header-button"
                   >
                     내 농장
                   </Button>
                 </Grid>
-                : null}
-                {/* ======================================================= */}
-
-                {/* 관리자 페이지 ==================== */}
-                {/* 임시로 유저 타입이 A인 사람이 관리자로 설정 */}
-                { user.user_type === "A"?
-                <Grid item onClick={onClickRedirectPathHandler('/Admin')}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={window.scrollTo(0, 0)}
-                    className="header-button"
-                  >
-                    관리자 페이지
-                  </Button>
-                </Grid>
-                : null}
-                {/* ======================================================= */}
+                }
               </Grid>
             </Grid>
 
             <Grid item>
               <Grid container alignItems="center">
+                {user.user_type === 'A' && (
+                  <Grid item>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={onClickRedirectPathHandler('/Admin')}
+                      className="display-none header-button"
+                    >
+                      관리자 페이지
+                    </Button>
+                  </Grid>
+                )}
+                {!user.status&&
                 <Grid item>
-                <Button
+                  <Button
                     color="primary"
                     variant="contained"
                     onClick={handleSignInDialogOpen}
                     className="display-none header-button"
                   >
-                    {user.status === 'login' ? 'My' : 'Sign In'}
+                    회원가입
+                  </Button>
+                </Grid>
+                }
+                {user.status&&
+                <Grid item>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={onClickSignOutOpenHandler}
+                    className="display-none header-button"
+                  >
+                    로그아웃
+                  </Button>
+                </Grid>
+                }
+                <Grid item>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={handleSignInDialogOpen('me')}
+                    className="display-none header-button"
+                  >
+                    {user.status === 'login' ? '내 정보' : '로그인'}
                   </Button>
                 </Grid>
               </Grid>

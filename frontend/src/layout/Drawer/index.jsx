@@ -14,11 +14,7 @@ import {
   ListItemText,
   IconButton,
 } from '@mui/material';
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Wrapper from './styles';
@@ -143,22 +139,13 @@ const DrawerListGroup = () => {
           <ListItemText primary={'문의 사항'} disableTypography />
         </ListItem>
         {user.status && (
-            <ListItem
-              button
-              key={'MyFarm'}
-              onClick={onClickRedirectPathHandler('/MyFarm')}
-            >
-              <ListItemText primary={'내 농장'} disableTypography />
-            </ListItem>
-        )}
-        {user.user_type==="A" && (
-            <ListItem
-              button
-              key={'Admin'}
-              onClick={onClickRedirectPathHandler('/Admin')}
-            >
-              <ListItemText primary={'관리자'} disableTypography />
-            </ListItem>
+          <ListItem
+            button
+            key={'MyFarm'}
+            onClick={onClickRedirectPathHandler('/MyFarm')}
+          >
+            <ListItemText primary={'내 농장'} disableTypography />
+          </ListItem>
         )}
         <ListItem
           button
@@ -167,13 +154,24 @@ const DrawerListGroup = () => {
         >
           <ListItemText primary={'우리 팀 소개'} disableTypography />
         </ListItem>
-        <ListItem
-          button
-          key={'Auth'}
-          onClick={onClickRedirectPathHandler('/Auth')}
-        >
-          <ListItemText primary={'내 정보 수정'} disableTypography />
-        </ListItem>
+        {user.user_type === 'A' && (
+          <ListItem
+            button
+            key={'Admin'}
+            onClick={onClickRedirectPathHandler('/Admin')}
+          >
+            <ListItemText primary={'관리자 페이지'} disableTypography />
+          </ListItem>
+        )}
+        {user.status && (
+          <ListItem
+            button
+            key={'Auth'}
+            onClick={onClickRedirectPathHandler('/Auth')}
+          >
+            <ListItemText primary={'내 정보 수정'} disableTypography />
+          </ListItem>
+        )}
       </List>
     </>
   );
