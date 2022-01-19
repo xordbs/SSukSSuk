@@ -162,8 +162,8 @@ const DrawerListGroup = () => {
         )}
         <ListItem
           button
-          key={'AboutMe'}
-          onClick={onClickRedirectPathHandler('/AboutMe')}
+          key={'AboutTeam'}
+          onClick={onClickRedirectPathHandler('/AboutTeam')}
         >
           <ListItemText primary={'우리 팀 소개'} disableTypography />
         </ListItem>
