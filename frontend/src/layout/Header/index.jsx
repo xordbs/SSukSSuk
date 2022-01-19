@@ -14,7 +14,7 @@ import {
   Button,
   IconButton,
   useMediaQuery,
-} from '@mui/material';
+} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Wrapper from './styles';
 

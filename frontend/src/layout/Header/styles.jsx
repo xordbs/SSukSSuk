@@ -15,9 +15,6 @@ const Wrapper = styled.div`
     padding-top: 5px;
   }
   & .logo_img{
-    height: 50px;
-  }
-  & .logo_img{
     height: 35px;
   }
   & .menu-button {
