@@ -49,22 +49,6 @@ const MyInfoUploadImageComponent = () => {
       spacing={2}
     >
       <Grid item xs={12}>
-        <section className="container">
-          <div {...getRootProps({ className: 'dropzone' })}>
-            <Avatar
-              variant="circle"
-              src={
-                thumbnailImageData.img
-                  ? thumbnailImageData.img
-                  : `${serverImgUrl}${user.user_img_url}`
-              }
-              className="cover-avatar"
-            />
-            <input {...getInputProps()} />
-          </div>
-        </section>
-      </Grid>
-      <Grid item xs={12}>
         <Fragment>
           <Typography> {user.nick_name} </Typography>
           <section className="container">
@@ -73,7 +57,7 @@ const MyInfoUploadImageComponent = () => {
                 size={'small'}
                 className="my-info-upload-image-component-button"
               >
-                EDIT PROFILE
+                회원정보 수정
               </Button>
               <input {...getInputProps()} />
             </div>
@@ -103,7 +87,7 @@ const MyInfoInputComponent = props => {
       }
       RightComponet={
         <TextField
-          disabled={keyValue === 'user_id' ? true : false}
+          disabled={keyValue === 'nick_name' ? false : true}
           id={`outlined-basic-${keyValue}`}
           defaultValue={inputValue[keyValue]}
           variant="outlined"
@@ -258,19 +242,24 @@ const MyInfoContentComponent = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <MyInfoInputComponent title="ID" keyValue="user_id" />
+          <MyInfoInputComponent title="아이디" keyValue="user_id" />
         </Grid>
         <Grid item xs={12}>
-          <MyInfoInputComponent title="Name" keyValue="user_nm" />
+          <MyInfoInputComponent title="이름" keyValue="user_nm" />
         </Grid>
 
         <Grid item xs={12}>
-          <MyInfoInputComponent title="Web Site" keyValue="web_site" />
+          <MyInfoInputComponent title="별명" keyValue="nick_name" />
         </Grid>
 
         <Grid item xs={12}>
-          <MyInfoButtonGroupComponent />
+          <MyInfoInputComponent title="이메일" keyValue="user_email" />
         </Grid>
+        <Grid item xs={12}>
+          <MyInfoInputComponent title="등급" keyValue="user_email" />
+        </Grid>
+
+        <Grid item xs={12}></Grid>
       </Grid>
     </form>
   );
