@@ -13,21 +13,12 @@
     LIMIT 1
   </select>
 
-  <insert id="AUTH.INSERT.TB_VU.001">
-  	/* 사용자, 유저 정보 삽입 */
-    INSERT INTO VOTEON.USERS
-    (
-        vu_nick_name  
-        ,vu_id 
-        ,vu_password 
-    )
-    VALUES
-    (
-        #{id}, 
-        #{nick_name}, 
-        #{password}
-    );
-
-  </insert>
+  <delete id="AUTH.DELETE.USERDELETE">
+    /* 사용자, 유저 정보 삭제 */
+    Delete
+    From user_T
+    Where user_id = #{id}
+      
+  </delete>
 
 </mapper>
