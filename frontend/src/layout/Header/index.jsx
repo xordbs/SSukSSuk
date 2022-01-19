@@ -150,19 +150,7 @@ const Header = props => {
             <Grid item>
               <Grid container alignItems="center">
                 <Grid item>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={onClickRedirectPathHandler('/SearchVote')}
-                  >
-                    <SearchIcon
-                      fontSize="default"
-                      color="inherit"
-                      htmlColor="#eeeeee"
-                    />
-                  </IconButton>
-                </Grid>
-                <Grid item>
-                  <Button
+                <Button
                     color="primary"
                     variant="contained"
                     onClick={handleSignInDialogOpen}

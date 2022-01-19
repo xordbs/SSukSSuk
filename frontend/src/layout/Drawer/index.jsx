@@ -167,6 +167,13 @@ const DrawerListGroup = () => {
         >
           <ListItemText primary={'우리 팀 소개'} disableTypography />
         </ListItem>
+        <ListItem
+          button
+          key={'Auth'}
+          onClick={onClickRedirectPathHandler('/Auth')}
+        >
+          <ListItemText primary={'내 정보 수정'} disableTypography />
+        </ListItem>
       </List>
     </>
   );
