@@ -36,6 +36,11 @@ const Wrapper = styled.div`
     color:#a4a4a4;
     background: #ffffff;
     box-shadow: none;
+
+    &:hover{
+      border-color: #000000;
+      color:#000000;
+    }
   }
   & .bg-unset {
     &:hover {
@@ -74,7 +79,7 @@ const Wrapper = styled.div`
       }
     }
   }
-  @media (max-width: 960px) {
+  @media (max-width: 1100px) {
     & .drawer {
       display: block;
     }

@@ -12,28 +12,26 @@ const Wrapper = styled.div`
   }
   & .logo {
     cursor: pointer;
-    padding-left: 16px;
+    padding-left: 30px;
   }
   & .logo_img{
     height: 50px;
-    transform: translateY( 40% );
   }
   & .menu-button {
     position: fixed;
     left: 20px;
+    top: 30px;
+    
     z-index: 1300;
     margin-left: 0;
     width: 40px;
-    height: 30px;
+    height: 28px;
     cursor: pointer;
-    margin-top:30px;
-
-    transform: translateY( 10% );
 
     & div {
       width: 100%;
       height: 3px;
-      background: #ffc74b;
+      background: #3e7925;
       border-radius: 30px;
 
       /* transition: all 0.4s ease; */
@@ -51,16 +49,16 @@ const Wrapper = styled.div`
       z-index: 99999;
       
       & div {
-        background: #ffc74b;
+        background: #3e7925;
         /* transition: all 0.4s ease; */
         &:nth-child(1) {
-          transform: translateY(-13px) translateX(-8px) rotate(-315deg);
+          transform: translateY(-10px) translateX(-10px) rotate(-315deg);
         }
         &:nth-child(2) {
           opacity: 0;
         }
         &:nth-child(3) {
-          transform: translateY(-40px) translateX(-8px) rotate(315deg);
+          transform: translateY(-35px) translateX(-10px) rotate(315deg);
         }
       }
     }
@@ -68,23 +66,28 @@ const Wrapper = styled.div`
 
   & .appbar {
     width: 100%;
-    height: 100px;
+    height: 90px;
     
     transition: all 0.3s ease;
     box-sizing: border-box;
 
     background-color: #ffffff;
-    // box-shadow: none;
-
     border-bottom: 1px solid grey;
-
+    
+    & .appbar-wrap{
+      width:1100px;
+      margin: 0 auto;
+      padding: 15px 0;
+    }
     &.appbar-shift {
       width: 100%;
     }
     & .title {
       flex-grow: 1;
+      padding-left:100px;
     }
   }
+
   & .header-button {
     margin-right: 15px;
     font-weight: normal;
@@ -94,9 +97,7 @@ const Wrapper = styled.div`
     opacity: 0.7;
     transition: all 0.2s;
 
-    font-size: 17px;
-    transform: translateY( 40% );
-
+    font-size: 18px;
     color:#000000;
     background-color: #ffffff;
 
@@ -106,16 +107,15 @@ const Wrapper = styled.div`
       box-shadow: none;
     }
   }
-  @media (min-width: 960px) {
+  @media (min-width: 1100px) {
     & .display-none {
       display: block;
     }
   }
-  @media (max-width: 960px) {
+  @media (max-width: 1100px) {
     & .logo {
       position: absolute;
       left: 50%;
-      top: 8px;
       transform: translate(-50%);
       padding-left: 0 !important;
     }

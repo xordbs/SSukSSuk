@@ -20,7 +20,7 @@ import Wrapper from './styles';
 
 const Header = props => {
   let history = useHistory();
-  const isTablet = useMediaQuery('(max-width:960px)');
+  const isTablet = useMediaQuery('(max-width:1100px)');
 
   const {
     user,
@@ -118,7 +118,7 @@ const Header = props => {
               >
                 <img
                   className="logo_img"
-                  src="images/ssug_orange.png"
+                  src="images/ssug_green.png"
                   alt="logo"
                 />
               </Typography>
