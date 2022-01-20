@@ -28,6 +28,7 @@ const Header = props => {
     drawerOpen,
     setDrawerOpen,
     setSignDialogOpen,
+    setIsSignUp,
     setUserDetailDialogOpen,
     setInfoDetailDialogOpen,
   } = useContext(CommonContext);
@@ -35,13 +36,14 @@ const Header = props => {
   const handleSignInDialogOpen = name => e => {
     if(name==='me')
     {
-      history.push('/Auth');
+      setIsSignUp('SignIn')
     }
+    else if(name==="SignUp")
+    {
+      setIsSignUp('SignUp');
+    }
+    history.push('/Auth');
   };
-
-  const handleSignUpDialogOpen=()=>{
-    
-  }
 
   const onClickRedirectPathHandler = name => e => {
     window.scrollTo(0, 0);
@@ -107,7 +109,7 @@ const Header = props => {
           align-items="center"
           className={drawerOpen ? 'appbar appbar-shift' : 'appbar'}
         >
-          <Grid container justify="space-between" alignItems="center">
+          <Grid className='appbar-wrap' container justify="space-between" alignItems="center">
             <Grid item>
               <Typography
                 variant="h6"
@@ -123,7 +125,7 @@ const Header = props => {
             </Grid>
 
             <Grid item className="title display-none">
-              <Grid container justify="center" spacing={2}>
+              <Grid container spacing={2}>
                 <Grid item>
                   <Button
                     color="primary"
@@ -178,7 +180,7 @@ const Header = props => {
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={handleSignUpDialogOpen}
+                    onClick={handleSignInDialogOpen('SignUp')}
                     className="display-none header-button"
                   >
                     회원가입
