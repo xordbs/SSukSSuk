@@ -116,7 +116,7 @@ export default function VerticalTabs() {
                   fontWeight: 'bold',
                   fontFamily: 'Noto Sans KR',
                   lineHeight: '22px',
-                  color: index === userDialogIndex ? '#4248b5' : '#3c3c3c',
+                  color: index === userDialogIndex ? '#9aba11' : '#3c3c3c',
                 }}
                 {...a11yProps(index)}
               />

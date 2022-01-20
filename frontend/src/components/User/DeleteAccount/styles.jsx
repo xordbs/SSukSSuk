@@ -65,7 +65,7 @@ const Wrapper = styled.div`
     background: #e0e0e0;
   }
   .my-info-button-group-component-grid-fab2 {
-    background: #4248b5;
+    background: #9aba11;
   }
   .text-component-typography {
     font-size: 14px;
