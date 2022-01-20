@@ -16,35 +16,30 @@ import {
   Divider,
   TextField,
 } from '@material-ui/core';
+
+// Input 안에 icon 넣을 거라면
 import InputAdornment from '@material-ui/core/InputAdornment';
-import PersonIcon from '@material-ui/icons/Person';
-import LockIcon from '@material-ui/icons/Lock';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import Wrapper from './styles';
 
 import userData from './dump.json';
 
 // 이메일 체크 정규식
-// const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+// 비밀번호 체크 정규식
+// var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+// 특수 / 문자 / 숫자 포함 형태 (8~15)
+
+// 핸드폰 번호 체크 정규식
+// var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
 
 const DialogTitleComponent = () => {
   return (
     <Wrapper>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={1}
-        className="grid"
-      >
-        <Grid item xs={11}></Grid>
-        <Grid item xs={1}>
-          <HighlightOffIcon />
-        </Grid>
-      </Grid>
-      <h1 className="dialog-title-component">🥕</h1>
+      <h1 className="dialog-title-component">
+        <img className="logo_img" src="images/ssug_green.png" alt="logo" />
+      </h1>
     </Wrapper>
   );
 };
@@ -100,6 +95,8 @@ const SignInSection01 = () => {
     }
 
     setUser({ ...userData });
+    // 지금은 dump지만 / 나중엔 signInUserData?
+
     setSignDialogOpen(false);
     setIsSignUp('SignIn');
 
@@ -108,15 +105,22 @@ const SignInSection01 = () => {
 
   useEffect(() => {
     console.log({ user });
-
-    if (signInUserData.id !== '' && signInUserData.email !== '') {
+    if (signInUserData.id !== '' && signInUserData.password !== '') {
       setDisabled(false);
     }
 
-    if (signInUserData.id === '' || signInUserData.email === '') {
+    if (signInUserData.id === '' || signInUserData.password === '') {
       setDisabled(true);
     }
-  }, [signInUserData.id, signInUserData.email, user]);
+  }, [signInUserData.id, signInUserData.password, user]);
+  //   if (signInUserData.id !== '' && signInUserData.email !== '') {
+  //     setDisabled(false);
+  //   }
+
+  //   if (signInUserData.id === '' || signInUserData.email === '') {
+  //     setDisabled(true);
+  //   }
+  // }, [signInUserData.id, signInUserData.email, user]);
 
   return (
     <Wrapper>
@@ -135,18 +139,19 @@ const SignInSection01 = () => {
             label="아이디"
             className="text-field"
             defaultValue={signInUserData.id}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}
             variant="outlined"
             fullWidth={true}
             onChange={OnChangeHandler('id')}
             onFocus={event => {
               setIsShowKeyborad(true);
+              // 아이콘 양식
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <PersonIcon />
+              //     </InputAdornment>
+              //   ),
+              // }}
             }}
           />
         </Grid>
@@ -159,13 +164,6 @@ const SignInSection01 = () => {
             type="password"
             autoComplete="current-password"
             defaultValue={signInUserData.password}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-            }}
             variant="outlined"
             fullWidth={true}
             onChange={OnChangeHandler('password')}
@@ -180,7 +178,7 @@ const SignInSection01 = () => {
             disabled={disabled}
             // disabled={false}
             fullWidth={true}
-            color="primary"
+            // color="primary"
             onClick={onSignInHandler}
             className="grid-item-button"
           >
@@ -242,7 +240,7 @@ const SignInSection02 = () => {
         justify="center"
         alignItems="center"
         spacing={1}
-        className="grid2"
+        className="grid"
       >
         <Grid item xs={12}>
           <Button
@@ -286,7 +284,7 @@ const SignUpSection01 = () => {
   return (
     <Wrapper>
       <Typography align="center" className="sign-up1">
-        쑥쑥에 가입해서 당근 2만톤 키워보세요
+        쑥쑥에 가입해서 ... 해보세요
       </Typography>
     </Wrapper>
   );
@@ -301,16 +299,22 @@ const SignUpSection02 = () => {
 
   const OnChangeHandler = name => e => {
     if (
-      signUpUserData.name !== '' &&
       signUpUserData.id !== '' &&
+      signUpUserData.password !== '' &&
+      signUpUserData.passwordConfirmation !== '' &&
+      signUpUserData.name !== '' &&
+      signUpUserData.nickname !== '' &&
       signUpUserData.email !== ''
     ) {
       setDisabled(false);
     }
 
     if (
-      signUpUserData.name === '' ||
       signUpUserData.id === '' ||
+      signUpUserData.password === '' ||
+      signUpUserData.passwordConfirmation === '' ||
+      signUpUserData.name === '' ||
+      signUpUserData.nickname === '' ||
       signUpUserData.email === ''
     ) {
       setDisabled(true);
@@ -320,17 +324,31 @@ const SignUpSection02 = () => {
   };
 
   const onSignUpHandler = async () => {
-    var { name, id, password } = signUpUserData;
+    var {
+      id,
+      password,
+      passwordConfirmation,
+      name,
+      nickname,
+      email,
+    } = signUpUserData;
 
-    if (name === '' || id === '' || password === '') {
-      alert('You need both email and password and username.');
+    if (
+      id === '' ||
+      password === '' ||
+      passwordConfirmation === '' ||
+      name === '' ||
+      nickname === '' ||
+      email === ''
+    ) {
+      alert('You need 문구는 수정해야 ! both email and password and username.');
       return;
     }
 
-    // if (!regExp.test(id)) {
-    //   alert('The email format is invalid.');
-    //   return;
-    // }
+    if (!regExp.test(email)) {
+      alert('The email format is invalid.');
+      return;
+    }
 
     let respone = [];
     let hashPassword = 'test2';
@@ -343,6 +361,7 @@ const SignUpSection02 = () => {
       console.log('PPAP: signInHandler -> error', error);
     }
 
+    // 여기 잠시만...??
     var body = {
       id: id,
       name: name,
@@ -350,13 +369,14 @@ const SignUpSection02 = () => {
     };
     console.log('PPAP: signUpHandler -> body', body);
 
-    //
-
     setIsSignUp('SignIn');
     setSignUpUserData({
       id: '',
-      name: '',
       password: '',
+      passwordConfirmation: '',
+      name: '',
+      nickname: '',
+      email: '',
     });
   };
 
@@ -368,19 +388,50 @@ const SignUpSection02 = () => {
         justify="center"
         alignItems="center"
         spacing={1}
-        style={{ marginLeft: 4 }}
+        // style={{ marginLeft: 4 }}
+        className="grid"
       >
         <Grid item xs={12} className="sign-up-grid">
           <TextField
             required
             id="outlined-required"
-            label="이메일"
+            label="아이디"
             defaultValue={signUpUserData.id}
             className="text-field"
             variant="outlined"
             placeholder=""
             fullWidth={true}
             onChange={OnChangeHandler('id')}
+          />
+        </Grid>
+        <Grid item xs={12} className="sign-up-grid-item2">
+          <TextField
+            required
+            id="outlined-password-input"
+            label="비밀번호"
+            className="text-Field"
+            type="password"
+            autoComplete="current-password"
+            defaultValue={signUpUserData.password}
+            variant="outlined"
+            placeholder=""
+            fullWidth={true}
+            onChange={OnChangeHandler('password')}
+          />
+        </Grid>
+        <Grid item xs={12} className="sign-up-grid-item2">
+          <TextField
+            required
+            id="outlined-password-input"
+            label="비밀번호확인"
+            className="text-Field"
+            type="password"
+            autoComplete="current-password"
+            defaultValue={signUpUserData.passwordConfirmation}
+            variant="outlined"
+            placeholder=""
+            fullWidth={true}
+            onChange={OnChangeHandler('password')}
           />
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item1">
@@ -396,19 +447,30 @@ const SignUpSection02 = () => {
             onChange={OnChangeHandler('name')}
           />
         </Grid>
-        <Grid item xs={12} className="sign-up-grid-item2">
+        <Grid item xs={12} className="sign-up-grid-item1">
           <TextField
             required
-            id="outlined-password-input"
-            label="비밀번호"
-            className="textField"
-            type="password"
-            autoComplete="current-password"
-            defaultValue={signUpUserData.password}
+            id="outlined-required"
+            label="별명"
+            defaultValue={signUpUserData.nickname}
+            className="text-field"
             variant="outlined"
-            placeholder="비밀번호"
+            placeholder=""
             fullWidth={true}
-            onChange={OnChangeHandler('password')}
+            onChange={OnChangeHandler('name')}
+          />
+        </Grid>
+        <Grid item xs={12} className="sign-up-grid">
+          <TextField
+            required
+            id="outlined-required"
+            label="이메일"
+            defaultValue={signUpUserData.email}
+            className="text-field"
+            variant="outlined"
+            placeholder=""
+            fullWidth={true}
+            onChange={OnChangeHandler('id')}
           />
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item3">
@@ -416,8 +478,9 @@ const SignUpSection02 = () => {
             variant="contained"
             disabled={disabled}
             fullWidth={true}
-            color="primary"
+            // color="primary"
             onClick={onSignUpHandler}
+            className="grid-item-button"
             style={{
               fontSize: 14,
               fontFamily: 'Noto Sans KR',
@@ -430,8 +493,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item4">
           <Typography align="center" className="sign-up-grid-item4-typography">
             쑥쑥 시스템에 가입함으로써
-            <br /> 귀하께서는 저희의 약관과 <b>데이터 및 쿠키 정책</b>에
-            동의하시게 됩니다.
+            <br /> 귀하는 저희의 약관과 <b>데이터 및 쿠키 정책</b>에 동의하시게
+            됩니다.
           </Typography>
         </Grid>
       </Grid>
@@ -734,11 +797,11 @@ const ResponsiveDialogSign = () => {
     CommonContext,
   );
 
-  // const handleClose = () => {
-  //   setSignDialogOpen(false);
+  const handleClose = () => {
+    setSignDialogOpen(false);
 
-  //   history.goBack();
-  // };
+    history.goBack();
+  };
 
   const [isSignUp, setIsSignUp] = useState('SignIn');
   const [signInUserData, setSignInUserData] = useState({
@@ -773,22 +836,22 @@ const ResponsiveDialogSign = () => {
         fullScreen={fullScreen}
         maxWidth={'xs'}
         open={signDialogOpen}
-        // onClose={handleClose}
+        onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
         PaperProps={{
           style: {
-            backgroundColor: 'white',
+            backgroundColor: '#ffffff',
             boxShadow: 'none',
           },
         }}
-        BackdropProps={{
-          style: {
-            boxShadow: 'none',
-            backgroundImage: `url(${serverImgUrl}thumb-1920-731946.jpg)`,
-            backgroundSize: 'cover',
-            filter: 'brightness(0.4)',
-          },
-        }}
+        // BackdropProps={{
+        //   style: {
+        //     boxShadow: 'none',
+        //     backgroundImage: `url(${serverImgUrl}thumb-1920-731946.jpg)`,
+        //     backgroundSize: 'cover',
+        //     filter: 'brightness(0.4)',
+        //   },
+        // }}
       >
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item xs={12}>
