@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+//
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import crypto from 'crypto';
@@ -15,7 +16,10 @@ import {
   Typography,
   Divider,
   TextField,
+  MenuItem,
 } from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
 
 // Input 안에 icon 넣을 거라면
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -24,15 +28,19 @@ import Wrapper from './styles';
 
 import userData from './dump.json';
 
-// 이메일 체크 정규식
-const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+// 아이디 체크 (영소문자+숫자, 4자이상)
+const regId = /^[a-z0-9]{4,}$/;
 
-// 비밀번호 체크 정규식
-// var regex = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-// 특수 / 문자 / 숫자 포함 형태 (8~15)
+// 비번/비번확인 체크 (영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리)
+const regPwd = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
+const regPwdCf = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
 
-// 핸드폰 번호 체크 정규식
-// var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+// 이름/닉네임 체크 (한글만)
+const regNm = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+const regNnm = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+
+// 이메일 체크 (대소문자 구분 X, 문자/숫자연속가능)
+const regEma = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 const DialogTitleComponent = () => {
   return (
@@ -72,14 +80,15 @@ const SignInSection01 = () => {
     var { id, password } = signInUserData;
 
     console.log('TCL: onSignInHandler -> id, password', id, password);
+    // console.log(regId.test(id));
 
     if (!password || !id) {
       alert('You need both email and password.');
       return;
     }
 
-    // if (!regExp.test(id)) {
-    //   alert('The email format is invalid.');
+    // if (!regId.test(id)) {
+    //   alert('The id format is invalid.');
     //   return;
     // }
 
@@ -104,7 +113,8 @@ const SignInSection01 = () => {
   };
 
   useEffect(() => {
-    console.log({ user });
+    // 여기가 콘솔로 확인하는 것!
+    console.log({ signInUserData });
     if (signInUserData.id !== '' && signInUserData.password !== '') {
       setDisabled(false);
     }
@@ -113,14 +123,6 @@ const SignInSection01 = () => {
       setDisabled(true);
     }
   }, [signInUserData.id, signInUserData.password, user]);
-  //   if (signInUserData.id !== '' && signInUserData.email !== '') {
-  //     setDisabled(false);
-  //   }
-
-  //   if (signInUserData.id === '' || signInUserData.email === '') {
-  //     setDisabled(true);
-  //   }
-  // }, [signInUserData.id, signInUserData.email, user]);
 
   return (
     <Wrapper>
@@ -134,7 +136,9 @@ const SignInSection01 = () => {
       >
         <Grid item xs={12}>
           <TextField
+            autoFocus
             required
+            // error={signInUserData.id === '' ? true : false}
             id="outlined-required"
             label="아이디"
             className="text-field"
@@ -158,6 +162,7 @@ const SignInSection01 = () => {
         <Grid item xs={12}>
           <TextField
             required
+            // error={signInUserData.password === '' ? true : false}
             id="outlined-password-input"
             label="비밀번호"
             className="text-field"
@@ -181,6 +186,7 @@ const SignInSection01 = () => {
             // color="primary"
             onClick={onSignInHandler}
             className="grid-item-button"
+            type="submit"
           >
             로그인
           </Button>
@@ -280,6 +286,44 @@ const SignInGroupComponent = () => {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+const grades = [
+  {
+    value: '멘토',
+    label: '멘토',
+  },
+  {
+    value: '일반',
+    label: '일반',
+  },
+];
+
+function MultilineTextFields() {
+  const [grade, setGrade] = React.useState('');
+
+  const handleChange = event => {
+    setGrade(event.target.value);
+  };
+  return (
+    <TextField
+      id="outlined-select-grade"
+      select
+      required
+      label="등급"
+      value={grade}
+      onChange={handleChange}
+      // helperText="등급 선택 꼭 해주세요! (넣지마?)"
+      variant="outlined"
+      fullWidth={true}
+    >
+      {grades.map(option => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
+}
+
 const SignUpSection01 = () => {
   return (
     <Wrapper>
@@ -304,7 +348,8 @@ const SignUpSection02 = () => {
       signUpUserData.passwordConfirmation !== '' &&
       signUpUserData.name !== '' &&
       signUpUserData.nickname !== '' &&
-      signUpUserData.email !== ''
+      signUpUserData.email !== '' &&
+      signUpUserData.grade !== ''
     ) {
       setDisabled(false);
     }
@@ -315,7 +360,8 @@ const SignUpSection02 = () => {
       signUpUserData.passwordConfirmation === '' ||
       signUpUserData.name === '' ||
       signUpUserData.nickname === '' ||
-      signUpUserData.email === ''
+      signUpUserData.email === '' ||
+      signUpUserData.grade === ''
     ) {
       setDisabled(true);
     }
@@ -331,6 +377,7 @@ const SignUpSection02 = () => {
       name,
       nickname,
       email,
+      grade,
     } = signUpUserData;
 
     if (
@@ -339,13 +386,14 @@ const SignUpSection02 = () => {
       passwordConfirmation === '' ||
       name === '' ||
       nickname === '' ||
-      email === ''
+      email === '' ||
+      grade === ''
     ) {
       alert('You need 문구는 수정해야 ! both email and password and username.');
       return;
     }
 
-    if (!regExp.test(email)) {
+    if (!regEma.test(email)) {
       alert('The email format is invalid.');
       return;
     }
@@ -377,6 +425,7 @@ const SignUpSection02 = () => {
       name: '',
       nickname: '',
       email: '',
+      grade: '',
     });
   };
 
@@ -393,7 +442,9 @@ const SignUpSection02 = () => {
       >
         <Grid item xs={12} className="sign-up-grid">
           <TextField
+            autoFocus
             required
+            // error={signUpUserData.id === '' ? true : false}
             id="outlined-required"
             label="아이디"
             defaultValue={signUpUserData.id}
@@ -407,6 +458,7 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item2">
           <TextField
             required
+            // error={signUpUserData.password === '' ? true : false}
             id="outlined-password-input"
             label="비밀번호"
             className="text-Field"
@@ -422,6 +474,7 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item2">
           <TextField
             required
+            // error={signUpUserData.passwordConfirmation === '' ? true : false}
             id="outlined-password-input"
             label="비밀번호확인"
             className="text-Field"
@@ -437,6 +490,7 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item1">
           <TextField
             required
+            // error={signUpUserData.name === '' ? true : false}
             id="outlined-required"
             label="이름"
             defaultValue={signUpUserData.name}
@@ -450,6 +504,7 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item1">
           <TextField
             required
+            // error={signUpUserData.nickname === '' ? true : false}
             id="outlined-required"
             label="별명"
             defaultValue={signUpUserData.nickname}
@@ -463,6 +518,7 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid">
           <TextField
             required
+            // error={signUpUserData.email === '' ? true : false}
             id="outlined-required"
             label="이메일"
             defaultValue={signUpUserData.email}
@@ -472,6 +528,11 @@ const SignUpSection02 = () => {
             fullWidth={true}
             onChange={OnChangeHandler('id')}
           />
+        </Grid>
+        <Grid item xs={12} className="sign-up-grid">
+          <MultilineTextFields
+          // error={signUpUserData.grade === '' ? true : false}
+          ></MultilineTextFields>
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item3">
           <Button
@@ -526,7 +587,6 @@ const SignUpSection03 = () => {
               or
             </Typography>
           </Grid> */}
-
           <Grid item xs={12}>
             <Divider />
           </Grid>
@@ -614,7 +674,7 @@ const ForgotPwGroupComponent = () => {
     setIsSignUp(whichGroup);
   };
   const sendSearchWordHandler = async searchWord => {
-    // if (!regExp.test(searchWord)) {
+    // if (!regEma.test(searchWord)) {
     //   alert('The email format is invalid.');
     //   return;
     // } else {
@@ -635,10 +695,7 @@ const ForgotPwGroupComponent = () => {
         className="forgot-pw"
       >
         <h2>비밀번호를 잊어버리셨나요?</h2>
-        <h3>
-          Enter the user ID and the verification code will be sent to the
-          registered email.
-        </h3>
+        <h3>아이디를 입력하시면 등록된 이메일로 인증번호가 발송됩니다.</h3>
         <input type="text" placeholder="아이디" ref={inputRef} />
         <button
           type="button"
@@ -647,20 +704,32 @@ const ForgotPwGroupComponent = () => {
             sendSearchWordHandler(inputRef.current.value);
           }}
         >
-          Send Login Link
+          인증번호 발송
         </button>
-        <h4 className="divider">
-          <span>계정이 없다면 바로 가입하세요!</span>
-        </h4>
-        <h5
+        <Grid item xs={12}>
+          <h3>계정이 없다면 바로 가입하세요!</h3>
+        </Grid>
+        {/* <h5
           className="btn-to-sign-up"
           onClick={() => {
             onClickHandler(`SignUp`);
           }}
         >
           회원가입
-        </h5>
-        <button
+        </h5> */}
+        <Grid item xs={12}>
+          <IconButton
+            className="sign-in-butoon grid-item-icon-button"
+            onClick={() => {
+              onClickHandler(`SignUp`);
+            }}
+          >
+            <Typography className="grid-item-typography3">
+              {'회원가입'}
+            </Typography>
+          </IconButton>
+        </Grid>
+        {/* <button
           type="button"
           className="btn-login"
           onClick={() => {
@@ -668,7 +737,18 @@ const ForgotPwGroupComponent = () => {
           }}
         >
           로그인하기
-        </button>
+        </button> */}
+        <Grid item xs={12}>
+          <Button
+            fullWidth={true}
+            onClick={() => {
+              onClickHandler(`SignIn`);
+            }}
+            className="grid2-item-button"
+          >
+            {`로그인`}
+          </Button>
+        </Grid>
         <Grid item xs={12}>
           <div>&nbsp;</div>
         </Grid>
@@ -676,6 +756,8 @@ const ForgotPwGroupComponent = () => {
     </Wrapper>
   );
 };
+
+////////////////////////////////////////////////////////////////////////////////
 
 // RecoverPw
 const RecoverPwGroupComponent = () => {
@@ -793,9 +875,13 @@ const ResponsiveDialogSign = () => {
   const fullScreen = useMediaQuery(theme => theme.breakpoints.down('xs'));
   let history = useHistory();
 
-  const { signDialogOpen, setSignDialogOpen, serverImgUrl, isSignUp, setIsSignUp } = useContext(
-    CommonContext,
-  );
+  const {
+    signDialogOpen,
+    setSignDialogOpen,
+    serverImgUrl,
+    isSignUp,
+    setIsSignUp,
+  } = useContext(CommonContext);
 
   const handleClose = () => {
     setSignDialogOpen(false);
@@ -810,8 +896,12 @@ const ResponsiveDialogSign = () => {
   });
   const [signUpUserData, setSignUpUserData] = useState({
     id: '',
-    name: '',
     password: '',
+    passwordConfirmation: '',
+    name: '',
+    nickname: '',
+    email: '',
+    grade: '',
   });
   const [recoverPwUserData, setRecoverPwUserData] = useState({
     email: '',
