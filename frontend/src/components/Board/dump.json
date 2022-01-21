@@ -1,0 +1,23 @@
+{
+    "items":[
+        { 
+            "community_no":1,
+            "community_title":"test_title",
+            "community_author":"test_author",
+            "community_date":"20220121",
+            "community_content":"test_content",
+            "community_hit":2,
+            "community_code":"free"
+        },
+        {
+            "community_no":2,
+            "community_title":"test_title2",
+            "community_author":"test_author2",
+            "community_date":"20220121",
+            "community_content":"test_content2",
+            "community_hit":1,
+            "community_code":"free2"
+        }
+
+    ]
+}
