@@ -286,44 +286,6 @@ const SignInGroupComponent = () => {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const grades = [
-  {
-    value: '멘토',
-    label: '멘토',
-  },
-  {
-    value: '일반',
-    label: '일반',
-  },
-];
-
-function MultilineTextFields() {
-  const [grade, setGrade] = React.useState('');
-
-  const handleChange = event => {
-    setGrade(event.target.value);
-  };
-  return (
-    <TextField
-      id="outlined-select-grade"
-      select
-      required
-      label="등급"
-      value={grade}
-      onChange={handleChange}
-      // helperText="등급 선택 꼭 해주세요! (넣지마?)"
-      variant="outlined"
-      fullWidth={true}
-    >
-      {grades.map(option => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </TextField>
-  );
-}
-
 const SignUpSection01 = () => {
   return (
     <Wrapper>
@@ -342,33 +304,9 @@ const SignUpSection02 = () => {
   const { serverUrl } = useContext(CommonContext);
 
   const OnChangeHandler = name => e => {
-    if (
-      signUpUserData.id !== '' &&
-      signUpUserData.password !== '' &&
-      signUpUserData.passwordConfirmation !== '' &&
-      signUpUserData.name !== '' &&
-      signUpUserData.nickname !== '' &&
-      signUpUserData.email !== '' &&
-      signUpUserData.grade !== ''
-    ) {
-      setDisabled(false);
-    }
-
-    if (
-      signUpUserData.id === '' ||
-      signUpUserData.password === '' ||
-      signUpUserData.passwordConfirmation === '' ||
-      signUpUserData.name === '' ||
-      signUpUserData.nickname === '' ||
-      signUpUserData.email === '' ||
-      signUpUserData.grade === ''
-    ) {
-      setDisabled(true);
-    }
-
     setSignUpUserData({ ...signUpUserData, [name]: e.target.value });
   };
-
+  console.log(signUpUserData);
   const onSignUpHandler = async () => {
     var {
       id,
@@ -429,6 +367,48 @@ const SignUpSection02 = () => {
     });
   };
 
+  const grades = [
+    {
+      value: '멘토',
+      label: '멘토',
+    },
+    {
+      value: '일반',
+      label: '일반',
+    },
+  ];
+
+  useEffect(() => {
+    if (
+      signUpUserData.id !== '' &&
+      signUpUserData.password !== '' &&
+      signUpUserData.passwordConfirmation !== '' &&
+      signUpUserData.nickname !== '' &&
+      signUpUserData.email !== '' &&
+      signUpUserData.grade !== ''
+    ) {
+      setDisabled(false);
+    }
+
+    if (
+      signUpUserData.id === '' ||
+      signUpUserData.password === '' ||
+      signUpUserData.passwordConfirmation === '' ||
+      signUpUserData.nickname === '' ||
+      signUpUserData.email === '' ||
+      signUpUserData.grade === ''
+    ) {
+      setDisabled(true);
+    }
+  }, [
+    signUpUserData.id,
+    signUpUserData.password,
+    signUpUserData.passwordConfirmation,
+    signUpUserData.nickname,
+    signUpUserData.email,
+    signUpUserData.grade,
+  ]);
+
   return (
     <Wrapper>
       <Grid
@@ -484,7 +464,7 @@ const SignUpSection02 = () => {
             variant="outlined"
             placeholder=""
             fullWidth={true}
-            onChange={OnChangeHandler('password')}
+            onChange={OnChangeHandler('passwordConfirmation')}
           />
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item1">
@@ -512,7 +492,7 @@ const SignUpSection02 = () => {
             variant="outlined"
             placeholder=""
             fullWidth={true}
-            onChange={OnChangeHandler('name')}
+            onChange={OnChangeHandler('nickname')}
           />
         </Grid>
         <Grid item xs={12} className="sign-up-grid">
@@ -526,13 +506,27 @@ const SignUpSection02 = () => {
             variant="outlined"
             placeholder=""
             fullWidth={true}
-            onChange={OnChangeHandler('id')}
+            onChange={OnChangeHandler('email')}
           />
         </Grid>
         <Grid item xs={12} className="sign-up-grid">
-          <MultilineTextFields
-          // error={signUpUserData.grade === '' ? true : false}
-          ></MultilineTextFields>
+          <TextField
+            id="outlined-select-grade"
+            select
+            required
+            label="등급"
+            defaultValue="일반"
+            onChange={OnChangeHandler('grade')}
+            // helperText="등급 선택 꼭 해주세요! (넣지마?)"
+            variant="outlined"
+            fullWidth={true}
+          >
+            {grades.map(option => (
+              <MenuItem key={option.index} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
         <Grid item xs={12} className="sign-up-grid-item3">
           <Button
@@ -901,7 +895,7 @@ const ResponsiveDialogSign = () => {
     name: '',
     nickname: '',
     email: '',
-    grade: '',
+    grade: '일반',
   });
   const [recoverPwUserData, setRecoverPwUserData] = useState({
     email: '',
