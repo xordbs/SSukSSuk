@@ -3,13 +3,95 @@ import React, { useState, useEffect, useContext } from 'react';
 import Wrapper from './styles';
 import listData from '../dump.json';
 
-const BoardList=props=>{
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
 
-    return(
-        <Wrapper className='root'>
-            <h2>BoardList</h2>
-        </Wrapper>
-    )
+function createData(
+  community_no,
+  community_hit,
+  community_title,
+  community_author,
+  community_date,
+  views,
+) {
+  return {
+    community_no,
+    community_hit,
+    community_title,
+    community_author,
+    community_date,
+    views,
+  };
 }
+
+function onRowClick(community_no)
+{
+    alert(community_no+" 클릭");
+}
+
+const BoardList = props => {
+  const rows = [];
+
+  listData.items.map(row => {
+    rows.push(
+      createData(
+        row.community_no,
+        row.community_hit,
+        row.community_title,
+        row.community_author,
+        row.community_date,
+        0,
+      ),
+    );
+  });
+
+  return (
+    <Wrapper>
+      <Grid container>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>번호</TableCell>
+                <TableCell>추천수</TableCell>
+                <TableCell>제목</TableCell>
+                <TableCell align="right">글쓴이</TableCell>
+                <TableCell align="right">작성일시</TableCell>
+                <TableCell align="right">조회수</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody >
+              {rows.map(row => (
+                <TableRow
+                  key={row.community_no}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  onClick={()=>onRowClick(row.community_no)}
+                  className='table-row'
+                >
+                  <TableCell component="th" scope="row">
+                    {row.community_no}
+                  </TableCell>
+                  <TableCell>{row.community_hit}</TableCell>
+                  <TableCell>{row.community_title}</TableCell>
+                  <TableCell align="right">{row.community_author}</TableCell>
+                  <TableCell align="right">{row.community_date}</TableCell>
+                  <TableCell align="right">{row.views}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </Wrapper>
+  );
+};
 
 export default BoardList;
