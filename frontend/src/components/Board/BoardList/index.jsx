@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Wrapper from '../../Auth/SignResponsiveDialog/styles';
 
+import Wrapper from './styles';
 import listData from '../dump.json';
 
 const BoardList=props=>{
