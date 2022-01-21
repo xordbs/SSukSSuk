@@ -87,10 +87,10 @@ const SignInSection01 = () => {
       return;
     }
 
-    // if (!regId.test(id)) {
-    //   alert('The id format is invalid.');
-    //   return;
-    // }
+    if (!regId.test(signInUserData.id)) {
+      alert('The id format is invalid.');
+      return;
+    }
 
     let respone = [];
     let hashPassword = '';
@@ -113,7 +113,7 @@ const SignInSection01 = () => {
   };
 
   useEffect(() => {
-    // 여기가 콘솔로 확인하는 것!
+    // 여기가 콘솔로 확인하는 것! [존..매우 중요]
     console.log({ signInUserData });
     if (signInUserData.id !== '' && signInUserData.password !== '') {
       setDisabled(false);
