@@ -24,6 +24,7 @@ import Ask from './pages/Ask/';
 import Community from './pages/Community/';
 import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
+import CommunityDetail from './pages/CommunityDetail';
 
 // css
 // import './index.css';
@@ -125,6 +126,7 @@ const App = () => {
             <Route exact path="/Community" component={Community} />
             <Route exact path="/MyFarm" component={MyFarm} />
             <Route exact path="/Admin" component={Admin} />
+            <Route exact path="/CommunityDetail/:no" component={CommunityDetail} />
             <Redirect to="/not-found" />
           </Switch>
         </BrowserRouter>
