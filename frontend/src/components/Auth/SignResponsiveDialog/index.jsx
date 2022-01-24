@@ -37,9 +37,9 @@ const regId = /^[a-z0-9]{4,}$/;
 const regPwd = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
 const regPwdCf = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
 
-// 이름/닉네임 체크 (한글만)
-const regNm = /^[ㄱ-ㅎ|가-힣]+$/;
-const regNnm = /^[ㄱ-ㅎ|가-힣]+$/;
+// 이름/닉네임 체크 (한글만, 2자이상)
+const regNm = /^[ㄱ-ㅎ|가-힣]+.{2,}$/;
+const regNnm = /^[ㄱ-ㅎ|가-힣]+.{2,}$/;
 
 // 이메일 체크 (대소문자 구분 X, 문자/숫자연속가능)
 const regEma = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -74,8 +74,35 @@ const SignInSection01 = () => {
 
   const OnChangeHandler = name => e => {
     setSignInUserData({ ...signInUserData, [name]: e.target.value });
+    if (name === 'id') {
+      if (e.target.value.length === 0) {
+        setsSgnInIdErr(false);
+        setSingInidErrMsg();
+      } else {
+        if (!regId.test(signInUserData.id)) {
+          setsSgnInIdErr(true);
+          setSingInidErrMsg('제대로 입력해주세요!');
+        } else {
+          setsSgnInIdErr(false);
+          setSingInidErrMsg();
+        }
+      }
+    }
+    if (name === 'password') {
+      if (e.target.value.length === 0) {
+        setSignInPwdErr(false);
+        setSignInPwdErrMsg();
+      } else {
+        if (!regPwd.test(signInUserData.password)) {
+          setSignInPwdErr(true);
+          setSignInPwdErrMsg('제대로 입력해주세요!');
+        } else {
+          setSignInPwdErr(false);
+          setSignInPwdErrMsg();
+        }
+      }
+    }
   };
-
   const onClickHandler = () => {
     setIsSignUp('ForgotPw');
   };
@@ -97,38 +124,6 @@ const SignInSection01 = () => {
     if (!password || !id) {
       alert('You need both email and password.');
       return;
-    }
-
-    if (!regId.test(signInUserData.id)) {
-      Swal.fire({
-        icon: 'error',
-        title: '아이디 형식 오류',
-        text: '영소문자+숫자, 4자이상',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setsSgnInIdErr(true);
-      setSingInidErrMsg('영소문자+숫자, 4자이상');
-      return;
-    } else {
-      setsSgnInIdErr(false);
-      setSingInidErrMsg();
-    }
-
-    if (!regPwd.test(signInUserData.password)) {
-      Swal.fire({
-        icon: 'error',
-        title: '비밀번호 형식 오류',
-        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignInPwdErr(true);
-      setSignInPwdErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
-      return;
-    } else {
-      setSignInPwdErr(false);
-      setSignInPwdErrMsg();
     }
 
     let respone = [];
@@ -160,14 +155,31 @@ const SignInSection01 = () => {
   useEffect(() => {
     // 여기가 콘솔로 확인하는 것! [존..매우 중요]
     console.log({ signInUserData });
-    if (signInUserData.id !== '' && signInUserData.password !== '') {
+
+    if (
+      signInUserData.id !== '' &&
+      signInUserData.password !== '' &&
+      signInIdErr === false &&
+      signInPwdErr === false
+    ) {
       setDisabled(false);
     }
 
-    if (signInUserData.id === '' || signInUserData.password === '') {
+    if (
+      signInUserData.id === '' ||
+      signInUserData.password === '' ||
+      signInIdErr === true ||
+      signInPwdErr === true
+    ) {
       setDisabled(true);
     }
-  }, [signInUserData.id, signInUserData.password, user]);
+  }, [
+    signInUserData.id,
+    signInUserData.password,
+    signInIdErr,
+    signInPwdErr,
+    user,
+  ]);
 
   return (
     <Wrapper>
@@ -227,7 +239,6 @@ const SignInSection01 = () => {
           <Button
             variant="contained"
             disabled={disabled}
-            // disabled={false}
             fullWidth={true}
             // color="primary"
             onClick={onSignInHandler}
@@ -260,7 +271,6 @@ const SignInSection01 = () => {
             </Grid>
           </Grid>
         </Grid> */}
-
         <Grid item xs={12}>
           <Grid container direction="row" justify="center" alignItems="center">
             <IconButton
@@ -336,7 +346,7 @@ const SignUpSection01 = () => {
   return (
     <Wrapper>
       <Typography align="center" className="sign-up1">
-        쑥쑥에 가입해서 ... 해보세요
+        쑥쑥에 가입해서 수확 많이 하세요💚
       </Typography>
     </Wrapper>
   );
@@ -349,27 +359,101 @@ const SignUpSection02 = () => {
   );
   const { serverUrlBase } = useContext(CommonContext);
 
+  /// 변화가 일어날 때마다 (값)
   const OnChangeHandler = name => e => {
     setSignUpUserData({ ...signUpUserData, [name]: e.target.value });
+    if (name === 'id') {
+      if (e.target.value.length === 0) {
+        setSignUpIdErr(false);
+        setSignUpIdErrMsg();
+      } else {
+        if (!regId.test(signUpUserData.id)) {
+          setSignUpIdErr(true);
+          setSignUpIdErrMsg('영문 소문자 + 숫자 / 4자 이상');
+        } else {
+          setSignUpIdErr(false);
+          setSignUpIdErrMsg();
+        }
+      }
+    }
     if (name === 'id' && e.target.value.length > 3) {
       Axios.get(serverUrlBase + `/user/checkid/` + e.target.value).then(
         data => {
           // console.log(data.data.idchk);
           if (data.data.idchk === false) {
             setSignUpIdErr(true);
-            setSignUpIdErrMsg('아이디 중복됩니다요~');
+            setSignUpIdErrMsg('이미 있는 아이디입니다!');
           } else {
             setSignUpIdErr(false);
             setSignUpIdErrMsg();
           }
         },
       );
-    } else if (name === 'nickname') {
+    }
+    if (name === 'password') {
+      if (e.target.value.length === 0) {
+        setSignUpPwdErr(false);
+        setSignUpPwdErrMsg();
+      } else {
+        if (!regPwd.test(signUpUserData.password)) {
+          setSignUpPwdErr(true);
+          setSignUpPwdErrMsg(
+            '영문 소문자 + 숫자 + 특수문자(각 1개 이상) /  8 ~ 15자',
+          );
+        } else {
+          setSignUpPwdErr(false);
+          setSignUpPwdErrMsg();
+        }
+      }
+    }
+    if (name === 'passwordConfirmation') {
+      if (e.target.value.length === 0) {
+        setSignUpPwdCfErr(false);
+        setSignUpPwdCfErrMsg();
+      } else {
+        if (!regPwdCf.test(signUpUserData.passwordConfirmation)) {
+          setSignUpPwdCfErr(true);
+          setSignUpPwdCfErrMsg('비밀번호를 다시 한번 입력 바람');
+        } else {
+          setSignUpPwdCfErr(false);
+          setSignUpPwdCfErrMsg();
+        }
+      }
+    }
+    if (name === 'name') {
+      if (e.target.value.length === 0) {
+        setSignUpNmErr(false);
+        setSignUpNmErrMsg();
+      } else {
+        if (!regNm.test(signUpUserData.name)) {
+          setSignUpNmErr(true);
+          setSignUpNmErrMsg('한글만 / 2자 이상');
+        } else {
+          setSignUpNmErr(false);
+          setSignUpNmErrMsg();
+        }
+      }
+    }
+    if (name === 'nickname') {
+      if (e.target.value.length === 0) {
+        setSignUpNnmErr(false);
+        setSignUpNnmErrMsg();
+      } else {
+        if (!regNnm.test(signUpUserData.nickname)) {
+          setSignUpNnmErr(true);
+          setSignUpNnmErrMsg('한글만 / 2자 이상');
+        } else {
+          setSignUpNnmErr(false);
+          setSignUpNnmErrMsg();
+        }
+      }
+    }
+    if (name === 'nickname' && e.target.value.length > 1) {
       Axios.get(serverUrlBase + `/user/checknick/` + e.target.value).then(
         data => {
           if (data.data.nickchk === false) {
             setSignUpNnmErr(true);
-            setSignUpNnmErrMsg('별명 중독되요~');
+            setSignUpNnmErrMsg('이미 있는 별명입니다!');
           } else {
             setSignUpNnmErr(false);
             setSignUpNnmErrMsg();
@@ -377,7 +461,22 @@ const SignUpSection02 = () => {
         },
       );
     }
+    if (name === 'email') {
+      if (e.target.value.length === 0) {
+        setSignUpEmaErr(false);
+        setSignUpEmaErrMsg();
+      } else {
+        if (!regEma.test(signUpUserData.email)) {
+          setSignUpEmaErr(true);
+          setSignUpEmaErrMsg('이메일 형식에 맞게 작성 바람');
+        } else {
+          setSignUpEmaErr(false);
+          setSignUpEmaErrMsg();
+        }
+      }
+    }
   };
+
   console.log(signUpUserData);
 
   const [signUpIdErr, setSignUpIdErr] = useState(false);
@@ -398,6 +497,7 @@ const SignUpSection02 = () => {
   const [signUpEmaErr, setSignUpEmaErr] = useState(false);
   const [signUpEmaErrMsg, setSignUpEmaErrMsg] = useState();
 
+  // 회원가입 버튼 클릭시
   const onSignUpHandler = async () => {
     var {
       id,
@@ -409,114 +509,45 @@ const SignUpSection02 = () => {
       grade,
     } = signUpUserData;
 
-    if (
-      id === '' ||
-      password === '' ||
-      passwordConfirmation === '' ||
-      name === '' ||
-      nickname === '' ||
-      email === '' ||
-      grade === ''
-    ) {
-      alert('You need 문구는 수정해야 ! both email and password and username.');
-      return;
-    }
+    // 비번 일치 유무... 안됨
+    // if (signUpUserData.password !== signUpUserData.passwordConfirmation) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: '비번 불일치 오류',
+    //     text: '비번 통일 시키세요~',
+    //     footer: '<a href="">Why do I have this issue?</a>',
+    //     target: document.querySelector('.MuiDialog-root'),
+    //   });
+    // }
 
-    if (!regId.test(signUpUserData.id)) {
-      Swal.fire({
-        icon: 'error',
-        title: '아이디 형식 오류',
-        text: '영소문자+숫자, 4자이상',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpIdErr(true);
-      setSignUpIdErrMsg('영소문자+숫자, 4자이상');
-      return;
-    } else {
-      setSignUpIdErr(false);
-      setSignUpIdErrMsg();
-    }
+    // if (
+    //   id === '' ||
+    //   password === '' ||
+    //   passwordConfirmation === '' ||
+    //   name === '' ||
+    //   nickname === '' ||
+    //   email === '' ||
+    //   grade === ''
+    // ) {
+    //   alert('You need 문구는 수정해야 ! both email and password and username.');
+    //   return;
+    // }
 
-    if (!regPwd.test(signUpUserData.password)) {
-      Swal.fire({
-        icon: 'error',
-        title: '비밀번호 형식 오류',
-        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpPwdErr(true);
-      setSignUpPwdErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
-      return;
-    } else {
-      setSignUpPwdErr(false);
-      setSignUpPwdErrMsg();
-    }
-
-    if (!regPwdCf.test(signUpUserData.passwordConfirmation)) {
-      Swal.fire({
-        icon: 'error',
-        title: '비밀번호확인 형식 오류',
-        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpPwdCfErr(true);
-      setSignUpPwdCfErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
-      return;
-    } else {
-      setSignUpPwdCfErr(false);
-      setSignUpPwdCfErrMsg();
-    }
-
-    if (!regNm.test(signUpUserData.name)) {
-      Swal.fire({
-        icon: 'error',
-        title: '이름 형식 오류',
-        text: '한글만',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpNmErr(true);
-      setSignUpNmErrMsg('한글만');
-      return;
-    } else {
-      setSignUpNmErr(false);
-      setSignUpNmErrMsg();
-    }
-
-    if (!regNnm.test(signUpUserData.nickname)) {
-      Swal.fire({
-        icon: 'error',
-        title: '별명 형식 오류',
-        text: '한글만',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpNnmErr(true);
-      setSignUpNnmErrMsg('한글만');
-      return;
-    } else {
-      setSignUpNnmErr(false);
-      setSignUpNnmErrMsg();
-    }
-
-    if (!regEma.test(signUpUserData.email)) {
-      Swal.fire({
-        icon: 'error',
-        title: '이메일 형식 오류',
-        text: '대소문자 구분 X, 문자/숫자연속가능',
-        footer: '<a href="">Why do I have this issue?</a>',
-        target: document.querySelector('.MuiDialog-root'),
-      });
-      setSignUpEmaErr(true);
-      setSignUpEmaErrMsg('대소문자 구분 X, 문자/숫자연속가능');
-      return;
-    } else {
-      setSignUpEmaErr(false);
-      setSignUpEmaErrMsg();
-    }
+    // if (!regId.test(signUpUserData.id)) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: '아이디 형식 오류',
+    //     text: '영소문자+숫자, 4자이상',
+    //     footer: '<a href="">Why do I have this issue?</a>',
+    //     target: document.querySelector('.MuiDialog-root'),
+    //   });
+    //   setSignUpIdErr(true);
+    //   setSignUpIdErrMsg('영소문자+숫자, 4자이상');
+    //   return;
+    // } else {
+    //   setSignUpIdErr(false);
+    //   setSignUpIdErrMsg();
+    // }
 
     let respone = [];
     let hashPassword = 'test2';
@@ -529,15 +560,47 @@ const SignUpSection02 = () => {
       console.log('PPAP: signInHandler -> error', error);
     }
 
-    // 여기 잠시만...??
-    var body = {
-      id: id,
-      name: name,
-      pwd: hashPassword,
-    };
-    console.log('PPAP: signUpHandler -> body', body);
+    // var body = {
+    //   user_id: id,
+    //   user_pw: password,
+    //   user_name: name,
+    //   user_nickName: nickname,
+    //   user_email: email,
+    //   user_code: 'U01',
+    // };
+    // console.log('PPAP: signUpHandler -> body', body);
+
+    // 회원가입 result
+    // result : success 아니면 false
+    // success 아니면 fail
+    Axios.post(serverUrlBase + `/user/regi`, {
+      user_id: id,
+      user_pw: password,
+      user_name: name,
+      user_nickName: nickname,
+      user_email: email,
+      user_code: 'a',
+    })
+      .then(data => {
+        const join_result = data.data;
+        if (!join_result.success) {
+          console.log('실패');
+        } else if (join_result.success) {
+          console.log(data);
+          successSign.fire({
+            title: <strong>환영합니다~</strong>,
+            html: <i>회원가입 성공!</i>,
+            icon: 'success',
+            target: document.querySelector('.MuiDialog-root'),
+          });
+        }
+      })
+      .catch(function(error) {
+        console.log('회원가입 오류 발생 : ' + error);
+      });
 
     setIsSignUp('SignIn');
+
     setSignUpUserData({
       id: '',
       password: '',
@@ -546,13 +609,6 @@ const SignUpSection02 = () => {
       nickname: '',
       email: '',
       grade: '',
-    });
-
-    await successSign.fire({
-      title: <strong>환영합니다~</strong>,
-      html: <i>회원가입 성공!</i>,
-      icon: 'success',
-      target: document.querySelector('.MuiDialog-root'),
     });
   };
 
@@ -572,20 +628,33 @@ const SignUpSection02 = () => {
       signUpUserData.id !== '' &&
       signUpUserData.password !== '' &&
       signUpUserData.passwordConfirmation !== '' &&
+      signUpUserData.name !== '' &&
       signUpUserData.nickname !== '' &&
       signUpUserData.email !== '' &&
-      signUpUserData.grade !== ''
+      signUpUserData.grade !== '' &&
+      signUpIdErr === false &&
+      signUpPwdErr === false &&
+      signUpPwdCfErr === false &&
+      signUpNmErr === false &&
+      signUpNnmErr === false &&
+      signUpEmaErr === false
     ) {
       setDisabled(false);
     }
-
     if (
       signUpUserData.id === '' ||
       signUpUserData.password === '' ||
       signUpUserData.passwordConfirmation === '' ||
+      signUpUserData.name === '' ||
       signUpUserData.nickname === '' ||
       signUpUserData.email === '' ||
-      signUpUserData.grade === ''
+      signUpUserData.grade === '' ||
+      signUpIdErr === true ||
+      signUpPwdErr === true ||
+      signUpPwdCfErr === true ||
+      signUpNmErr === true ||
+      signUpNnmErr === true ||
+      signUpEmaErr === true
     ) {
       setDisabled(true);
     }
@@ -593,9 +662,16 @@ const SignUpSection02 = () => {
     signUpUserData.id,
     signUpUserData.password,
     signUpUserData.passwordConfirmation,
+    signUpUserData.name,
     signUpUserData.nickname,
     signUpUserData.email,
     signUpUserData.grade,
+    signUpIdErr,
+    signUpPwdErr,
+    signUpPwdCfErr,
+    signUpNmErr,
+    signUpNnmErr,
+    signUpEmaErr,
   ]);
 
   return (
@@ -766,7 +842,6 @@ const SignUpSection03 = () => {
           {/* <Grid item xs={5}>
             <Divider />
           </Grid> */}
-
           {/* <Grid item xs={2}>
             <Typography
               align="center"
