@@ -21,7 +21,6 @@ function createData(
   community_title,
   community_author,
   community_date,
-  views,
 ) {
   return {
     community_no,
@@ -29,7 +28,6 @@ function createData(
     community_title,
     community_author,
     community_date,
-    views,
   };
 }
 
@@ -50,7 +48,6 @@ const BoardList = props => {
         row.community_title,
         row.community_author,
         row.community_date,
-        0,
       ),
     );
   });
@@ -63,7 +60,6 @@ const BoardList = props => {
             <TableHead className="table-head">
               <TableRow>
                 <TableCell>번호</TableCell>
-                <TableCell>추천수</TableCell>
                 <TableCell>제목</TableCell>
                 <TableCell align="right">글쓴이</TableCell>
                 <TableCell align="right">작성일시</TableCell>
@@ -81,11 +77,10 @@ const BoardList = props => {
                   <TableCell component="th" scope="row">
                     {row.community_no}
                   </TableCell>
-                  <TableCell>{row.community_hit}</TableCell>
                   <TableCell>{row.community_title}</TableCell>
                   <TableCell align="right">{row.community_author}</TableCell>
                   <TableCell align="right">{row.community_date}</TableCell>
-                  <TableCell align="right">{row.views}</TableCell>
+                  <TableCell align="right">{row.community_hit}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
