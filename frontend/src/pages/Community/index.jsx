@@ -1,5 +1,5 @@
 // import { Grid, Button } from '@material-ui/core';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import {Grid,Button,Pagination} from '@mui/material';
 
@@ -20,9 +20,11 @@ const Community = () => {
 
   let history = useHistory();
 
+  const [isSearch, setIsSearch]=useState(false);
   const [searchValue, setSearchValue] = useLocalStorageSetState('', 'search');
+  const [searchCategory,setSearchCategory]=useState(0);
   const [page, setPage] = React.useState(1);
-  
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -31,17 +33,32 @@ const Community = () => {
     history.push('/CommunityWrite');
   };
 
+  useEffect(()=>{
+    // 백엔드랑 연결되면 여기서 카테고리와 value, page를 사용해서 리스트 갱신해주는 것 추가
+    console.log(searchCategory,searchValue,page);
+    
+    if(isSearch)
+    {
+      setPage(1);
+      setIsSearch(!isSearch);
+    }
+  },[isSearch,page]);
+
   return (
     <ViewContext.Provider
       value={{
         searchValue,
         setSearchValue,
+        searchCategory,
+        setSearchCategory,
+        isSearch,
+        setIsSearch
       }}
     >
       <Layout>
         <Wrapper>
           <Grid>
-            {user.status && <Button variant="primary" onClick={onClickCommunityWriteHandler}>
+          {user.status && <Button variant="primary" onClick={onClickCommunityWriteHandler}>
               글쓰기
             </Button>}
             <SearchComponent />

@@ -34,7 +34,7 @@ const Wrapper = styled.div`
   .cover-grid {
   }
   .search-component-grid {
-    padding: 32px 0 12px 0;
+    padding: 12px 0 12px 0;
   }
   .search-component-grid-item-se-icon {
     color: #ccc;

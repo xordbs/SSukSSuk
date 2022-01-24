@@ -1,19 +1,35 @@
 import React, { useContext } from 'react';
 
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField, Button } from '@material-ui/core';
+import { FormControl, Select, MenuItem } from '@mui/material';
+
 import SearchIcon from '@material-ui/icons/Search';
 import Wrapper from './styles';
 
 import { ViewContext } from '../../../context/ViewContext';
 
 const SearchComponent = () => {
-  const { searchValue, setSearchValue } = useContext(ViewContext);
+  const {
+    searchValue,
+    setSearchValue,
+    searchCategory,
+    setSearchCategory,
+    setIsSearch
+  } = useContext(ViewContext);
+
+  const handleChange = event => {
+    setSearchCategory(event.target.value);
+  };
 
   const TopSearchCloseHandler = e => {
     if (e.target.type !== 'text') {
       return;
     }
   };
+
+  const SearchHandler=()=>{
+    setIsSearch(true);
+  }
 
   const onChangeSearchValueHandler = e => {
     setSearchValue(e.target.value);
@@ -23,8 +39,8 @@ const SearchComponent = () => {
     <Wrapper>
       <Grid
         container
-        alignItems="center"
-        justify="center"
+        alignItems="flex-end"
+        // justify="center"
         direction="column"
         className="search-component-grid"
         onClick={TopSearchCloseHandler}
@@ -32,12 +48,18 @@ const SearchComponent = () => {
         <Grid item>
           <Grid container spacing={1} alignItems="flex-end">
             <Grid item xs={3}>
-              <SearchIcon
-                className="search-component-grid-item-se-icon"
-                fontSize="large"
-              />
+              <FormControl>
+                <Select
+                  value={searchCategory}
+                  onChange={handleChange}
+                  displayEmpty
+                >
+                  <MenuItem value={0}>제목</MenuItem>
+                  <MenuItem value={1}>작성자</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={7}>
               <TextField
                 value={searchValue}
                 placeholder="Search..."
@@ -45,6 +67,11 @@ const SearchComponent = () => {
                 onChange={onChangeSearchValueHandler}
                 className="input2"
               />
+            </Grid>
+            <Grid item xs={2}>
+            <Button onClick={SearchHandler}>
+              찾기
+            </Button>
             </Grid>
           </Grid>
         </Grid>
