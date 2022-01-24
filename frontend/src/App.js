@@ -30,7 +30,7 @@ import MyFarm from './pages/MyFarm/';
 
 // const
 const defaultThumbnailImage = 'default_user.jpg';
-const HOST = '192.168.0.82:3001';
+const HOST = '127.0.0.1:3001';
 const serverUrl = `http://${HOST}/v1`;
 const serverUrlBase = `http://${HOST}`;
 const serverImgUrl = `https://ssafy-viba-s3.s3.ap-northeast-2.amazonaws.com/public/`;

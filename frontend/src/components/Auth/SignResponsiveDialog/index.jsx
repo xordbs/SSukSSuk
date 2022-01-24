@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-//
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import crypto from 'crypto';
@@ -26,6 +25,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import Wrapper from './styles';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import userData from './dump.json';
 
 // 아이디 체크 (영소문자+숫자, 4자이상)
@@ -36,11 +38,13 @@ const regPwd = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
 const regPwdCf = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
 
 // 이름/닉네임 체크 (한글만)
-const regNm = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
-const regNnm = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+const regNm = /^[ㄱ-ㅎ|가-힣]+$/;
+const regNnm = /^[ㄱ-ㅎ|가-힣]+$/;
 
 // 이메일 체크 (대소문자 구분 X, 문자/숫자연속가능)
 const regEma = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+const successSign = withReactContent(Swal);
 
 const DialogTitleComponent = () => {
   return (
@@ -76,20 +80,55 @@ const SignInSection01 = () => {
     setIsSignUp('ForgotPw');
   };
 
+  const [idError, setIdError] = useState(false);
+  const [idErrorMessage, setIdErrorMessage] = useState();
+
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState();
+
   const onSignInHandler = async e => {
     var { id, password } = signInUserData;
 
-    console.log('TCL: onSignInHandler -> id, password', id, password);
-    // console.log(regId.test(id));
+    // console.log('TCL: onSignInHandler -> id, password', id, password); # 아이디 비번 둘다 확인 잘 됩니다!
+    // console.log(regId.test(id));         # 잘 뜹니다! (true/false)
+    // console.log(regPwd.test(password));  # 잘 뜹니다! (true/false)
 
+    // 이게 유효성 검사? (DB랑 비교를 하는 그런?)
     if (!password || !id) {
       alert('You need both email and password.');
       return;
     }
 
     if (!regId.test(signInUserData.id)) {
-      alert('The id format is invalid.');
+      Swal.fire({
+        icon: 'error',
+        title: '아이디 형식 오류',
+        text: '영소문자+숫자, 4자이상',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      setIdError(true);
+      setIdErrorMessage('여깁니다..');
       return;
+    } else {
+      setIdError(false);
+      setIdErrorMessage();
+    }
+
+    if (!regPwd.test(signInUserData.password)) {
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호 형식 오류',
+        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      setPasswordError(true);
+      setPasswordErrorMessage('여깁니다...');
+      return;
+    } else {
+      setPasswordError(false);
+      setPasswordErrorMessage();
     }
 
     let respone = [];
@@ -108,6 +147,12 @@ const SignInSection01 = () => {
 
     setSignDialogOpen(false);
     setIsSignUp('SignIn');
+
+    await successSign.fire({
+      icon: 'success',
+      title: <strong>어서오십쇼~</strong>,
+      html: <i>다양하게 즐겨보십쇼...</i>,
+    });
 
     history.goBack();
   };
@@ -136,9 +181,9 @@ const SignInSection01 = () => {
       >
         <Grid item xs={12}>
           <TextField
-            autoFocus
             required
-            // error={signInUserData.id === '' ? true : false}
+            error={idError}
+            helperText={idErrorMessage}
             id="outlined-required"
             label="아이디"
             className="text-field"
@@ -162,7 +207,8 @@ const SignInSection01 = () => {
         <Grid item xs={12}>
           <TextField
             required
-            // error={signInUserData.password === '' ? true : false}
+            error={passwordError}
+            helperText={passwordErrorMessage}
             id="outlined-password-input"
             label="비밀번호"
             className="text-field"
@@ -331,8 +377,69 @@ const SignUpSection02 = () => {
       return;
     }
 
-    if (!regEma.test(email)) {
-      alert('The email format is invalid.');
+    if (!regId.test(signUpUserData.id)) {
+      Swal.fire({
+        icon: 'error',
+        title: '아이디 형식 오류',
+        text: '영소문자+숫자, 4자이상',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
+
+    if (!regPwd.test(signUpUserData.password)) {
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호 형식 오류',
+        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
+
+    if (!regPwdCf.test(signUpUserData.passwordConfirmation)) {
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호확인 형식 오류',
+        text: '영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
+
+    if (!regNm.test(signUpUserData.name)) {
+      Swal.fire({
+        icon: 'error',
+        title: '이름 형식 오류',
+        text: '한글만',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
+
+    if (!regNnm.test(signUpUserData.nickname)) {
+      Swal.fire({
+        icon: 'error',
+        title: '별명 형식 오류',
+        text: '한글만',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
+
+    if (!regEma.test(signUpUserData.email)) {
+      Swal.fire({
+        icon: 'error',
+        title: '이메일 형식 오류',
+        text: '대소문자 구분 X, 문자/숫자연속가능',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
       return;
     }
 
@@ -364,6 +471,13 @@ const SignUpSection02 = () => {
       nickname: '',
       email: '',
       grade: '',
+    });
+
+    await successSign.fire({
+      title: <strong>환영합니다~</strong>,
+      html: <i>회원가입 성공!</i>,
+      icon: 'success',
+      target: document.querySelector('.MuiDialog-root'),
     });
   };
 
@@ -422,7 +536,6 @@ const SignUpSection02 = () => {
       >
         <Grid item xs={12} className="sign-up-grid">
           <TextField
-            autoFocus
             required
             // error={signUpUserData.id === '' ? true : false}
             id="outlined-required"
