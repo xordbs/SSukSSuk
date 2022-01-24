@@ -37,7 +37,6 @@ const BoardList = props => {
   let history = useHistory();
 
   function onRowClick(community_no) {
-    console.log(community_no);
     history.push('/CommunityDetail/'+community_no);
   }
 
