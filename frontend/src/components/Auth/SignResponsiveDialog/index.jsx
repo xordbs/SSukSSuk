@@ -68,7 +68,7 @@ const SignInSection01 = () => {
     user,
     setUser,
     setSignDialogOpen,
-    serverUrl,
+    serverUrlBase,
     setIsShowKeyborad,
   } = useContext(CommonContext);
 
@@ -347,10 +347,27 @@ const SignUpSection02 = () => {
   const { signUpUserData, setSignUpUserData, setIsSignUp } = useContext(
     ViewContext,
   );
-  const { serverUrl } = useContext(CommonContext);
+  const { serverUrlBase } = useContext(CommonContext);
 
   const OnChangeHandler = name => e => {
     setSignUpUserData({ ...signUpUserData, [name]: e.target.value });
+    if (name === 'id' && e.target.value.length > 3) {
+      Axios.get(serverUrlBase + `/user/checkid/` + e.target.value).then(
+        data => {
+          // console.log(data.data.idchk);
+          if (data.data.idchk === false) {
+            Swal.fire({
+              icon: 'error',
+              title: '아이디 있다',
+              text: '다른 아이디 해라',
+              footer: '<a href="">Why do I have this issue?</a>',
+              target: document.querySelector('.MuiDialog-root'),
+              // error 테두리로 해줘
+            });
+          }
+        },
+      );
+    }
   };
   console.log(signUpUserData);
   const onSignUpHandler = async () => {
