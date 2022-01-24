@@ -61,14 +61,11 @@ const theme = createTheme({
 const App = () => {
   const [user, setUser] = useLocalStorageSetState(
     {
-      user_no: 0,
-      user_id: '',
-      user_nm: '',
-      user_pwd: '',
-      user_img_url: '',
-      status: '',
-      web_site: '',
+      id: '',
+      name: '',
       token: '',
+      status: '',
+      type:'',
     },
     'user',
   );

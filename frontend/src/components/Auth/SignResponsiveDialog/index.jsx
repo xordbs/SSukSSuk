@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
+import store from 'store';
 import crypto from 'crypto';
 import { ViewContext } from '../../../context/ViewContext';
 import { CommonContext } from '../../../context/CommonContext';
@@ -142,24 +143,38 @@ const SignInSection01 = () => {
       return;
     }
 
-    setUser({ ...userData });
-    // 지금은 dump지만 / 나중엔 signInUserData?
+    Axios.post(serverUrlBase + `/user/login/`, {
+      user_id: id,
+      user_pw: password,
+    })
+      .then(data => {
+        const login_user = data.data;
+        if (login_user.status === 'fail') {
+          alert(login_user.msg);
+        } else if (login_user.status === 'login') {
+          setUser({ ...login_user });
+          store.set('user', { ...login_user });
 
-    setSignDialogOpen(false);
-    setIsSignUp('SignIn');
-
-    await successSign.fire({
-      icon: 'success',
-      title: <strong>어서오십쇼~</strong>,
-      html: <i>다양하게 즐겨보십쇼...</i>,
-    });
-
-    history.goBack();
+          setSignDialogOpen(false);
+          setIsSignUp('SignIn');
+          successSign.fire({
+            icon: 'success',
+            title: <strong>어서오십쇼~</strong>,
+            html: <i>다양하게 즐겨보십쇼...</i>,
+          });
+          console.log('login');
+          console.log(store.get('user'));
+          history.goBack();
+        }
+      })
+      .catch(function(error) {
+        console.log('로그인 오류 발생 : ' + error);
+      });
   };
 
   useEffect(() => {
     // 여기가 콘솔로 확인하는 것! [존..매우 중요]
-    console.log({ signInUserData });
+    // console.log({ signInUserData });
     if (signInUserData.id !== '' && signInUserData.password !== '') {
       setDisabled(false);
     }
