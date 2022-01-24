@@ -80,11 +80,11 @@ const SignInSection01 = () => {
     setIsSignUp('ForgotPw');
   };
 
-  const [idError, setIdError] = useState(false);
-  const [idErrorMessage, setIdErrorMessage] = useState();
+  const [signInIdErr, setsSgnInIdErr] = useState(false);
+  const [singInidErrMsg, setSingInidErrMsg] = useState();
 
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState();
+  const [signInPwdErr, setSignInPwdErr] = useState(false);
+  const [signInPwdErrMsg, setSignInPwdErrMsg] = useState();
 
   const onSignInHandler = async e => {
     var { id, password } = signInUserData;
@@ -107,12 +107,12 @@ const SignInSection01 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
-      setIdError(true);
-      setIdErrorMessage('여깁니다..');
+      setsSgnInIdErr(true);
+      setSingInidErrMsg('영소문자+숫자, 4자이상');
       return;
     } else {
-      setIdError(false);
-      setIdErrorMessage();
+      setsSgnInIdErr(false);
+      setSingInidErrMsg();
     }
 
     if (!regPwd.test(signInUserData.password)) {
@@ -123,12 +123,12 @@ const SignInSection01 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
-      setPasswordError(true);
-      setPasswordErrorMessage('여깁니다...');
+      setSignInPwdErr(true);
+      setSignInPwdErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
       return;
     } else {
-      setPasswordError(false);
-      setPasswordErrorMessage();
+      setSignInPwdErr(false);
+      setSignInPwdErrMsg();
     }
 
     let respone = [];
@@ -182,8 +182,8 @@ const SignInSection01 = () => {
         <Grid item xs={12}>
           <TextField
             required
-            error={idError}
-            helperText={idErrorMessage}
+            error={signInIdErr}
+            helperText={singInidErrMsg}
             id="outlined-required"
             label="아이디"
             className="text-field"
@@ -207,8 +207,8 @@ const SignInSection01 = () => {
         <Grid item xs={12}>
           <TextField
             required
-            error={passwordError}
-            helperText={passwordErrorMessage}
+            error={signInPwdErr}
+            helperText={signInPwdErrMsg}
             id="outlined-password-input"
             label="비밀번호"
             className="text-field"
@@ -356,20 +356,48 @@ const SignUpSection02 = () => {
         data => {
           // console.log(data.data.idchk);
           if (data.data.idchk === false) {
-            Swal.fire({
-              icon: 'error',
-              title: '아이디 있다',
-              text: '다른 아이디 해라',
-              footer: '<a href="">Why do I have this issue?</a>',
-              target: document.querySelector('.MuiDialog-root'),
-              // error 테두리로 해줘
-            });
+            setSignUpIdErr(true);
+            setSignUpIdErrMsg('아이디 중복됩니다요~');
+          } else {
+            setSignUpIdErr(false);
+            setSignUpIdErrMsg();
+          }
+        },
+      );
+    } else if (name === 'nickname') {
+      Axios.get(serverUrlBase + `/user/checknick/` + e.target.value).then(
+        data => {
+          if (data.data.nickchk === false) {
+            setSignUpNnmErr(true);
+            setSignUpNnmErrMsg('별명 중독되요~');
+          } else {
+            setSignUpNnmErr(false);
+            setSignUpNnmErrMsg();
           }
         },
       );
     }
   };
   console.log(signUpUserData);
+
+  const [signUpIdErr, setSignUpIdErr] = useState(false);
+  const [signUpIdErrMsg, setSignUpIdErrMsg] = useState();
+
+  const [signUpPwdErr, setSignUpPwdErr] = useState(false);
+  const [signUpPwdErrMsg, setSignUpPwdErrMsg] = useState();
+
+  const [signUpPwdCfErr, setSignUpPwdCfErr] = useState(false);
+  const [signUpPwdCfErrMsg, setSignUpPwdCfErrMsg] = useState();
+
+  const [signUpNmErr, setSignUpNmErr] = useState(false);
+  const [signUpNmErrMsg, setSignUpNmErrMsg] = useState();
+
+  const [signUpNnmErr, setSignUpNnmErr] = useState(false);
+  const [signUpNnmErrMsg, setSignUpNnmErrMsg] = useState();
+
+  const [signUpEmaErr, setSignUpEmaErr] = useState(false);
+  const [signUpEmaErrMsg, setSignUpEmaErrMsg] = useState();
+
   const onSignUpHandler = async () => {
     var {
       id,
@@ -402,7 +430,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpIdErr(true);
+      setSignUpIdErrMsg('영소문자+숫자, 4자이상');
       return;
+    } else {
+      setSignUpIdErr(false);
+      setSignUpIdErrMsg();
     }
 
     if (!regPwd.test(signUpUserData.password)) {
@@ -413,7 +446,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpPwdErr(true);
+      setSignUpPwdErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
       return;
+    } else {
+      setSignUpPwdErr(false);
+      setSignUpPwdErrMsg();
     }
 
     if (!regPwdCf.test(signUpUserData.passwordConfirmation)) {
@@ -424,7 +462,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpPwdCfErr(true);
+      setSignUpPwdCfErrMsg('영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리');
       return;
+    } else {
+      setSignUpPwdCfErr(false);
+      setSignUpPwdCfErrMsg();
     }
 
     if (!regNm.test(signUpUserData.name)) {
@@ -435,7 +478,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpNmErr(true);
+      setSignUpNmErrMsg('한글만');
       return;
+    } else {
+      setSignUpNmErr(false);
+      setSignUpNmErrMsg();
     }
 
     if (!regNnm.test(signUpUserData.nickname)) {
@@ -446,7 +494,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpNnmErr(true);
+      setSignUpNnmErrMsg('한글만');
       return;
+    } else {
+      setSignUpNnmErr(false);
+      setSignUpNnmErrMsg();
     }
 
     if (!regEma.test(signUpUserData.email)) {
@@ -457,7 +510,12 @@ const SignUpSection02 = () => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      setSignUpEmaErr(true);
+      setSignUpEmaErrMsg('대소문자 구분 X, 문자/숫자연속가능');
       return;
+    } else {
+      setSignUpEmaErr(false);
+      setSignUpEmaErrMsg();
     }
 
     let respone = [];
@@ -554,7 +612,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid">
           <TextField
             required
-            // error={signUpUserData.id === '' ? true : false}
+            error={signUpIdErr}
+            helperText={signUpIdErrMsg}
             id="outlined-required"
             label="아이디"
             defaultValue={signUpUserData.id}
@@ -568,7 +627,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item2">
           <TextField
             required
-            // error={signUpUserData.password === '' ? true : false}
+            error={signUpPwdErr}
+            helperText={signUpPwdErrMsg}
             id="outlined-password-input"
             label="비밀번호"
             className="text-Field"
@@ -584,7 +644,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item2">
           <TextField
             required
-            // error={signUpUserData.passwordConfirmation === '' ? true : false}
+            error={signUpPwdCfErr}
+            helperText={signUpPwdCfErrMsg}
             id="outlined-password-input"
             label="비밀번호확인"
             className="text-Field"
@@ -600,7 +661,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item1">
           <TextField
             required
-            // error={signUpUserData.name === '' ? true : false}
+            error={signUpNmErr}
+            helperText={signUpNmErrMsg}
             id="outlined-required"
             label="이름"
             defaultValue={signUpUserData.name}
@@ -614,7 +676,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid-item1">
           <TextField
             required
-            // error={signUpUserData.nickname === '' ? true : false}
+            error={signUpNnmErr}
+            helperText={signUpNnmErrMsg}
             id="outlined-required"
             label="별명"
             defaultValue={signUpUserData.nickname}
@@ -628,7 +691,8 @@ const SignUpSection02 = () => {
         <Grid item xs={12} className="sign-up-grid">
           <TextField
             required
-            // error={signUpUserData.email === '' ? true : false}
+            error={signUpEmaErr}
+            helperText={signUpEmaErrMsg}
             id="outlined-required"
             label="이메일"
             defaultValue={signUpUserData.email}
