@@ -118,7 +118,7 @@ const Header = props => {
               >
                 <img
                   className="logo_img"
-                  src="images/ssug_green.png"
+                  src={history.location.pathname.indexOf("/CommunityDetail")==-1?"images/ssug_green.png":"../images/ssug_green.png"}
                   alt="logo"
                 />
               </Typography>
