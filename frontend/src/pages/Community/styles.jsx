@@ -27,6 +27,21 @@ const Wrapper = styled.div`
     }
   }
 
+  .tab-style{
+    // color:#9aba11;
+    font-weight: 500;
+    font-size: 18px;
+
+    margin:0px 5px;
+  }
+
+  .tabs-style:{
+    & .MuiTabs-indicator: {
+      // display: "none"
+      backgroundColor: secondary;
+    }
+  }
+
 `;
 
 export default Wrapper;

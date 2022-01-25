@@ -51,7 +51,7 @@ const SearchComponent = () => {
               <Select
                 value={searchCategory}
                 onChange={handleChange}
-                autoWidth="false"
+                // autoWidth="false"
                 displayEmpty
                 className="select-box"
               >

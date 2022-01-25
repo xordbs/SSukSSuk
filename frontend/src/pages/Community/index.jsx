@@ -27,6 +27,19 @@ import Wrapper from './styles';
 import PropTypes from 'prop-types';
 import listData from './dump.json';
 
+import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@emotion/react';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3e7925',
+    },
+    secondary: {
+      main: '#000000',
+    },
+  },
+});
+
 const Community = () => {
   const { user, setIsSignUp } = useContext(CommonContext);
 
@@ -97,18 +110,32 @@ const Community = () => {
             justifyContent="space-between"
             alignItems="end"
           >
+            <ThemeProvider theme={theme}>
+              <Grid item>
+                <Tabs
+                  value={category}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                  indicatorColor="primary"
+                  textColor="primary"
+                  // textColor='inherit'
+                >
+                  <Tab
+                    className="tab-style"
+                    label={'자유 게시판 (' + listData.items.length + ')'}
+                  />
+                  <Tab className="tab-style" label="멘토 게시판" />
+                </Tabs>
+              </Grid>
+            </ThemeProvider>
             <Grid item>
-              <Tabs
-                value={category}
-                onChange={handleChange}
-                aria-label="basic tabs example"
+              {/* <SearchComponent /> */}
+              <Button
+                className="write-button"
+                onClick={onClickCommunityWriteHandler}
               >
-                <Tab label="자유 게시판" />
-                <Tab label="멘토 게시판" />
-              </Tabs>
-            </Grid>
-            <Grid item>
-              <SearchComponent />
+                글쓰기
+              </Button>
             </Grid>
           </Grid>
 
@@ -120,16 +147,17 @@ const Community = () => {
             alignItems="flex-end"
             direction="column"
           >
-            <Button
+            {/* <Button
               className="write-button"
               onClick={onClickCommunityWriteHandler}
             >
               글쓰기
-            </Button>
+            </Button> */}
           </Grid>
           <Grid container alignItems="center" direction="column">
             <Pagination count={10} page={page} onChange={handlePageChange} />
           </Grid>
+          <SearchComponent />
         </Wrapper>
       </Layout>
     </ViewContext.Provider>
