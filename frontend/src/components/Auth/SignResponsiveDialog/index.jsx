@@ -35,12 +35,12 @@ import userData from './dump.json';
 const regId = /^[a-z0-9]{4,}$/;
 
 // 비번/비번확인 체크 (영문소문자+숫자+특수문자 최소 1개 이상, 8~15자리)
-const regPwd = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
-const regPwdCf = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,15}$/;
+const regPwd = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{7,14}$/;
+const regPwdCf = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{7,14}$/;
 
 // 이름/닉네임 체크 (한글만, 2자이상)
-const regNm = /^[ㄱ-ㅎ|가-힣]+.{2,}$/;
-const regNnm = /^[ㄱ-ㅎ|가-힣]+.{2,}$/;
+const regNm = /^[ㄱ-ㅎ|가-힣]+.{1,}$/;
+const regNnm = /^[ㄱ-ㅎ|가-힣]+.{1,}$/;
 
 // 이메일 체크 (대소문자 구분 X, 문자/숫자연속가능)
 const regEma = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -598,7 +598,7 @@ const SignUpSection02 = () => {
       user_name: name,
       user_nickName: nickname,
       user_email: email,
-      user_code: 'a',
+      user_code: 'U01',
     })
       .then(data => {
         const join_result = data.data;
