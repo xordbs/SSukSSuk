@@ -65,7 +65,7 @@ const Community = () => {
     >
       <Layout>
         <Wrapper>
-          <Grid container direction="row"  justifyContent ="space-between" alignItems="center">
+          <Grid container direction="row" className='top-box' justifyContent ="space-between" alignItems="center">
             <Grid item>카테고리</Grid>
             <Grid item >
               <SearchComponent />

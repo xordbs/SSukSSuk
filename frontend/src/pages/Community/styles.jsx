@@ -9,6 +9,10 @@ const Wrapper = styled.div`
     padding:10px 0;
   }
 
+  & .top-box{
+    padding:10px 0;
+  }
+
   & .write-button{
     font-weight: 700;
     font-size: 16px;

@@ -14,7 +14,7 @@ const SearchComponent = () => {
     setSearchValue,
     searchCategory,
     setSearchCategory,
-    setIsSearch
+    setIsSearch,
   } = useContext(ViewContext);
 
   const handleChange = event => {
@@ -27,9 +27,9 @@ const SearchComponent = () => {
     }
   };
 
-  const SearchHandler=()=>{
+  const SearchHandler = () => {
     setIsSearch(true);
-  }
+  };
 
   const onChangeSearchValueHandler = e => {
     setSearchValue(e.target.value);
@@ -40,38 +40,40 @@ const SearchComponent = () => {
       <Grid
         container
         alignItems="flex-end"
-        // justify="center"
+        justify="center"
         direction="column"
         className="search-component-grid"
         onClick={TopSearchCloseHandler}
       >
         <Grid item>
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item xs={3}>
-              <FormControl>
-                <Select
-                  value={searchCategory}
-                  onChange={handleChange}
-                  displayEmpty
-                >
-                  <MenuItem value={0}>제목</MenuItem>
-                  <MenuItem value={1}>작성자</MenuItem>
-                </Select>
-              </FormControl>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item>
+              <Select
+                value={searchCategory}
+                onChange={handleChange}
+                autoWidth="false"
+                displayEmpty
+                className="select-box"
+              >
+                <MenuItem value={0}>제목</MenuItem>
+                <MenuItem value={1}>작성자</MenuItem>
+              </Select>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item>
               <TextField
                 value={searchValue}
-                placeholder="Search..."
-                autoFocus={true}
+                // placeholder="찾고싶은 내용을 입력하세요"
+                // autoFocus={true}
+                variant="outlined"
+                size="small"
                 onChange={onChangeSearchValueHandler}
-                className="input2"
+                className="input1"
               />
             </Grid>
-            <Grid item xs={2}>
-            <Button onClick={SearchHandler}>
-              찾기
-            </Button>
+            <Grid item>
+              <Button className="write-button" onClick={SearchHandler}>
+                검색
+              </Button>
             </Grid>
           </Grid>
         </Grid>
