@@ -145,15 +145,16 @@ const SignInSection01 = () => {
 
     Axios.post(serverUrlBase + `/user/login/`, {
       user_id: id,
-      user_pw: password,
+      user_pw: hashPassword,
     })
       .then(data => {
         const login_user = data.data;
-        if (login_user.status === 'fail') {
-          alert(login_user.msg);
-        } else if (login_user.status === 'login') {
+        if (login_user.status === 'login') {
+          // 로그인 성공
           setUser({ ...login_user });
           store.set('user', { ...login_user });
+          // header에 token 저장
+          Axios.defaults.headers.common['x-access-token'] = login_user.token;
 
           setSignDialogOpen(false);
           setIsSignUp('SignIn');
@@ -165,6 +166,9 @@ const SignInSection01 = () => {
           console.log('login');
           console.log(store.get('user'));
           history.goBack();
+        } else {
+          // 로그인 실패
+          alert(login_user.msg);
         }
       })
       .catch(function(error) {
