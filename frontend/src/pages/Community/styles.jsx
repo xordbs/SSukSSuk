@@ -10,7 +10,8 @@ const Wrapper = styled.div`
   }
 
   & .top-box{
-    padding:10px 0;
+    border-bottom: solid 1px #e9ecef;
+    margin:10px 0;
   }
 
   & .write-button{
@@ -19,6 +20,11 @@ const Wrapper = styled.div`
     padding:5px 13px;
     color:#ffffff;
     background-color: #9aba11;
+
+    &:hover {
+      color:#ffffff;
+      background-color: #9aba11;
+    }
   }
 
 `;

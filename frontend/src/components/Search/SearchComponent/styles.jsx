@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   .cover-grid {
   }
   .search-component-grid {
-    // padding: 12px 0 12px 0;
+    padding: 10px 0 10px 0;
   }
   .search-component-grid-item-se-icon {
     color: #ccc;
@@ -46,10 +46,20 @@ const Wrapper = styled.div`
     padding:5px 13px;
     color:#ffffff;
     background-color: #9aba11;
+
+    &:hover {
+      color:#ffffff;
+      background-color: #9aba11;
+    }
   }
   .select-box{
     width:100px;
     height:40px;
+  }
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: #212121;
+    }
   }
 `;
 export default Wrapper;

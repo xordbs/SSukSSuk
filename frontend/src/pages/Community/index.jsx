@@ -1,7 +1,15 @@
 // import { Grid, Button } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Grid, Button, Pagination } from '@mui/material';
+import {
+  Grid,
+  Button,
+  Pagination,
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+} from '@mui/material';
 
 import BoardList from '../../components/Board/BoardList/';
 import { useHistory } from 'react-router-dom';
@@ -14,43 +22,60 @@ import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
+// PropTypes는 부모로부터 전달받은 prop의 데이터 type을 검사한다.
+// 자식 컴포넌트에서 명시해 놓은 데이터 타입과 부모로부터 넘겨받은 데이터 타입이 일치하지 않으면 콘솔에 에러 경고문이 띄워진다.
+import PropTypes from 'prop-types';
+import listData from './dump.json';
+
 const Community = () => {
   const { user, setIsSignUp } = useContext(CommonContext);
 
   let history = useHistory();
 
+  const [category, setCategory] = React.useState(0);
   const [isSearch, setIsSearch] = useState(false);
   const [searchValue, setSearchValue] = useLocalStorageSetState('', 'search');
   const [searchCategory, setSearchCategory] = useState(0);
   const [page, setPage] = React.useState(1);
+
+  const handleChange = (event, value) => {
+    setCategory(value);
+  };
 
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
   const onClickCommunityWriteHandler = () => {
-    if(!user.states)
-    {
-       // 여기도 SignUp 변경하는거 다른 사람들이랑 충돌 안나도록 일단은 이렇게 하고 나중에 다 만들고 나서 바꿀 수 있으면 최적화
-      alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+    if (!user.status) {
+      // 여기도 SignUp 변경하는거 다른 사람들이랑 충돌 안나도록 일단은 이렇게 하고 나중에 다 만들고 나서 바꿀 수 있으면 최적화
+      alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
       setIsSignUp('SignIn');
       history.push('/Auth');
-    }
-    else
-    {
+    } else {
       history.push('/CommunityWrite');
     }
   };
 
   useEffect(() => {
     // 백엔드랑 연결되면 여기서 카테고리와 value, page를 사용해서 리스트 갱신해주는 것 추가
-    console.log(searchCategory, searchValue, page);
+    console.log(category, searchCategory, searchValue, page);
+    // 리스트 갱신되는지 확인함
+    listData.items.push({
+      community_no: listData.items.length + 1,
+      community_title: '[정보글] 귀농 3년이면 과일도 심는다?',
+      community_author: '도시보다 시골',
+      community_date: '20220121',
+      community_content: 'test_content6',
+      community_hit: 0,
+      community_code: 'free',
+    });
 
     if (isSearch) {
       setPage(1);
-      setIsSearch(!isSearch); // 이거때문에 한번 더 렌더링 되는거 같은데 어떻게 좀 바꿀 수 없을까 => 최적화
+      setIsSearch(!isSearch); // 이거때문에 한번 더 렌더링 되는거 같은데 어떻게 좀 바꿀 수 없을까
     }
-  }, [isSearch, page]);
+  }, [isSearch, page, category]);
 
   return (
     <ViewContext.Provider
@@ -65,15 +90,42 @@ const Community = () => {
     >
       <Layout>
         <Wrapper>
-          <Grid container direction="row" className='top-box' justifyContent ="space-between" alignItems="center">
-            <Grid item>카테고리</Grid>
-            <Grid item >
+          <Grid
+            container
+            direction="row"
+            className="top-box"
+            justifyContent="space-between"
+            alignItems="end"
+          >
+            <Grid item>
+              <Tabs
+                value={category}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="자유 게시판" />
+                <Tab label="멘토 게시판" />
+              </Tabs>
+            </Grid>
+            <Grid item>
               <SearchComponent />
             </Grid>
           </Grid>
-          <BoardList page={page} />
-          <Grid className='bottom-box' container alignItems="flex-end" direction="column">
-            <Button className='write-button' onClick={onClickCommunityWriteHandler}>글쓰기</Button>
+
+          <BoardList listData={listData} />
+
+          <Grid
+            className="bottom-box"
+            container
+            alignItems="flex-end"
+            direction="column"
+          >
+            <Button
+              className="write-button"
+              onClick={onClickCommunityWriteHandler}
+            >
+              글쓰기
+            </Button>
           </Grid>
           <Grid container alignItems="center" direction="column">
             <Pagination count={10} page={page} onChange={handlePageChange} />

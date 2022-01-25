@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Wrapper from './styles';
-import listData from '../dump.json';
 
 import {
   Grid,
@@ -33,6 +32,7 @@ function createData(
 
 const BoardList = props => {
   let history = useHistory();
+  const listData=props.listData;
 
   function onRowClick(community_no) {
     history.push('/CommunityDetail/'+community_no);
