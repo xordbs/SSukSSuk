@@ -601,10 +601,9 @@ const SignUpSection02 = () => {
       user_code: 'U01',
     })
       .then(data => {
-        const join_result = data.data;
-        if (!join_result.success) {
-          console.log('실패');
-        } else if (join_result.success) {
+        const join_result = data.data.result;
+        console.log(join_result);
+        if (join_result === 'success') {
           console.log(data);
           successSign.fire({
             title: <strong>환영합니다~</strong>,
@@ -612,6 +611,8 @@ const SignUpSection02 = () => {
             icon: 'success',
             target: document.querySelector('.MuiDialog-root'),
           });
+        } else {
+          alert('가입에 실패하였습니다.');
         }
       })
       .catch(function(error) {
