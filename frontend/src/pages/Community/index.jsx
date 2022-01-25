@@ -72,8 +72,8 @@ const Community = () => {
             </Grid>
           </Grid>
           <BoardList page={page} />
-          <Grid container alignItems="flex-end" direction="column">
-            <Button onClick={onClickCommunityWriteHandler}>글작성</Button>
+          <Grid className='bottom-box' container alignItems="flex-end" direction="column">
+            <Button className='write-button' onClick={onClickCommunityWriteHandler}>글쓰기</Button>
           </Grid>
           <Grid container alignItems="center" direction="column">
             <Pagination count={10} page={page} onChange={handlePageChange} />
