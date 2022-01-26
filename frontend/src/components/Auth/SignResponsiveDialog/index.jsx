@@ -145,11 +145,13 @@ const SignInSection01 = () => {
       .then(data => {
         const login_user = data.data;
         if (login_user.status === 'login') {
+          console.log('login');
+          console.log(login_user);
           // 로그인 성공
           setUser({ ...login_user });
           store.set('user', { ...login_user });
           // header에 token 저장
-          Axios.defaults.headers.common['x-access-token'] = login_user.token;
+          Axios.defaults.headers.common['authorization'] = login_user.token;
 
           setSignDialogOpen(false);
           setIsSignUp('SignIn');
