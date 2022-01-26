@@ -114,6 +114,7 @@ const SignInSection01 = () => {
   const [signInPwdErr, setSignInPwdErr] = useState(false);
   const [signInPwdErrMsg, setSignInPwdErrMsg] = useState();
 
+  // 로그인 버튼을 누르면 실행되는 기능
   const onSignInHandler = async e => {
     var { id, password } = signInUserData;
 
@@ -122,10 +123,10 @@ const SignInSection01 = () => {
     // console.log(regPwd.test(password));  # 잘 뜹니다! (true/false)
 
     // 이게 유효성 검사? (DB랑 비교를 하는 그런?)
-    if (!password || !id) {
-      alert('You need both email and password.');
-      return;
-    }
+    // if (!password || !id) {
+    //   alert('You need both email and password.');
+    //   return;
+    // }
 
     let respone = [];
     let hashPassword = '';
@@ -143,6 +144,7 @@ const SignInSection01 = () => {
       user_pw: hashPassword,
     })
       .then(data => {
+        // console.log(data);
         const login_user = data.data;
         if (login_user.status === 'login') {
           // 로그인 성공
@@ -163,7 +165,14 @@ const SignInSection01 = () => {
           history.goBack();
         } else {
           // 로그인 실패
-          alert(login_user.msg);
+          Swal.fire({
+            icon: 'error',
+            title: '해당 하는 유저가 없습니다!',
+            text: '아이디 또는 비밀번호를 확인 바랍니다!',
+            footer: '<a href="">Why do I have this issue?</a>',
+            target: document.querySelector('.MuiDialog-root'),
+          });
+          // alert(login_user.msg);
         }
       })
       .catch(function(error) {
@@ -528,16 +537,16 @@ const SignUpSection02 = () => {
       grade,
     } = signUpUserData;
 
-    // 비번 일치 유무... 안됨
-    // if (signUpUserData.password !== signUpUserData.passwordConfirmation) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: '비번 불일치 오류',
-    //     text: '비번 통일 시키세요~',
-    //     footer: '<a href="">Why do I have this issue?</a>',
-    //     target: document.querySelector('.MuiDialog-root'),
-    //   });
-    // }
+    if (signUpUserData.password !== signUpUserData.passwordConfirmation) {
+      Swal.fire({
+        icon: 'error',
+        title: '비밀번호 불일치',
+        text: '다시 한번 확인해 주세요!',
+        footer: '<a href="">Why do I have this issue?</a>',
+        target: document.querySelector('.MuiDialog-root'),
+      });
+      return;
+    }
 
     // if (
     //   id === '' ||
@@ -612,7 +621,14 @@ const SignUpSection02 = () => {
             target: document.querySelector('.MuiDialog-root'),
           });
         } else {
-          alert('가입에 실패하였습니다.');
+          // 어떻게 확인하라고?... 미안...
+          Swal.fire({
+            icon: 'error',
+            title: '회원가입 실패!',
+            text: '?',
+            footer: '<a href="">Why do I have this issue?</a>',
+            target: document.querySelector('.MuiDialog-root'),
+          });
         }
       })
       .catch(function(error) {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import crypto from 'crypto';
@@ -14,6 +14,11 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Wrapper from './styles';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const successSign = withReactContent(Swal);
+
 const InputComponent = props => {
   let { name } = props;
   const { inputValue, setInputValue } = useContext(ViewContext);
@@ -23,6 +28,20 @@ const InputComponent = props => {
     setInputValue({ ...inputValue, [name]: e.target.value });
     console.log('OnChangeHandler -> inputValue', inputValue);
   };
+
+  // useEffect(() => {
+  //   if (
+  //     !!inputValue['현재 비밀번호'] &&
+  //     !!inputValue['새 비밀번호'] &&
+  //   ) {
+  //     props.setDisabled(false);
+  //   } else {
+  //     props.setDisabled(true);
+  //   }
+  // }, [
+  //   inputValue['현재 비밀번호'],
+  //   inputValue['새 비밀번호'],
+  // ]);
 
   const onClickHandler = () => {
     setIsShowPassword(!isShowPassword);
@@ -70,6 +89,7 @@ const InputComponent = props => {
   );
 };
 
+// 글 왼쪽/오른쪽 나눈거 (왼쪽 = 라벨 / 오른쪽 = 인풋)
 const ContentDefaultComponent = props => {
   const { LeftComponent, RightComponet } = props;
   return (
@@ -92,9 +112,10 @@ const ContentDefaultComponent = props => {
   );
 };
 
+// 우하단 버튼들 관련
 const MyInfoButtonGroupComponent = props => {
   let history = useHistory();
-  const { setUserDetailDialogOpen, user, serverUrl, setUser } = useContext(
+  const { setUserDetailDialogOpen, user, serverUrlBase, setUser } = useContext(
     CommonContext,
   );
   const { inputValue } = useContext(ViewContext);
@@ -163,24 +184,27 @@ const MyInfoButtonGroupComponent = props => {
           onClick={handleClose}
           className="cancel-fab my-info-button-group-component-grid-fab1"
         >
-          취소하기
+          취소
         </Fab>
 
         <Fab
           variant="extended"
+          disabled={props.disabled}
           aria-label="like"
           color="inherit"
           onClick={onMyInfoSaveHandelr}
           className="upload-fab my-info-button-group-component-grid-fab2"
         >
-          탈퇴하기
+          탈퇴
         </Fab>
       </Grid>
     </Wrapper>
   );
 };
 
-const ChangePasswordComponent = params => {
+// 전체 구조
+const DeleteUserComponent = params => {
+  const [disabled, setDisabled] = useState(true);
   return (
     <Wrapper>
       <form noValidate autoComplete="off">
@@ -198,14 +222,14 @@ const ChangePasswordComponent = params => {
             className="change-password-component-grid-item"
           ></Grid>
           <Grid item xs={12}>
-            <InputComponent name={'ID'} />
+            <InputComponent name={'아이디'} setDisabled={setDisabled} />
           </Grid>
           <Grid item xs={12}>
-            <InputComponent name={'PASSWORD'} />
+            <InputComponent name={'비밀번호'} setDisabled={setDisabled} />
           </Grid>
 
           <Grid item xs={12}>
-            <MyInfoButtonGroupComponent />
+            <MyInfoButtonGroupComponent disabled={disabled} />
           </Grid>
         </Grid>
       </form>
@@ -213,14 +237,14 @@ const ChangePasswordComponent = params => {
   );
 };
 
-const ChangePassword = () => {
+const DeleteUser = () => {
   const [inputValue, setInputValue] = useState('');
 
   return (
     <ViewContext.Provider value={{ inputValue, setInputValue }}>
-      <ChangePasswordComponent />
+      <DeleteUserComponent />
     </ViewContext.Provider>
   );
 };
 
-export default ChangePassword;
+export default DeleteUser;
