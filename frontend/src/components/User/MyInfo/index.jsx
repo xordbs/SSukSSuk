@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
+import store from 'store';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import { useDropzone } from 'react-dropzone';
@@ -20,38 +21,6 @@ import {
   Fab,
 } from '@material-ui/core';
 import Wrapper from './styles';
-
-const MyInfoUploadImageComponent = () => {
-  const { user } = useContext(CommonContext);
-
-  const onDrop = useCallback(acceptedFiles => {
-    console.log('Basic -> acceptedFiles', acceptedFiles);
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone(onDrop);
-
-  return (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      alignItems="center"
-      spacing={2}
-    >
-      <Grid item xs={12}>
-        <Fragment>
-          <Typography> {user.nick_name} </Typography>
-          <section className="container">
-            <div {...getRootProps({ className: 'dropzone' })}>
-              <input {...getInputProps()} />
-            </div>
-          </section>
-        </Fragment>
-      </Grid>
-      <Grid item xs={2}></Grid>
-    </Grid>
-  );
-};
 
 const MyInfoInputComponent = props => {
   let { keyValue, title, rows } = props;
@@ -71,7 +40,7 @@ const MyInfoInputComponent = props => {
       }
       RightComponet={
         <TextField
-          disabled={keyValue === 'nick_name' ? false : true}
+          disabled={keyValue === 'user_nickName' ? false : true}
           id={`outlined-basic-${keyValue}`}
           defaultValue={inputValue[keyValue]}
           variant="outlined"
@@ -88,9 +57,12 @@ const MyInfoInputComponent = props => {
 
 const MyInfoButtonGroupComponent = props => {
   let history = useHistory();
-  const { setUserDetailDialogOpen, user, serverUrl, setUser } = useContext(
+  const { setUserDetailDialogOpen, serverUrlBase, setUser } = useContext(
     CommonContext,
   );
+
+  const user = store.get('user');
+
   const { inputValue } = useContext(ViewContext);
 
   const [isReadyToUpload, setIsReadyToUpload] = useState(false);
@@ -106,32 +78,52 @@ const MyInfoButtonGroupComponent = props => {
     const formData = new FormData();
 
     let body = {
-      ...inputValue,
+      user_id: inputValue.user_id,
+      user_nickName: inputValue.user_nickName,
     };
+    //formData.append('optionData', JSON.stringify(body));
+    console.log(body);
+    console.log(user.token);
+    Axios.defaults.headers.common['authorization'] = user.token;
+    Axios.patch(serverUrlBase + `/user/updateinfo`, {
+      body,
+      // headers: {
+      //   authorization: user.token,
+      // },
+      // body,
+    })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
-    formData.append('optionData', JSON.stringify(body));
-
-    alert('Not implemented yet.');
-
-    setUser({ ...data, status: 'login' });
+    //setUser({ ...data, status: 'login' });
   };
 
+  const regNnm = /^[ㄱ-ㅎ|가-힣]+.{1,}$/;
   useEffect(() => {
-    if (inputValue.user_id !== user.user_id) {
-      setIsReadyToUpload(true);
+    console.log('수정테스트 : ' + inputValue.user_nickName, user.name);
+    if (
+      inputValue.user_nickName !== user.name &&
+      regNnm.test(inputValue.user_nickName)
+    ) {
+      Axios.get(
+        serverUrlBase + `/user/checknick/` + inputValue.user_nickName,
+      ).then(data => {
+        if (data.data.nickchk === false) {
+          setIsReadyToUpload(false);
+        } else {
+          setIsReadyToUpload(true);
+        }
+      });
+      return;
+    } else {
+      setIsReadyToUpload(false);
       return;
     }
-
-    if (inputValue.user_nm !== user.user_nm) {
-      setIsReadyToUpload(true);
-      return;
-    }
-
-    if (inputValue.user_data !== '') {
-      setIsReadyToUpload(true);
-      return;
-    }
-  }, [inputValue.user_id, inputValue.user_nm, inputValue.user_data]);
+  }, [inputValue.user_nickName]);
 
   return (
     <Grid
@@ -191,7 +183,7 @@ const MyInfoContentDefaultComponent = props => {
   );
 };
 
-const MyInfoContentComponent = () => {
+const MyInfoContentComponent = props => {
   return (
     <form noValidate autoComplete="off">
       <Grid
@@ -207,18 +199,18 @@ const MyInfoContentComponent = () => {
           <MyInfoInputComponent title="아이디" keyValue="user_id" />
         </Grid>
         <Grid item xs={12}>
-          <MyInfoInputComponent title="이름" keyValue="user_nm" />
+          <MyInfoInputComponent title="이름" keyValue="user_name" />
         </Grid>
 
         <Grid item xs={12}>
-          <MyInfoInputComponent title="별명" keyValue="nick_name" />
+          <MyInfoInputComponent title="별명" keyValue="user_nickName" />
         </Grid>
 
         <Grid item xs={12}>
           <MyInfoInputComponent title="이메일" keyValue="user_email" />
         </Grid>
         <Grid item xs={12}>
-          <MyInfoInputComponent title="등급" keyValue="user_email" />
+          <MyInfoInputComponent title="등급" keyValue="user_code" />
         </Grid>
 
         <Grid item xs={12}></Grid>
@@ -229,13 +221,32 @@ const MyInfoContentComponent = () => {
 };
 
 const MyInfo = () => {
-  const { user } = useContext(CommonContext);
-
+  const { user, serverUrlBase } = useContext(CommonContext);
   const [inputValue, setInputValue] = useState({
-    user_nm: user.user_nm,
-    user_id: user.user_id,
-    web_site: user.web_site,
+    user_id: '',
+    user_name: '',
+    user_nickName: '',
+    user_email: '',
+    user_code: '',
   });
+  let err = false;
+  let errMsg = '';
+  useEffect(() => {
+    Axios.get(serverUrlBase + '/user/myInfo/' + user.id)
+      .then(data => {
+        const info_result = data.data.result;
+        if (info_result === 'success') {
+          const info_user = data.data.user[0];
+          setInputValue(info_user);
+        } else {
+          alert('내 정보 불러오기 실패');
+        }
+      })
+      .catch(error => {
+        console.log('내정보 ' + error);
+      });
+  }, []);
+
   return (
     <ViewContext.Provider
       value={{
