@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setToken, setNickname } from '../../../redux/reducers/AuthReducer';
 import store from 'store';
 import crypto from 'crypto';
 import { ViewContext } from '../../../context/ViewContext';
@@ -58,6 +60,7 @@ const DialogTitleComponent = () => {
 };
 
 const SignInSection01 = () => {
+  const dispatch = useDispatch();
   let history = useHistory();
 
   const [disabled, setDisabled] = useState(true);
@@ -148,8 +151,14 @@ const SignInSection01 = () => {
           console.log('login');
           console.log(login_user);
           // 로그인 성공
-          setUser({ ...login_user });
-          store.set('user', { ...login_user });
+
+          store.set('useraa', { ...login_user });
+          console.log('로그인성공 redux');
+
+          dispatch(setToken(login_user));
+          //dispatch(setUser(login_user));
+          // redux에 token 저장
+
           // header에 token 저장
           Axios.defaults.headers.common['authorization'] = login_user.token;
 
@@ -161,7 +170,8 @@ const SignInSection01 = () => {
             html: <i>다양하게 즐겨보십쇼...</i>,
           });
           console.log('login');
-          console.log(store.get('user'));
+          console.log(store.get('useraa'));
+          dispatch(setNickname('닉네임바꿔'));
           history.goBack();
         } else {
           // 로그인 실패

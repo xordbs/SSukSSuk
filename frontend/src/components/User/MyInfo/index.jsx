@@ -81,24 +81,25 @@ const MyInfoButtonGroupComponent = props => {
       user_id: inputValue.user_id,
       user_nickName: inputValue.user_nickName,
     };
-    //formData.append('optionData', JSON.stringify(body));
-    console.log(body);
-    console.log(user.token);
+
     Axios.defaults.headers.common['authorization'] = user.token;
-    Axios.patch(serverUrlBase + `/user/updateinfo`, {
-      body,
-      // headers: {
-      //   authorization: user.token,
-      // },
-      // body,
-    })
+    Axios.patch(serverUrlBase + `/user/updateinfo`, body)
       .then(data => {
-        console.log(data);
+        if (data.status === 200) {
+          console.log(data);
+          console.log('store');
+          console.log(store.get('user'));
+          console.log('store 변경 후');
+
+          console.log(store.get('user'));
+          alert('변경 완료');
+        } else {
+          console.log(data.status);
+        }
       })
       .catch(error => {
         console.log(error);
       });
-
     //setUser({ ...data, status: 'login' });
   };
 
@@ -232,7 +233,7 @@ const MyInfo = () => {
   let err = false;
   let errMsg = '';
   useEffect(() => {
-    Axios.get(serverUrlBase + '/user/myInfo/' + user.id)
+    Axios.get(serverUrlBase + '/user/myInfo/' + user.user_id)
       .then(data => {
         const info_result = data.data.result;
         if (info_result === 'success') {

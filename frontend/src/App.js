@@ -25,6 +25,9 @@ import Community from './pages/Community/';
 import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
 
+// redux
+import {useSelector} from "react-redux";
+
 // css
 // import './index.css';
 
@@ -61,11 +64,11 @@ const theme = createTheme({
 const App = () => {
   const [user, setUser] = useLocalStorageSetState(
     {
-      id: '',
-      name: '',
+      user_id: '',
+      user_nickName: '',
       token: '',
       status: '',
-      type:'',
+      user_code:'',
     },
     'user',
   );
@@ -78,6 +81,10 @@ const App = () => {
   const [infoDialogOpen, setInfoDetailDialogOpen] = useState(false);
   const [userDialogOpen, setUserDetailDialogOpen] = useState(false);
 
+  const userr = useSelector(state => state.Auth.user);
+  console.log("app.js state");
+  console.log(userr);
+  
   return (
     <CommonContext.Provider
       value={{
