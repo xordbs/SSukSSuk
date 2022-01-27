@@ -122,6 +122,7 @@ const MyInfoButtonGroupComponent = props => {
   const { setUserDetailDialogOpen, user, serverUrlBase, setUser } = useContext(
     CommonContext,
   );
+
   const { inputValue } = useContext(ViewContext);
 
   const handleClose = () => {
@@ -129,6 +130,7 @@ const MyInfoButtonGroupComponent = props => {
     history.goBack();
   };
 
+  // 확인버튼을 누르면 실행되는 기능
   const onMyInfoSaveHandelr = async props => {
     var Pwd = inputValue['비밀번호'];
 
@@ -147,24 +149,23 @@ const MyInfoButtonGroupComponent = props => {
 
     // path[url 그냥], body[data 받아서], query[글자 검색]
     Axios.defaults.headers.common['authorization'] = user.token;
+    // console.log(user.user_id);
+    // console.log(hashPwd);
+    // console.log(user.token);
     Axios.delete(serverUrlBase + '/user/delete/', {
-      user_id: user.id,
-      user_pw: hashPwd,
+      data: {
+        user_id: user.user_id,
+        user_pw: hashPwd,
+      },
     })
       .then(data => {
         if (data.status === 200) {
+          console.log(data);
           if (data.data.result === 'success') {
             successSign.fire({
               icon: 'success',
               title: <strong>탈퇴!</strong>,
               html: <i>다신 보지 말자구요 ^^</i>,
-            });
-            setUser({
-              id: '',
-              name: '',
-              token: '',
-              status: '',
-              type: '',
             });
             store.set('user', {
               id: '',
@@ -173,9 +174,17 @@ const MyInfoButtonGroupComponent = props => {
               status: '',
               type: '',
             });
+            // setUser({
+            //   id: '',
+            //   name: '',
+            //   token: '',
+            //   status: '',
+            //   type: '',
+            // });
 
             history.goBack();
           } else {
+            console.log(data);
             Swal.fire({
               icon: 'error',
               title: '입력 정보 오류',
@@ -185,6 +194,7 @@ const MyInfoButtonGroupComponent = props => {
             });
           }
         } else {
+          console.log(data);
           Swal.fire({
             icon: 'error',
             title: '탈퇴 실패!',

@@ -27,24 +27,9 @@ const InputComponent = props => {
   const { inputValue, setInputValue } = useContext(ViewContext);
 
   const [isShowPassword, setIsShowPassword] = useState(false);
-  // const [disabled, setDisabled] = useState(true);
 
   const OnChangeHandler = name => e => {
     setInputValue({ ...inputValue, [name]: e.target.value });
-    // if (name === '현재 비밀번호') {
-    //   if (e.target.value.length === 0) {
-    //     setsInputPwdErr(false);
-    //     setInputPwdErrMsg();
-    //   } else {
-    //     if (!regPwd.test(inputValue['현재 비밀번호'])) {
-    //       setsInputPwdErr(true);
-    //       setInputPwdErrMsg('제대로 입력해주세요!');
-    //     } else {
-    //       setsInputPwdErr(false);
-    //       setInputPwdErrMsg();
-    //     }
-    //   }
-    // }
     if (name === '새 비밀번호') {
       if (e.target.value.length === 0) {
         setsInputPwdErr(false);
@@ -73,7 +58,6 @@ const InputComponent = props => {
         }
       }
     }
-    // console.log('OnChangeHandler -> inputValue', inputValue);
   };
 
   const [inputPwdErr, setsInputPwdErr] = useState(false);
@@ -219,7 +203,7 @@ const MyInfoButtonGroupComponent = props => {
     }
     Axios.defaults.headers.common['authorization'] = user.token;
     Axios.patch(serverUrlBase + '/user/updatepw/', {
-      user_id: user.id,
+      user_id: user.user_id,
       user_pw: hashPwd,
       user_new_pw: hashNewPwd,
     })

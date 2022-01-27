@@ -119,8 +119,6 @@ const SignInSection01 = () => {
     var { id, password } = signInUserData;
 
     // console.log('TCL: onSignInHandler -> id, password', id, password); # 아이디 비번 둘다 확인 잘 됩니다!
-    // console.log(regId.test(id));         # 잘 뜹니다! (true/false)
-    // console.log(regPwd.test(password));  # 잘 뜹니다! (true/false)
 
     // 이게 유효성 검사? (DB랑 비교를 하는 그런?)
     // if (!password || !id) {
@@ -507,7 +505,7 @@ const SignUpSection02 = () => {
     }
   };
 
-  console.log(signUpUserData);
+  // console.log(signUpUserData);
 
   const [signUpIdErr, setSignUpIdErr] = useState(false);
   const [signUpIdErrMsg, setSignUpIdErrMsg] = useState();
@@ -550,35 +548,6 @@ const SignUpSection02 = () => {
       return;
     }
 
-    // if (
-    //   id === '' ||
-    //   password === '' ||
-    //   passwordConfirmation === '' ||
-    //   name === '' ||
-    //   nickname === '' ||
-    //   email === '' ||
-    //   grade === ''
-    // ) {
-    //   alert('You need 문구는 수정해야 ! both email and password and username.');
-    //   return;
-    // }
-
-    // if (!regId.test(signUpUserData.id)) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: '아이디 형식 오류',
-    //     text: '영소문자+숫자, 4자이상',
-    //     footer: '<a href="">Why do I have this issue?</a>',
-    //     target: document.querySelector('.MuiDialog-root'),
-    //   });
-    //   setSignUpIdErr(true);
-    //   setSignUpIdErrMsg('영소문자+숫자, 4자이상');
-    //   return;
-    // } else {
-    //   setSignUpIdErr(false);
-    //   setSignUpIdErrMsg();
-    // }
-
     let respone = [];
     let hashPassword = 'test2';
     try {
@@ -600,9 +569,6 @@ const SignUpSection02 = () => {
     // };
     // console.log('PPAP: signUpHandler -> body', body);
 
-    // 회원가입 result
-    // result : success 아니면 false
-    // success 아니면 fail
     Axios.post(serverUrlBase + `/user/regi`, {
       user_id: id,
       user_pw: hashPassword,
