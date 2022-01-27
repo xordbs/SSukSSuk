@@ -26,14 +26,14 @@ import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
 
 // redux
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 // css
 // import './index.css';
 
 // const
 const defaultThumbnailImage = 'default_user.jpg';
-const HOST = '127.0.0.1:3001';
+const HOST = '52.79.38.33:3001';
 const serverUrl = `http://${HOST}/v1`;
 const serverUrlBase = `http://${HOST}`;
 const serverImgUrl = `https://ssafy-viba-s3.s3.ap-northeast-2.amazonaws.com/public/`;
@@ -68,7 +68,7 @@ const App = () => {
       user_nickName: '',
       token: '',
       status: '',
-      user_code:'',
+      user_code: '',
     },
     'user',
   );
@@ -82,9 +82,9 @@ const App = () => {
   const [userDialogOpen, setUserDetailDialogOpen] = useState(false);
 
   const userr = useSelector(state => state.Auth.user);
-  console.log("app.js state");
+  console.log('app.js state');
   console.log(userr);
-  
+
   return (
     <CommonContext.Provider
       value={{
