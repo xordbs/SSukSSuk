@@ -22,10 +22,8 @@ import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
-// PropTypes는 부모로부터 전달받은 prop의 데이터 type을 검사한다.
-// 자식 컴포넌트에서 명시해 놓은 데이터 타입과 부모로부터 넘겨받은 데이터 타입이 일치하지 않으면 콘솔에 에러 경고문이 띄워진다.
-import PropTypes from 'prop-types';
 import listData from './dump.json';
+import noticeData from './notice.json';
 
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -137,7 +135,7 @@ const Community = () => {
             </Grid>
           </Grid>
 
-          <BoardList listData={listData} />
+          <BoardList listData={listData} noticeData={noticeData} />
 
           <Grid
             className="bottom-box"

@@ -15,31 +15,33 @@ import {
   Paper,
 } from '@mui/material';
 
-function createData(
-  community_no,
-  community_hit,
-  community_title,
-  community_author,
-  community_date,
-) {
+function createData(no, hit, title, author, date) {
   return {
-    community_no,
-    community_hit,
-    community_title,
-    community_author,
-    community_date,
+    no,
+    hit,
+    title,
+    author,
+    date,
   };
 }
 
 const BoardList = props => {
   let history = useHistory();
-  // const noticeData=props.noticeData;
+  const noticeData = props.noticeData;
   const listData = props.listData;
+
+  console.log(noticeData);
 
   function onRowClick(community_no) {
     history.push('/CommunityDetail/' + community_no);
   }
 
+  function onNoticeClick(notice_no) {
+    //나중에 noticeDetail로 변경
+    history.push('/CommunityDetail/' + notice_no);
+  }
+
+  const notice_rows = [];
   const rows = [];
 
   listData.items.map(row => {
@@ -53,23 +55,60 @@ const BoardList = props => {
       ),
     );
   });
-
   // 이건 나중에 받아오는걸로
   const total_list_len = rows.length;
+
+  noticeData.items.map(row => {
+    notice_rows.push(
+      createData(
+        row.notice_no,
+        row.notice_hit,
+        row.notice_title,
+        row.notice_author,
+        row.notice_date,
+      ),
+    );
+  });
 
   return (
     <Wrapper>
       <Grid container>
         <div className="result">검색 결과 {total_list_len}개</div>
         <TableContainer component={Paper} className="table-wrapper">
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table sx={{ minWidth: 350 }} aria-label="simple table">
             <TableHead className="table-head"></TableHead>
             <TableBody>
+              {notice_rows.map(row => (
+                <TableRow
+                  key={row.no}
+                  onClick={() => onNoticeClick(row.no)}
+                  className="table-row"
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    align="center"
+                    className="notice-front"
+                  >
+                    Notice
+                  </TableCell>
+                  <TableCell className="cell-body">
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="space-around"
+                      className="cell-body-main"
+                    >
+                      {row.title}
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              ))}
               {rows.map(row => (
                 <TableRow
-                  key={row.community_no}
+                  key={row.no}
                   // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  onClick={() => onRowClick(row.community_no)}
+                  onClick={() => onRowClick(row.no)}
                   className="table-row"
                 >
                   <TableCell
@@ -78,7 +117,7 @@ const BoardList = props => {
                     align="center"
                     className="cell-front"
                   >
-                    {row.community_no}
+                    {row.no}
                   </TableCell>
                   <TableCell className="cell-body">
                     <Grid
@@ -90,7 +129,7 @@ const BoardList = props => {
                       className="cell-body-main"
                     >
                       <Grid item className="cell-body-top">
-                        {row.community_title}
+                        {row.title}
                       </Grid>
                       <Grid item className="cell-body-buttom">
                         <Grid
@@ -99,21 +138,17 @@ const BoardList = props => {
                           justifyContent="space-between"
                         >
                           <Grid item className="cell-body-buttom-front">
-                            {row.community_author + ' | ' + row.community_date}
+                            {row.author + ' | ' + row.date}
                           </Grid>
                           <Grid item>
                             <div className="cell-body-buttom-back">
-                              <div className='item'>
-                              <VisibilityOutlinedIcon />
-                              &nbsp;&nbsp;{row.community_hit}
+                              <div className="item">
+                                <VisibilityOutlinedIcon />
+                                &nbsp;&nbsp;{row.hit}
                               </div>
-                              <div className='item'>
-                              <VisibilityOutlinedIcon />
-                              &nbsp;&nbsp;{row.community_hit}
-                              </div>
-                              <div className='item'>
-                              <VisibilityOutlinedIcon />
-                              &nbsp;&nbsp;{row.community_hit}
+                              <div className="item">
+                                <VisibilityOutlinedIcon />
+                                &nbsp;&nbsp;{row.hit}
                               </div>
                             </div>
                           </Grid>

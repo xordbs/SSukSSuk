@@ -14,6 +14,11 @@ const Wrapper = styled.div`
         border-bottom: 1px solid grey;
         box-shadow: none;
 
+        .notice-front{
+            font-weight:bold;
+            font-size: 16px;
+            color:#849635;
+        }
         .table-row{
             cursor:pointer;
             height:80px;

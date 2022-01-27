@@ -55,8 +55,7 @@ const SearchComponent = () => {
                 displayEmpty
                 className="select-box"
               >
-                <MenuItem value={0}>제목</MenuItem>
-                <MenuItem value={1}>작성자</MenuItem>
+                <MenuItem value={0}>제목+내용</MenuItem>
               </Select>
             </Grid>
             <Grid item>
