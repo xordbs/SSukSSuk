@@ -169,7 +169,7 @@ const SignInSection01 = () => {
           // 로그인 실패
           Swal.fire({
             icon: 'error',
-            title: '해당 하는 유저가 없습니다!',
+            title: '입력 정보 오류!',
             text: '아이디 또는 비밀번호를 확인 바랍니다!',
             footer: '<a href="">Why do I have this issue?</a>',
             target: document.querySelector('.MuiDialog-root'),
@@ -650,6 +650,7 @@ const SignUpSection02 = () => {
     });
   };
 
+  // value를 고치면 될 듯
   const grades = [
     {
       value: '멘토',

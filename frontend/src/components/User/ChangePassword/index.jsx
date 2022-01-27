@@ -31,20 +31,20 @@ const InputComponent = props => {
 
   const OnChangeHandler = name => e => {
     setInputValue({ ...inputValue, [name]: e.target.value });
-    if (name === '현재 비밀번호') {
-      if (e.target.value.length === 0) {
-        setsInputPwdErr(false);
-        setInputPwdErrMsg();
-      } else {
-        if (!regPwd.test(inputValue['현재 비밀번호'])) {
-          setsInputPwdErr(true);
-          setInputPwdErrMsg('제대로 입력해주세요!');
-        } else {
-          setsInputPwdErr(false);
-          setInputPwdErrMsg();
-        }
-      }
-    }
+    // if (name === '현재 비밀번호') {
+    //   if (e.target.value.length === 0) {
+    //     setsInputPwdErr(false);
+    //     setInputPwdErrMsg();
+    //   } else {
+    //     if (!regPwd.test(inputValue['현재 비밀번호'])) {
+    //       setsInputPwdErr(true);
+    //       setInputPwdErrMsg('제대로 입력해주세요!');
+    //     } else {
+    //       setsInputPwdErr(false);
+    //       setInputPwdErrMsg();
+    //     }
+    //   }
+    // }
     if (name === '새 비밀번호') {
       if (e.target.value.length === 0) {
         setsInputPwdErr(false);
@@ -197,6 +197,7 @@ const MyInfoButtonGroupComponent = props => {
         footer: '<a href="">Why do I have this issue?</a>',
         target: document.querySelector('.MuiDialog-root'),
       });
+      return;
     }
 
     let respone = [];
@@ -216,18 +217,42 @@ const MyInfoButtonGroupComponent = props => {
       console.log('signInHandler -> error', error);
       return;
     }
-
-    Axios.patch(serverUrlBase + `/user/updatepw/`, {
+    Axios.defaults.headers.common['authorization'] = user.token;
+    Axios.patch(serverUrlBase + '/user/updatepw/', {
       user_id: user.id,
       user_pw: hashPwd,
       user_new_pw: hashNewPwd,
     })
       .then(data => {
-        console.log(data);
-        history.goBack();
+        if (data.status === 200) {
+          if (data.data.result === 'success') {
+            successSign.fire({
+              icon: 'success',
+              title: <strong>변경 완료!</strong>,
+              html: <i>자동 로그인 됬어요~!</i>,
+            });
+            history.goBack();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: '입력 정보 오류',
+              text: '현재 비밀번호 틀렸어요!',
+              footer: '<a href="">Why do I have this issue?</a>',
+              target: document.querySelector('.MuiDialog-root'),
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '변경 실패!',
+            text: '??',
+            footer: '<a href="">Why do I have this issue?</a>',
+            target: document.querySelector('.MuiDialog-root'),
+          });
+        }
       })
-      .catch(function(error) {
-        console.log('비밀번호 변경 오류 발생 : ' + error);
+      .catch(error => {
+        console.log(error);
       });
 
     // var body = {

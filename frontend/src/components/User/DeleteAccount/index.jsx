@@ -14,6 +14,8 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Wrapper from './styles';
 
+import store from 'store';
+
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
@@ -29,19 +31,13 @@ const InputComponent = props => {
     console.log('OnChangeHandler -> inputValue', inputValue);
   };
 
-  // useEffect(() => {
-  //   if (
-  //     !!inputValue['현재 비밀번호'] &&
-  //     !!inputValue['새 비밀번호'] &&
-  //   ) {
-  //     props.setDisabled(false);
-  //   } else {
-  //     props.setDisabled(true);
-  //   }
-  // }, [
-  //   inputValue['현재 비밀번호'],
-  //   inputValue['새 비밀번호'],
-  // ]);
+  useEffect(() => {
+    if (!!inputValue['비밀번호']) {
+      props.setDisabled(false);
+    } else {
+      props.setDisabled(true);
+    }
+  }, [inputValue['비밀번호']]);
 
   const onClickHandler = () => {
     setIsShowPassword(!isShowPassword);
@@ -58,30 +54,38 @@ const InputComponent = props => {
           <>
             <TextField
               required
+              // required={name === '비밀번호' ? true : false}
+              // disabled={name === '비밀번호' ? false : true}
               id={`outlined-password-input-${name}`}
               label={name}
               defaultValue={inputValue[name]}
               variant="outlined"
               autoComplete="current-password"
               onChange={OnChangeHandler(name)}
-              type={
-                `${name}` === 'PASSWORD'
-                  ? isShowPassword
-                    ? ''
-                    : 'password'
-                  : ''
-              }
-              //type={isShowPassword ? '' : 'password'}
+              // type={
+              //   `${name}` === 'PASSWORD'
+              //     ? isShowPassword
+              //       ? ''
+              //       : 'password'
+              //     : ''
+              // }
+              type={isShowPassword ? '' : 'password'}
               className="input-component-text-field"
             />
-            {name === 'PASSWORD' && (
+            <IconButton
+              onClick={onClickHandler}
+              className="input-component-icon-button"
+            >
+              <VisibilityIcon />
+            </IconButton>
+            {/* {name === 'PASSWORD' && (
               <IconButton
                 onClick={onClickHandler}
                 className="input-component-icon-button"
               >
                 <VisibilityIcon />
               </IconButton>
-            )}
+            )} */}
           </>
         }
       />
@@ -126,41 +130,73 @@ const MyInfoButtonGroupComponent = props => {
   };
 
   const onMyInfoSaveHandelr = async props => {
-    var before_pwd = inputValue['Before Password'];
-    var password = inputValue['New Password'];
-    var changePassword = inputValue['New Password Confirm'];
-    if (password !== changePassword) {
-      alert('Passwords that do not match between passwords.');
-      return;
-    }
-    if (!password || password.lengh < 5) {
-      alert('Wrong password.');
-      return;
-    }
+    var Pwd = inputValue['비밀번호'];
 
     let respone = [];
-    let hashPassword = 'test2';
-    let hashBeforePwd = 'test2';
+    let hashPwd = '';
+
     try {
-      hashPassword = crypto
+      hashPwd = crypto
         .createHash('sha512')
-        .update(password)
-        .digest('hex');
-      hashBeforePwd = crypto
-        .createHash('sha512')
-        .update(before_pwd)
+        .update(Pwd)
         .digest('hex');
     } catch (error) {
       console.log('signInHandler -> error', error);
+      return;
     }
 
-    var body = {
-      new_pwd: hashPassword,
-      before_pwd: hashBeforePwd,
-      user_id: user.user_id,
-    };
+    // path[url 그냥], body[data 받아서], query[글자 검색]
+    Axios.defaults.headers.common['authorization'] = user.token;
+    Axios.delete(serverUrlBase + '/user/delete/' + user.id, {
+      user_id: user.id,
+      user_pw: hashPwd,
+    })
+      .then(data => {
+        if (data.status === 200) {
+          if (data.data.result === 'success') {
+            successSign.fire({
+              icon: 'success',
+              title: <strong>탈퇴!</strong>,
+              html: <i>다신 보지 말자구요 ^^</i>,
+            });
+            setUser({
+              id: '',
+              name: '',
+              token: '',
+              status: '',
+              type: '',
+            });
+            store.set('user', {
+              id: '',
+              name: '',
+              token: '',
+              status: '',
+              type: '',
+            });
 
-    alert('Not implemented yet.');
+            history.goBack();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: '입력 정보 오류',
+              text: '비밀번호 다시 틀렸어요!',
+              footer: '<a href="">Why do I have this issue?</a>',
+              target: document.querySelector('.MuiDialog-root'),
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '탈퇴 실패!',
+            text: '좀 더 있으라구 그냥 ^^',
+            footer: '<a href="">Why do I have this issue?</a>',
+            target: document.querySelector('.MuiDialog-root'),
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
     // if (respone['status'] === 200) {
     //   alert('Has changed.');
@@ -221,9 +257,9 @@ const DeleteUserComponent = params => {
             xs={12}
             className="change-password-component-grid-item"
           ></Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <InputComponent name={'아이디'} setDisabled={setDisabled} />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <InputComponent name={'비밀번호'} setDisabled={setDisabled} />
           </Grid>
