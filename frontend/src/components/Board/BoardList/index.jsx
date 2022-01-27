@@ -32,8 +32,6 @@ const BoardList = props => {
   const noticeData = props.noticeData;
   const listData = props.listData;
 
-  console.log(noticeData);
-
   function onRowClick(community_no) {
     history.push('/CommunityDetail/' + community_no);
   }
@@ -57,9 +55,7 @@ const BoardList = props => {
       ),
     );
   });
-  // 이건 나중에 받아오는걸로
-  const total_list_len = rows.length;
-
+  
   noticeData.items.map(row => {
     notice_rows.push(
       createData(
@@ -75,7 +71,7 @@ const BoardList = props => {
   return (
     <Wrapper>
       <Grid container>
-        <div className="result">검색 결과 {total_list_len}개</div>
+        {/* <div className="result">검색 결과 {total_list_len}개</div> */}
         <TableContainer component={Paper} className="table-wrapper">
           <Table sx={{ minWidth: 350 }} aria-label="simple table">
             <TableHead className="table-head"></TableHead>

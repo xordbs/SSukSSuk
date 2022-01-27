@@ -88,6 +88,11 @@ const Community = () => {
     }
   }, [isSearch, page, category]);
 
+    // 이건 나중에 받아오는걸로
+    const free_len = listData.items.length;
+    const mento_len=10;
+
+
   return (
     <ViewContext.Provider
       value={{
@@ -119,9 +124,13 @@ const Community = () => {
                 >
                   <Tab
                     className="tab-style"
-                    label={'자유 게시판'}
+                    label={'전체 게시판 ('+(free_len+mento_len)+')'}
                   />
-                  <Tab className="tab-style" label="멘토 게시판" />
+                  <Tab
+                    className="tab-style"
+                    label={'자유 게시판 ('+free_len+')'}
+                  />
+                  <Tab className="tab-style" label={"멘토 게시판 (" + mento_len + ")"} />
                 </Tabs>
               </Grid>
             </ThemeProvider>
