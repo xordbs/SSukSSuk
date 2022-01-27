@@ -147,7 +147,7 @@ const MyInfoButtonGroupComponent = props => {
 
     // path[url 그냥], body[data 받아서], query[글자 검색]
     Axios.defaults.headers.common['authorization'] = user.token;
-    Axios.delete(serverUrlBase + '/user/delete/' + user.id, {
+    Axios.delete(serverUrlBase + '/user/delete/', {
       user_id: user.id,
       user_pw: hashPwd,
     })
