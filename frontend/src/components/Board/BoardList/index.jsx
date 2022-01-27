@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import Wrapper from './styles';
 
+import BoardItem from '../../BoardItem'
+
 import {
   Grid,
   Table,
