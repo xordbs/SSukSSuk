@@ -5,6 +5,8 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setInit } from '../../../redux/reducers/AuthReducer';
 import store from 'store';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
@@ -21,6 +23,7 @@ import {
   Fab,
 } from '@material-ui/core';
 import Wrapper from './styles';
+import { setNickname } from '../../../redux/reducers/AuthReducer';
 
 const MyInfoInputComponent = props => {
   let { keyValue, title, rows } = props;
@@ -57,11 +60,10 @@ const MyInfoInputComponent = props => {
 
 const MyInfoButtonGroupComponent = props => {
   let history = useHistory();
-  const { setUserDetailDialogOpen, serverUrlBase, setUser } = useContext(
-    CommonContext,
-  );
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.Auth.user);
 
-  const user = store.get('user');
+  const { setUserDetailDialogOpen, serverUrlBase } = useContext(CommonContext);
 
   const { inputValue } = useContext(ViewContext);
 
@@ -73,10 +75,6 @@ const MyInfoButtonGroupComponent = props => {
   };
 
   const onMyInfoSaveHandelr = async props => {
-    let respone = [];
-    let data = {};
-    const formData = new FormData();
-
     let body = {
       user_id: inputValue.user_id,
       user_nickName: inputValue.user_nickName,
@@ -86,21 +84,15 @@ const MyInfoButtonGroupComponent = props => {
     Axios.patch(serverUrlBase + `/user/updateinfo`, body)
       .then(data => {
         if (data.status === 200) {
-          console.log(data);
-          console.log('store');
-          console.log(store.get('user'));
-          console.log('store 변경 후');
-
-          console.log(store.get('user'));
+          dispatch(setNickname(body.user_nickName));
           alert('변경 완료');
         } else {
-          console.log(data.status);
+          console.log('회원정보 수정 실패 : ' + data.status);
         }
       })
       .catch(error => {
         console.log(error);
       });
-    //setUser({ ...data, status: 'login' });
   };
 
   const regNnm = /^[ㄱ-ㅎ|가-힣]+.{1,}$/;
@@ -222,7 +214,8 @@ const MyInfoContentComponent = props => {
 };
 
 const MyInfo = () => {
-  const { user, serverUrlBase } = useContext(CommonContext);
+  const user = useSelector(state => state.Auth.user);
+  const { serverUrlBase } = useContext(CommonContext);
   const [inputValue, setInputValue] = useState({
     user_id: '',
     user_name: '',

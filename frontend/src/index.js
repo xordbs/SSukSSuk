@@ -4,18 +4,20 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 // store
-import store from './app/configStore'
-import { Provider } from 'react-redux'
-import {PersistGate} from "redux-persist/integration/react";
-import persistStore from "redux-persist/es/persistStore";
+import store from './redux/configStore';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import persistStore from 'redux-persist/es/persistStore';
 
-const persistor = persistStore(store)
+const persistor = persistStore(store);
 
 ReactDOM.render(
-    <Provider store={store}>
+  <Provider store={store}>
     <PersistGate persistor={persistor}>
-        <App />
+      <App />
     </PersistGate>
-        </Provider>, document.getElementById('root'));
+  </Provider>,
+  document.getElementById('root'),
+);
 
 serviceWorker.unregister();

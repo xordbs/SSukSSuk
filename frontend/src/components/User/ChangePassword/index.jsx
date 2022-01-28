@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Axios from 'axios';
 import crypto from 'crypto';
 import { CommonContext } from '../../../context/CommonContext';
@@ -157,10 +158,9 @@ const ContentDefaultComponent = props => {
 // 우하단 버튼들 관련
 const MyInfoButtonGroupComponent = props => {
   let history = useHistory();
+  const user = useSelector(state => state.Auth.user);
   // const [disabled, setDisabled] = useState(true);
-  const { setUserDetailDialogOpen, user, serverUrlBase, setUser } = useContext(
-    CommonContext,
-  );
+  const { setUserDetailDialogOpen, serverUrlBase } = useContext(CommonContext);
   const { inputValue } = useContext(ViewContext);
 
   const handleClose = () => {
@@ -184,7 +184,6 @@ const MyInfoButtonGroupComponent = props => {
       return;
     }
 
-    let respone = [];
     let hashPwd = '';
     let hashNewPwd = '';
 

@@ -25,9 +25,6 @@ import Community from './pages/Community/';
 import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
 
-// redux
-import { useSelector } from 'react-redux';
-
 // css
 // import './index.css';
 
@@ -80,10 +77,6 @@ const App = () => {
   const [signDialogOpen, setSignDialogOpen] = useState(false);
   const [infoDialogOpen, setInfoDetailDialogOpen] = useState(false);
   const [userDialogOpen, setUserDetailDialogOpen] = useState(false);
-
-  const userr = useSelector(state => state.Auth.user);
-  console.log('app.js state');
-  console.log(userr);
 
   return (
     <CommonContext.Provider

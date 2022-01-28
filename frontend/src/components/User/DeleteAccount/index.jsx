@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setInit } from '../../../redux/reducers/AuthReducer';
 import Axios from 'axios';
 import crypto from 'crypto';
 import { CommonContext } from '../../../context/CommonContext';
@@ -119,9 +121,9 @@ const ContentDefaultComponent = props => {
 // 우하단 버튼들 관련
 const MyInfoButtonGroupComponent = props => {
   let history = useHistory();
-  const { setUserDetailDialogOpen, user, serverUrlBase, setUser } = useContext(
-    CommonContext,
-  );
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.Auth.user);
+  const { setUserDetailDialogOpen, serverUrlBase } = useContext(CommonContext);
 
   const { inputValue } = useContext(ViewContext);
 
@@ -134,7 +136,6 @@ const MyInfoButtonGroupComponent = props => {
   const onMyInfoSaveHandelr = async props => {
     var Pwd = inputValue['비밀번호'];
 
-    let respone = [];
     let hashPwd = '';
 
     try {
@@ -149,9 +150,6 @@ const MyInfoButtonGroupComponent = props => {
 
     // path[url 그냥], body[data 받아서], query[글자 검색]
     Axios.defaults.headers.common['authorization'] = user.token;
-    // console.log(user.user_id);
-    // console.log(hashPwd);
-    // console.log(user.token);
     Axios.delete(serverUrlBase + '/user/delete/', {
       data: {
         user_id: user.user_id,
@@ -162,25 +160,13 @@ const MyInfoButtonGroupComponent = props => {
         if (data.status === 200) {
           console.log(data);
           if (data.data.result === 'success') {
+            dispatch(setInit());
+
             successSign.fire({
               icon: 'success',
               title: <strong>탈퇴!</strong>,
               html: <i>다신 보지 말자구요 ^^</i>,
             });
-            store.set('user', {
-              id: '',
-              name: '',
-              token: '',
-              status: '',
-              type: '',
-            });
-            // setUser({
-            //   id: '',
-            //   name: '',
-            //   token: '',
-            //   status: '',
-            //   type: '',
-            // });
 
             history.goBack();
           } else {
