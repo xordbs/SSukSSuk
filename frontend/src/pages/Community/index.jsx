@@ -23,7 +23,7 @@ import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
 import listData from './dump.json';
-import noticeData from './notice.json';
+// import noticeData from './notice.json';
 
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -71,6 +71,8 @@ const Community = () => {
   useEffect(() => {
     // 백엔드랑 연결되면 여기서 카테고리와 value, page를 사용해서 리스트 갱신해주는 것 추가
     console.log(category, searchCategory, searchValue, page);
+    
+
     // 리스트 갱신되는지 확인함
     listData.items.push({
       community_no: listData.items.length + 1,
@@ -144,7 +146,7 @@ const Community = () => {
             </Grid>
           </Grid>
 
-          <BoardList listData={listData} noticeData={noticeData} />
+          <BoardList listData={listData} noticeData={null} />
 
           <Grid
             className="bottom-box"

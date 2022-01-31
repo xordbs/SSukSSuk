@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import Wrapper from './styles';
 
-import BoardItem from '../BoardItem'
+import BoardItem from '../BoardItem';
 
 import {
   Grid,
@@ -29,6 +29,7 @@ function createData(no, hit, title, author, date) {
 
 const BoardList = props => {
   let history = useHistory();
+  
   const noticeData = props.noticeData;
   const listData = props.listData;
 
@@ -55,18 +56,20 @@ const BoardList = props => {
       ),
     );
   });
-  
-  noticeData.items.map(row => {
-    notice_rows.push(
-      createData(
-        row.notice_no,
-        row.notice_hit,
-        row.notice_title,
-        row.notice_author,
-        row.notice_date,
-      ),
-    );
-  });
+
+  if (noticeData != null) {
+    noticeData.items.map(row => {
+      notice_rows.push(
+        createData(
+          row.notice_no,
+          row.notice_hit,
+          row.notice_title,
+          row.notice_author,
+          row.notice_date,
+        ),
+      );
+    });
+  }
 
   return (
     <Wrapper>
