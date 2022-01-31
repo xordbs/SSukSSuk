@@ -1,5 +1,6 @@
 // import { Grid, Button } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
+import Axios from 'axios';
 
 import {
   Grid,
@@ -22,7 +23,7 @@ import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
-import listData from './dump.json';
+// import listData from './dump.json';
 // import noticeData from './notice.json';
 
 import { createTheme } from '@material-ui/core/styles';
@@ -39,10 +40,13 @@ const theme = createTheme({
 });
 
 const Community = () => {
-  const { user, setIsSignUp } = useContext(CommonContext);
+  const { user, setIsSignUp,serverUrlBase } = useContext(CommonContext);
 
   let history = useHistory();
 
+  const [listData,setListData]=useState({});
+  const [freeLen, setFreeLen]=useState(0);
+  const [mentoLen, setMentoLen]=useState(0);
   const [category, setCategory] = React.useState(0);
   const [isSearch, setIsSearch] = useState(false);
   const [searchValue, setSearchValue] = useLocalStorageSetState('', 'search');
@@ -68,32 +72,56 @@ const Community = () => {
     }
   };
 
+  const getCommunityListCnt=()=>{
+    Axios.get(serverUrlBase + `/community/listcount`,{
+      params: {
+        keyword: searchValue
+      }
+    })
+      .then(data => {
+        const cnt_data=data.data.data;
+        // console.log(cnt_data);       
+
+        cnt_data.map(cur=>{
+          if(cur.community_code==="C01")  setFreeLen(cur.list_cnt);
+          else if(cur.community_code==="C02") setMentoLen(cur.list_cnt);
+        })
+      })
+      .catch(function(error) {
+        console.log('community list count error: ' + error);
+      });
+  }
+
+  const readCommunityList=()=>{
+    Axios.get(serverUrlBase + `/community/list`,{
+      params: {
+        community_code:category,
+        keyword: searchValue,
+        page_no: page
+      }
+    })
+      .then(data => {
+        setListData(data.data);
+        console.log(listData);
+      })
+      .catch(function(error) {
+        console.log('community list count error: ' + error);
+      });
+  }
+
   useEffect(() => {
     // 백엔드랑 연결되면 여기서 카테고리와 value, page를 사용해서 리스트 갱신해주는 것 추가
     console.log(category, searchCategory, searchValue, page);
-    
+    getCommunityListCnt();
+    readCommunityList();
 
-    // 리스트 갱신되는지 확인함
-    listData.items.push({
-      community_no: listData.items.length + 1,
-      community_title: '[정보글] 귀농 3년이면 과일도 심는다?',
-      community_author: '도시보다 시골',
-      community_date: '20220121',
-      community_content: 'test_content6',
-      community_hit: 0,
-      community_code: 'free',
-    });
-
+    // 이거때문에 한번 더 렌더링 되는거 같은데 어떻게 좀 바꿀 수 없을까
+    // 여기도 최적화ㅎㅎ..
     if (isSearch) {
       setPage(1);
-      setIsSearch(!isSearch); // 이거때문에 한번 더 렌더링 되는거 같은데 어떻게 좀 바꿀 수 없을까
+      setIsSearch(!isSearch);
     }
   }, [isSearch, page, category]);
-
-    // 이건 나중에 받아오는걸로
-    const free_len = listData.items.length;
-    const mento_len=10;
-
 
   return (
     <ViewContext.Provider
@@ -126,13 +154,13 @@ const Community = () => {
                 >
                   <Tab
                     className="tab-style"
-                    label={'전체 게시판 ('+(free_len+mento_len)+')'}
+                    label={'전체 게시판 ('+(freeLen+mentoLen)+')'}
                   />
                   <Tab
                     className="tab-style"
-                    label={'자유 게시판 ('+free_len+')'}
+                    label={'자유 게시판 ('+freeLen+')'}
                   />
-                  <Tab className="tab-style" label={"멘토 게시판 (" + mento_len + ")"} />
+                  <Tab className="tab-style" label={"멘토 게시판 (" + mentoLen + ")"} />
                 </Tabs>
               </Grid>
             </ThemeProvider>
