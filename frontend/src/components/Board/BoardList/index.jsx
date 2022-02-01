@@ -29,7 +29,7 @@ function createData(no, hit, title, author, date) {
 
 const BoardList = props => {
   let history = useHistory();
-  
+
   const noticeData = props.noticeData;
   const listData = props.listData;
 
@@ -45,20 +45,22 @@ const BoardList = props => {
   const notice_rows = [];
   const rows = [];
 
-  listData.items.map(row => {
-    rows.push(
-      createData(
-        row.community_no,
-        row.community_hit,
-        row.community_title,
-        row.community_author,
-        row.community_date,
-      ),
-    );
-  });
+  if (listData !=null && listData.data != null) {
+    listData.data.map(row => {
+      rows.push(
+        createData(
+          row.community_no,
+          row.community_hit,
+          row.community_title,
+          row.community_author,
+          row.community_date,
+        ),
+      );
+    });
+  }
 
-  if (noticeData != null) {
-    noticeData.items.map(row => {
+  if (noticeData != null && noticeData.data!=null) {
+    noticeData.data.map(row => {
       notice_rows.push(
         createData(
           row.notice_no,

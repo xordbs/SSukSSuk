@@ -40,15 +40,14 @@ const theme = createTheme({
 });
 
 const Community = () => {
-  const { user, setIsSignUp,serverUrlBase } = useContext(CommonContext);
+  const { user, setIsSignUp, serverUrlBase } = useContext(CommonContext);
 
   let history = useHistory();
 
-  const [listData,setListData]=useState({});
-  const [freeLen, setFreeLen]=useState(0);
-  const [mentoLen, setMentoLen]=useState(0);
+  const [listData, setListData] = useState({});
+  const [freeLen, setFreeLen] = useState(0);
+  const [mentoLen, setMentoLen] = useState(0);
   const [category, setCategory] = React.useState(0);
-  const [isSearch, setIsSearch] = useState(false);
   const [searchValue, setSearchValue] = useLocalStorageSetState('', 'search');
   const [searchCategory, setSearchCategory] = useState(0);
   const [page, setPage] = React.useState(1);
@@ -72,56 +71,84 @@ const Community = () => {
     }
   };
 
-  const getCommunityListCnt=()=>{
-    Axios.get(serverUrlBase + `/community/listcount`,{
+  const pageLen = [];
+  const setPageLen = () => {
+    pageLen.splice(0, pageLen.length);
+    pageLen.push(parseInt((freeLen + mentoLen) / 10) + 1);
+    pageLen.push(parseInt(freeLen / 10) + 1);
+    pageLen.push(parseInt(mentoLen / 10) + 1);
+  };
+
+  const getCommunityListCnt = () => {
+    Axios.get(serverUrlBase + `/community/listcount`, {
       params: {
-        keyword: searchValue
-      }
+        keyword: searchValue,
+      },
     })
       .then(data => {
-        const cnt_data=data.data.data;
-        // console.log(cnt_data);       
-
-        cnt_data.map(cur=>{
-          if(cur.community_code==="C01")  setFreeLen(cur.list_cnt);
-          else if(cur.community_code==="C02") setMentoLen(cur.list_cnt);
-        })
+        const cnt_data = data.data.data;
+        cnt_data.map(cur => {
+          if (cur.community_code === 'C01') setFreeLen(cur.list_cnt);
+          else if (cur.community_code === 'C02') setMentoLen(cur.list_cnt);
+        });
       })
       .catch(function(error) {
         console.log('community list count error: ' + error);
       });
-  }
 
-  const readCommunityList=()=>{
-    Axios.get(serverUrlBase + `/community/list`,{
+    setPageLen();
+  };
+
+  const readCommunityList = () => {
+    const keyword = searchValue ? searchValue : null;
+    let communityCode;
+    if (category === 0) communityCode = null;
+    else if (category === 1) communityCode = 'c01';
+    else if (category === 2) communityCode = 'c02';
+
+    Axios.get(serverUrlBase + `/community/list`, {
       params: {
-        community_code:category,
-        keyword: searchValue,
-        page_no: page
-      }
+        community_code: communityCode,
+        keyword: keyword,
+        page_no: page,
+      },
     })
       .then(data => {
         setListData(data.data);
-        console.log(listData);
+        console.log(data);
       })
       .catch(function(error) {
-        console.log('community list count error: ' + error);
+        console.log('community list error: ' + error);
       });
-  }
+  };
 
   useEffect(() => {
-    // 백엔드랑 연결되면 여기서 카테고리와 value, page를 사용해서 리스트 갱신해주는 것 추가
-    console.log(category, searchCategory, searchValue, page);
     getCommunityListCnt();
-    readCommunityList();
+    setPageLen();
 
-    // 이거때문에 한번 더 렌더링 되는거 같은데 어떻게 좀 바꿀 수 없을까
-    // 여기도 최적화ㅎㅎ..
-    if (isSearch) {
+    if (page === 1) {
+      readCommunityList();
+      window.scrollTo(0, 0);
+    } else {
       setPage(1);
-      setIsSearch(!isSearch);
     }
-  }, [isSearch, page, category]);
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (page === 1) {
+      readCommunityList();
+      window.scrollTo(0, 0);
+    } else {
+      setPage(1);
+    }
+  }, [category]);
+
+  useEffect(() => {
+    readCommunityList();
+    window.scrollTo(0, 0); // 스크롤 맨 위로 이동
+  }, [page]);
+
+  setPageLen();
 
   return (
     <ViewContext.Provider
@@ -130,8 +157,6 @@ const Community = () => {
         setSearchValue,
         searchCategory,
         setSearchCategory,
-        isSearch,
-        setIsSearch,
       }}
     >
       <Layout>
@@ -154,13 +179,16 @@ const Community = () => {
                 >
                   <Tab
                     className="tab-style"
-                    label={'전체 게시판 ('+(freeLen+mentoLen)+')'}
+                    label={'전체 게시판 (' + (freeLen + mentoLen) + ')'}
                   />
                   <Tab
                     className="tab-style"
-                    label={'자유 게시판 ('+freeLen+')'}
+                    label={'자유 게시판 (' + freeLen + ')'}
                   />
-                  <Tab className="tab-style" label={"멘토 게시판 (" + mentoLen + ")"} />
+                  <Tab
+                    className="tab-style"
+                    label={'멘토 게시판 (' + mentoLen + ')'}
+                  />
                 </Tabs>
               </Grid>
             </ThemeProvider>
@@ -181,10 +209,13 @@ const Community = () => {
             container
             alignItems="flex-end"
             direction="column"
-          >
-          </Grid>
+          ></Grid>
           <Grid container alignItems="center" direction="column">
-            <Pagination count={10} page={page} onChange={handlePageChange} />
+            <Pagination
+              count={pageLen[category]}
+              page={page}
+              onChange={handlePageChange}
+            />
           </Grid>
           <SearchComponent />
         </Wrapper>
