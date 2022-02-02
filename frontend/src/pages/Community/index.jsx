@@ -38,17 +38,28 @@ const theme = createTheme({
   },
 });
 
+function createData(no, hit, title, author, date) {
+  return {
+    no,
+    hit,
+    title,
+    author,
+    date,
+  };
+}  
+
 const Community = () => {
   const user = useSelector(state => state.Auth.user);
   const { setIsSignUp, serverUrlBase } = useContext(CommonContext);
 
   let history = useHistory();
 
-  const [listData, setListData] = useState({});
+  const [listData, setListData] = useState([]);
+  const [noticeData, setNoticeData] = useState([]);
   const [freeLen, setFreeLen] = useState(0);
   const [mentoLen, setMentoLen] = useState(0);
   const [category, setCategory] = React.useState(0);
-  const [searchValue, setSearchValue] = useLocalStorageSetState('', 'search');
+  const [searchValue, setSearchValue] = useState(null);
   const [searchCategory, setSearchCategory] = useState(0);
   const [page, setPage] = React.useState(1);
 
@@ -62,10 +73,9 @@ const Community = () => {
 
   const onClickCommunityWriteHandler = () => {
     if (!user.status) {
-      // 여기도 SignUp 변경하는거 다른 사람들이랑 충돌 안나도록 일단은 이렇게 하고 나중에 다 만들고 나서 바꿀 수 있으면 최적화
-      alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');
-      setIsSignUp('SignIn');
-      history.push('/Auth');
+      alert('로그인이 필요합니다');
+      // setIsSignUp('SignIn');
+      // history.push('/Auth');
     } else {
       history.push('/CommunityWrite');
     }
@@ -74,9 +84,10 @@ const Community = () => {
   const pageLen = [];
   const setPageLen = () => {
     pageLen.splice(0, pageLen.length);
-    pageLen.push(parseInt((freeLen + mentoLen) / 10) + 1);
-    pageLen.push(parseInt(freeLen / 10) + 1);
-    pageLen.push(parseInt(mentoLen / 10) + 1);
+
+    pageLen.push((freeLen+mentoLen===1)?0:parseInt((freeLen + mentoLen) / 10) + 1);
+    pageLen.push((freeLen===1)?0:parseInt(freeLen / 10) + 1);
+    pageLen.push((mentoLen===1)?0:parseInt(mentoLen / 10) + 1);
   };
 
   const getCommunityListCnt = () => {
@@ -86,17 +97,20 @@ const Community = () => {
       },
     })
       .then(data => {
+        let tf,tm;
+        tf=tm=0;
+
         const cnt_data = data.data.data;
         cnt_data.map(cur => {
-          if (cur.community_code === 'C01') setFreeLen(cur.list_cnt);
-          else if (cur.community_code === 'C02') setMentoLen(cur.list_cnt);
+          if (cur.community_code === 'C01') tf=cur.list_cnt;
+          else if (cur.community_code === 'C02') tm=cur.list_cnt;
         });
+        setFreeLen(tf)
+        setMentoLen(tm)
       })
       .catch(function(error) {
         console.log('community list count error: ' + error);
       });
-
-    setPageLen();
   };
 
   const readCommunityList = () => {
@@ -114,14 +128,28 @@ const Community = () => {
       },
     })
       .then(data => {
-        setListData(data.data);
-        console.log(data);
+        const tempList=[];
+        data.data.data.map(row => {
+          if(row.community_author){
+          tempList.push(
+              createData(
+                row.community_no,
+                row.community_hit,
+                row.community_title,
+                row.community_author,
+                row.community_date,
+              ),
+            );
+          }
+          });
+        setListData(tempList);
       })
       .catch(function(error) {
         console.log('community list error: ' + error);
       });
   };
 
+  // useEffect를 3개로 나눠놓으니까 처음 실행할 때 서버에 3번 연결하네;;;;;
   useEffect(() => {
     getCommunityListCnt();
     setPageLen();
@@ -201,8 +229,8 @@ const Community = () => {
               </Button>
             </Grid>
           </Grid>
-
-          <BoardList listData={listData} noticeData={null} />
+          {/* {searchValue && <div className="result">{searchValue} 검색 결과</div>} */}
+          <BoardList listData={listData} noticeData={noticeData} />
 
           <Grid
             className="bottom-box"

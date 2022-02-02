@@ -17,21 +17,13 @@ import {
   Paper,
 } from '@mui/material';
 
-function createData(no, hit, title, author, date) {
-  return {
-    no,
-    hit,
-    title,
-    author,
-    date,
-  };
-}
-
 const BoardList = props => {
   let history = useHistory();
 
   const noticeData = props.noticeData;
   const listData = props.listData;
+
+  console.log(listData);
 
   function onRowClick(community_no) {
     history.push('/CommunityDetail/' + community_no);
@@ -42,46 +34,14 @@ const BoardList = props => {
     history.push('/CommunityDetail/' + notice_no);
   }
 
-  const notice_rows = [];
-  const rows = [];
-
-  if (listData !=null && listData.data != null) {
-    listData.data.map(row => {
-      rows.push(
-        createData(
-          row.community_no,
-          row.community_hit,
-          row.community_title,
-          row.community_author,
-          row.community_date,
-        ),
-      );
-    });
-  }
-
-  if (noticeData != null && noticeData.data!=null) {
-    noticeData.data.map(row => {
-      notice_rows.push(
-        createData(
-          row.notice_no,
-          row.notice_hit,
-          row.notice_title,
-          row.notice_author,
-          row.notice_date,
-        ),
-      );
-    });
-  }
-
   return (
     <Wrapper>
       <Grid container>
-        {/* <div className="result">검색 결과 {total_list_len}개</div> */}
         <TableContainer component={Paper} className="table-wrapper">
           <Table sx={{ minWidth: 350 }} aria-label="simple table">
             <TableHead className="table-head"></TableHead>
             <TableBody>
-              {notice_rows.map(row => (
+              {noticeData.map(row => (
                 <TableRow
                   key={row.no}
                   onClick={() => onNoticeClick(row.no)}
@@ -107,7 +67,7 @@ const BoardList = props => {
                   </TableCell>
                 </TableRow>
               ))}
-              {rows.map(row => (
+              {listData.map(row => (
                 <TableRow
                   key={row.no}
                   // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
