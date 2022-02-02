@@ -23,8 +23,7 @@ import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
-// import listData from './dump.json';
-// import noticeData from './notice.json';
+import { useSelector, useDispatch } from 'react-redux'
 
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -40,7 +39,8 @@ const theme = createTheme({
 });
 
 const Community = () => {
-  const { user, setIsSignUp, serverUrlBase } = useContext(CommonContext);
+  const user = useSelector(state => state.Auth.user);
+  const { setIsSignUp, serverUrlBase } = useContext(CommonContext);
 
   let history = useHistory();
 
