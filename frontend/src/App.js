@@ -23,6 +23,7 @@ import SearchVote from './pages/SearchVote/';
 import Notice from './pages/Notice';
 import NoticeDetail from './pages/Notice/Detail/';
 import NoticeWrite from './pages/Notice/Write/';
+import NoticeUpdate from './pages/Notice/Update/';
 import Community from './pages/Community/';
 import Admin from './pages/Admin/';
 import MyFarm from './pages/MyFarm/';
@@ -125,6 +126,7 @@ const App = () => {
             <Route exact path="/Notice" component={Notice} />
             <Route exact path="/NoticeDetail/:no" component={NoticeDetail} />
             <Route exact path="/NoticeWrite" component={NoticeWrite} />
+            <Route exact path="/NoticeUpdate/:no" component={NoticeUpdate} />
             <Route exact path="/Community" component={Community} />
             <Route exact path="/MyFarm" component={MyFarm} />
             <Route exact path="/Admin" component={Admin} />
