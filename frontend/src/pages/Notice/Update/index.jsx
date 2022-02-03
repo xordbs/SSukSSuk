@@ -50,18 +50,17 @@ const NoticeWrite = ({ match }) => {
       return;
     }
 
-    Axios.post(serverUrlBase + `/notice/write`, {
+    Axios.defaults.headers.common['authorization'] = user.token;
+    Axios.patch(serverUrlBase + `/notice/update`, {
       notice_title: title,
-      notice_author: user.user_nickName,
       notice_content: content,
-      notice_code: code,
-      notice_user_id: user.user_id,
+      notice_no: no,
     })
       .then(data => {
         if (data.status === 200) {
           Swal.fire({
             icon: 'success',
-            title: '글이 성공적으로 등록되었습니다.',
+            title: '글이 성공적으로 수정되었습니다.',
           });
         } else {
           Swal.fire({
