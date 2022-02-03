@@ -2,15 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Axios from 'axios';
 
-import {
-  Grid,
-  Button,
-  Pagination,
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Grid, Button, Pagination, Tabs, Tab } from '@mui/material';
 
 import BoardList from '../../components/Board/BoardList/';
 import { useHistory } from 'react-router-dom';
@@ -18,12 +10,11 @@ import SearchComponent from '../../components/Search/SearchComponent';
 
 import Layout from '../../layout/';
 
-import { useLocalStorageSetState } from '../../common/CommonHooks';
 import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
@@ -46,16 +37,15 @@ function createData(no, hit, title, author, date) {
     author,
     date,
   };
-}  
+}
 
 const Community = () => {
   const user = useSelector(state => state.Auth.user);
-  const { setIsSignUp, serverUrlBase } = useContext(CommonContext);
+  const { serverUrlBase } = useContext(CommonContext);
 
   let history = useHistory();
 
   const [listData, setListData] = useState([]);
-  const [noticeData, setNoticeData] = useState([]);
   const [freeLen, setFreeLen] = useState(0);
   const [mentoLen, setMentoLen] = useState(0);
   const [category, setCategory] = React.useState(0);
@@ -85,9 +75,11 @@ const Community = () => {
   const setPageLen = () => {
     pageLen.splice(0, pageLen.length);
 
-    pageLen.push((freeLen+mentoLen===1)?0:parseInt((freeLen + mentoLen) / 10) + 1);
-    pageLen.push((freeLen===1)?0:parseInt(freeLen / 10) + 1);
-    pageLen.push((mentoLen===1)?0:parseInt(mentoLen / 10) + 1);
+    pageLen.push(
+      freeLen + mentoLen === 1 ? 0 : parseInt((freeLen + mentoLen) / 10) + 1,
+    );
+    pageLen.push(freeLen === 1 ? 0 : parseInt(freeLen / 10) + 1);
+    pageLen.push(mentoLen === 1 ? 0 : parseInt(mentoLen / 10) + 1);
   };
 
   const getCommunityListCnt = () => {
@@ -97,16 +89,16 @@ const Community = () => {
       },
     })
       .then(data => {
-        let tf,tm;
-        tf=tm=0;
+        let tf, tm;
+        tf = tm = 0;
 
         const cnt_data = data.data.data;
         cnt_data.map(cur => {
-          if (cur.community_code === 'C01') tf=cur.list_cnt;
-          else if (cur.community_code === 'C02') tm=cur.list_cnt;
+          if (cur.community_code === 'C01') tf = cur.list_cnt;
+          else if (cur.community_code === 'C02') tm = cur.list_cnt;
         });
-        setFreeLen(tf)
-        setMentoLen(tm)
+        setFreeLen(tf);
+        setMentoLen(tm);
       })
       .catch(function(error) {
         console.log('community list count error: ' + error);
@@ -128,10 +120,10 @@ const Community = () => {
       },
     })
       .then(data => {
-        const tempList=[];
+        const tempList = [];
         data.data.data.map(row => {
-          if(row.community_author){
-          tempList.push(
+          if (row.community_author) {
+            tempList.push(
               createData(
                 row.community_no,
                 row.community_hit,
@@ -141,7 +133,7 @@ const Community = () => {
               ),
             );
           }
-          });
+        });
         setListData(tempList);
       })
       .catch(function(error) {
@@ -230,7 +222,7 @@ const Community = () => {
             </Grid>
           </Grid>
           {/* {searchValue && <div className="result">{searchValue} 검색 결과</div>} */}
-          <BoardList listData={listData} noticeData={noticeData} />
+          <BoardList listType={'Community'} listData={listData} />
 
           <Grid
             className="bottom-box"
