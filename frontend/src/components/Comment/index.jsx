@@ -3,24 +3,15 @@ import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Wrapper from './styles';
+import CommentItem from './CommentItem';
 import { CommonContext } from '../../context/CommonContext';
 
-import {
-  Grid,
-  Button,
-  FormControl,
-  TextField,
-  List,
-  ListItem,
-  Divider,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { Grid, Button, FormControl, TextField, List } from '@mui/material';
 
 const Comment = props => {
-  let history = useHistory();
   const { serverUrlBase } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
+  const boardUrl = '/' + props.listType;
   const [content, setContent] = useState('');
   const [commentList, setCommentList] = useState([]);
   const handleTextChange = e => {
@@ -28,7 +19,7 @@ const Comment = props => {
   };
 
   const onClickCommentWriteHandler = e => {
-    Axios.post(serverUrlBase + '/' + props.listType + '/comment/write', {
+    Axios.post(serverUrlBase + boardUrl + '/comment/write', {
       comment_user_nickName: user.user_nickName,
       article_no: props.no,
       comment_text: content,
@@ -36,8 +27,8 @@ const Comment = props => {
     })
       .then(data => {
         if (data.status === 200) {
-          // getCommentList();
           setContent('');
+          getCommentList();
         }
       })
       .catch(e => {
@@ -45,26 +36,11 @@ const Comment = props => {
       });
   };
 
-  const onClickCommentDeleteHandler = no => {
-    Axios.delete(serverUrlBase + '/' + props.listType + '/comment/delete/' + no)
-      .then(data => {
-        if (data.status === 200) {
-          alert('삭제성공');
-        } else {
-          console.log('삭제실패');
-        }
-      })
-      .catch(e => {
-        console.log('comment delete error', e);
-      });
-  };
-
   const getCommentList = async () => {
     try {
-      const res = await Axios.get(
-        serverUrlBase + '/' + props.listType + '/comment/list',
-        { params: { article_no: props.no } },
-      );
+      const res = await Axios.get(serverUrlBase + boardUrl + '/comment/list', {
+        params: { article_no: props.no },
+      });
       setCommentList(res.data.data);
     } catch (e) {
       console.log('getCommentList error', e);
@@ -73,7 +49,12 @@ const Comment = props => {
 
   useEffect(() => {
     getCommentList();
+  }, []);
+
+  useEffect(() => {
+    console.log('asdf');
   }, [commentList]);
+
   return (
     <Wrapper alignItems="center">
       <FormControl fullWidth>
@@ -97,48 +78,11 @@ const Comment = props => {
       {commentList.length && (
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {commentList.map(comment => (
-            <>
-              <ListItem key={comment.comment_no} alignItems="flex-start">
-                <ListItemText
-                  primary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="div"
-                        variant="subtitle2"
-                        color="text.primary"
-                      >
-                        {comment.comment_user_nickName}
-                      </Typography>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="caption"
-                      >
-                        {' '}
-                        — {comment.comment_date}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                  secondary={
-                    <Typography variant="body1" gutterBottom>
-                      {comment.comment_text}
-                    </Typography>
-                  }
-                />
-                {user.user_id === comment.comment_user_id && (
-                  <Button
-                    className="write-button"
-                    onClick={e => {
-                      onClickCommentDeleteHandler(comment.comment_no);
-                    }}
-                  >
-                    삭제{' '}
-                  </Button>
-                )}
-              </ListItem>
-              <Divider variant="inset" component="li" />
-            </>
+            <CommentItem
+              key={comment.comment_no}
+              comment={comment}
+              boardUrl={boardUrl}
+            />
           ))}
         </List>
       )}
