@@ -45,6 +45,20 @@ const Comment = props => {
       });
   };
 
+  const onClickCommentDeleteHandler = no => {
+    Axios.delete(serverUrlBase + '/' + props.listType + '/comment/delete/' + no)
+      .then(data => {
+        if (data.status === 200) {
+          alert('삭제성공');
+        } else {
+          console.log('삭제실패');
+        }
+      })
+      .catch(e => {
+        console.log('comment delete error', e);
+      });
+  };
+
   const getCommentList = async () => {
     try {
       const res = await Axios.get(
@@ -112,6 +126,16 @@ const Comment = props => {
                     </Typography>
                   }
                 />
+                {user.user_id === comment.comment_user_id && (
+                  <Button
+                    className="write-button"
+                    onClick={e => {
+                      onClickCommentDeleteHandler(comment.comment_no);
+                    }}
+                  >
+                    삭제{' '}
+                  </Button>
+                )}
               </ListItem>
               <Divider variant="inset" component="li" />
             </>
