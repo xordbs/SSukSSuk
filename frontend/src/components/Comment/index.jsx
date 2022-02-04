@@ -60,7 +60,6 @@ const Comment = props => {
   useEffect(() => {
     getCommentList();
   }, [commentList]);
-
   return (
     <Wrapper alignItems="center">
       <FormControl fullWidth>
@@ -81,42 +80,44 @@ const Comment = props => {
         </Grid>
       </Grid>
       <hr></hr>
-      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        {commentList.map(comment => (
-          <>
-            <ListItem key={comment.comment_no} alignItems="flex-start">
-              <ListItemText
-                primary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="div"
-                      variant="subtitle2"
-                      color="text.primary"
-                    >
-                      {comment.comment_user_nickName}
+      {commentList.length && (
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          {commentList.map(comment => (
+            <>
+              <ListItem key={comment.comment_no} alignItems="flex-start">
+                <ListItemText
+                  primary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: 'inline' }}
+                        component="div"
+                        variant="subtitle2"
+                        color="text.primary"
+                      >
+                        {comment.comment_user_nickName}
+                      </Typography>
+                      <Typography
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="caption"
+                      >
+                        {' '}
+                        — {comment.comment_date}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                  secondary={
+                    <Typography variant="body1" gutterBottom>
+                      {comment.comment_text}
                     </Typography>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="caption"
-                    >
-                      {' '}
-                      — {comment.comment_date}
-                    </Typography>
-                  </React.Fragment>
-                }
-                secondary={
-                  <Typography variant="body1" gutterBottom>
-                    {comment.comment_text}
-                  </Typography>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </>
-        ))}
-      </List>
+                  }
+                />
+              </ListItem>
+              <Divider variant="inset" component="li" />
+            </>
+          ))}
+        </List>
+      )}
     </Wrapper>
   );
 };
