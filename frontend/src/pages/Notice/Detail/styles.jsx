@@ -49,10 +49,6 @@ const Wrapper = styled.div`
       height: 350px;
       overflow: auto;
     }
-
-    .body-content-input {
-      width: 850px;
-    }
   }
 
   & .write-button {

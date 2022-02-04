@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Layout from '../../../layout/';
+import Comment from '../../../components/Comment';
 
 import Wrapper from './styles';
 import Axios from 'axios';
@@ -68,12 +69,17 @@ const NoticeDetail = ({ match }) => {
       }
     });
   };
+
+  const onClickNoticeHandler = () => {
+    history.goBack();
+  };
+
   if (!notice) return <>loading중..</>;
   return (
     <Layout>
       <Wrapper>
         <Grid container>
-          <h2>문의사항</h2>
+          <h2>{notice.notice_code === 'N01' ? '공지사항' : '문의사항'}</h2>
         </Grid>
         <Grid container className="root-box" direction="column">
           <Grid item className="body-box">
@@ -84,11 +90,14 @@ const NoticeDetail = ({ match }) => {
               alignItems="center"
               className="category-box"
             >
-              <Grid item className="body-header">
-                분류
+              <Grid item className="body-header" xs={2}>
+                제목
               </Grid>
-              <Grid item className="body-content">
-                {notice.notice_code}
+              <Grid item className="body-content" xs={8}>
+                {notice.notice_title}
+              </Grid>
+              <Grid item className="body-content" xs={2}>
+                {notice.notice_date}
               </Grid>
             </Grid>
             <Grid
@@ -98,14 +107,17 @@ const NoticeDetail = ({ match }) => {
               alignItems="center"
               className="title-box"
             >
-              <Grid item className="body-header">
-                제목
+              <Grid item className="body-header" xs={2}>
+                작성자
               </Grid>
-              <Grid item className="body-content">
-                <InputBase
-                  value={notice.notice_title}
-                  className="body-content-input"
-                />
+              <Grid item className="body-content" xs={7}>
+                <InputBase value={notice.notice_author} />
+              </Grid>
+              <Grid item className="body-header" xs={2}>
+                조회수
+              </Grid>
+              <Grid item className="body-content" xs={1}>
+                {notice.notice_hit}
               </Grid>
             </Grid>
             <Grid
@@ -128,6 +140,19 @@ const NoticeDetail = ({ match }) => {
                 </Grid>
               </div>
             </Grid>
+          </Grid>
+        </Grid>
+        {/* 댓글 */}
+        <Grid container direction="column" alignItems="center">
+          <Comment listType={'notice'} no={notice.notice_no} />
+        </Grid>
+        <hr></hr>
+        {/* 댓글 */}
+        <Grid container direction="column" alignItems="center">
+          <Grid item>
+            <Button className="write-button" onClick={onClickNoticeHandler}>
+              목록{' '}
+            </Button>
           </Grid>
         </Grid>
         {user.user_id != '' && user.user_id === notice.notice_user_id && (
