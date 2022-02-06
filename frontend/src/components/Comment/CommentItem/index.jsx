@@ -15,31 +15,20 @@ import {
   IconButton,
 } from '@mui/material';
 
-const CommentItem = props => {
-  const { serverUrlBase } = useContext(CommonContext);
+const CommentItem = ({
+  comment,
+  onDeleteComment,
+  onUpdateComment,
+  updateDone,
+}) => {
   const user = useSelector(state => state.Auth.user);
-  const boardUrl = props.boardUrl;
-  const [editComment, setEditComment] = useState();
   const [isEdit, setIsEdit] = useState(true);
   const [isVisible, setIsVisible] = useState('visible');
   const [isDoneVisible, setIsDoneVisible] = useState('hidden');
-  const [comment, setComment] = useState(props.comment);
-  const handleEditTextChange = e => {
-    setEditComment(e.target.value);
-  };
+  const [newComment, setNewComment] = useState(comment);
 
-  const onClickCommentDeleteHandler = no => {
-    Axios.delete(serverUrlBase + boardUrl + '/comment/delete/' + no)
-      .then(data => {
-        if (data.status === 200) {
-          alert('삭제성공');
-        } else {
-          console.log('삭제실패');
-        }
-      })
-      .catch(e => {
-        console.log('comment delete error', e);
-      });
+  const handleEditTextChange = e => {
+    setNewComment({ ...newComment, comment_text: e.target.value });
   };
 
   const onClickCommentEditHandler = () => {
@@ -48,24 +37,13 @@ const CommentItem = props => {
     setIsDoneVisible('visible');
   };
 
-  const onClickCommentEditDoneHandler = () => {
-    Axios.defaults.headers.common['authorization'] = user.token;
-    Axios.patch(serverUrlBase + boardUrl + '/comment/update', {
-      comment_no: comment.comment_no,
-      comment_text: editComment,
-    }).then(data => {
-      if (data.status === 200) {
-        setIsEdit(true);
-        setIsVisible('visible');
-        setIsDoneVisible('hidden');
-        alert('변경 완료');
-      }
-    });
-  };
-
   useEffect(() => {
-    setEditComment(comment.comment_text);
-  }, []);
+    if (updateDone) {
+      setIsEdit(true);
+      setIsVisible('visible');
+      setIsDoneVisible('hidden');
+    }
+  }, [updateDone]);
 
   return (
     <>
@@ -98,9 +76,14 @@ const CommentItem = props => {
                 InputProps={{ disableUnderline: true }}
                 multiline
                 variant="standard"
-                value={editComment}
+                value={newComment.comment_text}
                 onChange={handleEditTextChange}
                 disabled={isEdit}
+                inputRef={input => {
+                  if (input != null) {
+                    input.focus();
+                  }
+                }}
               />
             </>
           }
@@ -117,16 +100,14 @@ const CommentItem = props => {
             <IconButton
               aria-label="delete"
               sx={{ visibility: isVisible }}
-              onClick={e => {
-                onClickCommentDeleteHandler(comment.comment_no);
-              }}
+              onClick={() => onDeleteComment(comment.comment_no)}
             >
               <DeleteIcon />
             </IconButton>
             <IconButton
               aria-label="done"
               sx={{ visibility: isDoneVisible }}
-              onClick={onClickCommentEditDoneHandler}
+              onClick={() => onUpdateComment(newComment)}
             >
               <DoneOutlineIcon />
             </IconButton>

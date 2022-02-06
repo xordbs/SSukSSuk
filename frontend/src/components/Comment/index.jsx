@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Wrapper from './styles';
-import CommentItem from './CommentItem';
+import CommentList from './CommentList';
 import { CommonContext } from '../../context/CommonContext';
 
-import { Grid, Button, FormControl, TextField, List } from '@mui/material';
+import { Grid, Button, FormControl, TextField } from '@mui/material';
 
 const Comment = props => {
   const { serverUrlBase } = useContext(CommonContext);
@@ -14,6 +13,8 @@ const Comment = props => {
   const boardUrl = '/' + props.listType;
   const [content, setContent] = useState('');
   const [commentList, setCommentList] = useState([]);
+  const [updateDone, setUpdateDone] = useState(false);
+
   const handleTextChange = e => {
     setContent(e.target.value);
   };
@@ -47,12 +48,41 @@ const Comment = props => {
     }
   };
 
+  const onDeleteComment = no => {
+    Axios.delete(serverUrlBase + boardUrl + '/comment/delete/' + no)
+      .then(data => {
+        if (data.status === 200) {
+          alert('삭제성공');
+          getCommentList();
+        } else {
+          console.log('삭제실패');
+        }
+      })
+      .catch(e => {
+        console.log('comment delete error', e);
+      });
+  };
+
+  const onUpdateComment = comment => {
+    Axios.defaults.headers.common['authorization'] = user.token;
+    Axios.patch(serverUrlBase + boardUrl + '/comment/update', {
+      comment_no: comment.comment_no,
+      comment_text: comment.comment_text,
+    }).then(data => {
+      if (data.status === 200) {
+        alert('변경 완료');
+        getCommentList();
+        setUpdateDone(true);
+      }
+    });
+  };
+
   useEffect(() => {
     getCommentList();
   }, []);
 
   useEffect(() => {
-    console.log('asdf');
+    setUpdateDone(false);
   }, [commentList]);
 
   return (
@@ -74,18 +104,12 @@ const Comment = props => {
           </Button>
         </Grid>
       </Grid>
-      <hr></hr>
-      {commentList.length && (
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          {commentList.map(comment => (
-            <CommentItem
-              key={comment.comment_no}
-              comment={comment}
-              boardUrl={boardUrl}
-            />
-          ))}
-        </List>
-      )}
+      <CommentList
+        commentList={commentList}
+        onDeleteComment={onDeleteComment}
+        onUpdateComment={onUpdateComment}
+        updateDone={updateDone}
+      />
     </Wrapper>
   );
 };
