@@ -19,7 +19,10 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import PersonIcon from '@mui/icons-material/Person';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
@@ -172,15 +175,15 @@ const FadeMenu = props => {
   // 무한? console.log(userId);
   const { serverUrlBase } = useContext(CommonContext);
 
-  // 라즈베리파이에서 만든거 강퇴 안됨(90% 추측)
+  // 라즈베리파이에서 만든거 강퇴 안됨(??)
   const onDeleteUser = async props => {
+    setAnchorEl(null);
     Axios.delete(serverUrlBase + `/admin/delete/` + userId)
       .then(data => {
-        console.log(data);
         successSign.fire({
           icon: 'success',
           title: <strong>추방!</strong>,
-          html: <i>잘못 누르신건 아니죠? 돌이킬 수 없어요...</i>,
+          html: <i>되돌릴 수 없어요... 아시죠?</i>,
           target: document.querySelector('.MuiDialog-root'),
         });
       })
@@ -189,17 +192,81 @@ const FadeMenu = props => {
       });
   };
 
-  const onChangeUser = async props => {
-    Axios.delete(serverUrlBase + `/admin/update/`);
+  const onChangeUser01 = async props => {
+    setAnchorEl(null);
+    Axios.put(serverUrlBase + '/admin/update/', {
+      user_id: userId,
+      user_code: 'U01',
+    })
+      .then(data => {
+        successSign.fire({
+          icon: 'success',
+          title: <strong>일반으로!</strong>,
+          html: <i>등급 변경 완료!</i>,
+          target: document.querySelector('.MuiDialog-root'),
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
-  // Swal.fire({
-  //   icon: 'error',
-  //   title: '입력 정보 오류!',
-  //   text: '아이디 또는 비밀번호를 확인 바랍니다!',
-  //   footer: '<a href="">Why do I have this issue?</a>',
-  //   target: document.querySelector('.MuiDialog-root'),
-  // });
+  const onChangeUser02 = async props => {
+    setAnchorEl(null);
+    Axios.put(serverUrlBase + '/admin/update/', {
+      user_id: userId,
+      user_code: 'U02',
+    })
+      .then(data => {
+        successSign.fire({
+          icon: 'success',
+          title: <strong>멘토로!</strong>,
+          html: <i>등급 변경 완료!</i>,
+          target: document.querySelector('.MuiDialog-root'),
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onChangeUser03 = async props => {
+    setAnchorEl(null);
+    Axios.put(serverUrlBase + '/admin/update/', {
+      user_id: userId,
+      user_code: 'U03',
+    })
+      .then(data => {
+        successSign.fire({
+          icon: 'success',
+          title: <strong>운영자로!</strong>,
+          html: <i>등급 변경 완료!</i>,
+          target: document.querySelector('.MuiDialog-root'),
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onChangeUser04 = async props => {
+    setAnchorEl(null);
+    Axios.put(serverUrlBase + '/admin/update/', {
+      user_id: userId,
+      user_code: 'U04',
+    })
+      .then(data => {
+        successSign.fire({
+          icon: 'success',
+          title: <strong>관리자로!</strong>,
+          html: <i>등급 변경 완료!</i>,
+          target: document.querySelector('.MuiDialog-root'),
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -232,11 +299,29 @@ const FadeMenu = props => {
             </ListItemIcon>
             <ListItemText>회원 강퇴</ListItemText>
           </MenuItem>
-          <MenuItem onClick={onChangeUser}>
+          <MenuItem onClick={onChangeUser01}>
+            <ListItemIcon>
+              <PersonIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>등급 변경 [일반]</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={onChangeUser02}>
+            <ListItemIcon>
+              <AssignmentIndIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>등급 변경 [멘토]</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={onChangeUser03}>
             <ListItemIcon>
               <ManageAccountsIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>회원 등급 변경</ListItemText>
+            <ListItemText>등급 변경 [운영자]</ListItemText>
+          </MenuItem>
+          <MenuItem onClick={onChangeUser04}>
+            <ListItemIcon>
+              <AdminPanelSettingsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>등급 변경 [관리자]</ListItemText>
           </MenuItem>
         </MenuList>
       </Menu>
