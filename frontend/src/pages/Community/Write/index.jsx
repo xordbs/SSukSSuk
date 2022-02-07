@@ -136,7 +136,7 @@ const CommunityWrite = () => {
                     <FormControlLabel
                       value="C02"
                       control={<Radio />}
-                      label="멘토 게시판"
+                      label="멘토링 게시판"
                     />
                   </RadioGroup>
                 </FormControl>

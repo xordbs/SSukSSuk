@@ -107,7 +107,7 @@ const CommunityUpdate = ({ match }) => {
                 분류
               </Grid>
               <Grid item className="body-content">
-                {code === 'C01' ? '자유 게시판' : '멘토 게시판'}
+                {code === 'C01' ? '자유 게시판' : '멘토링 게시판'}
               </Grid>
             </Grid>
             <Grid

@@ -84,7 +84,7 @@ const CommunityDetail = ({ match }) => {
     <Layout>
       <Wrapper>
       <Grid container>
-          <h2>{Community.community_code === 'C01' ? '자유 게시판' : '멘토 게시판'}</h2>
+          <h2>{Community.community_code === 'C01' ? '자유 게시판' : '멘토링 게시판'}</h2>
         </Grid>
         <Grid container className="root-box" direction="column">
           <Grid item className="body-box">
