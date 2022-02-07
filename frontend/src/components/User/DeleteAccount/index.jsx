@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInit } from '../../../redux/reducers/AuthReducer';
+import { setFarmInit } from '../../../redux/reducers/FarmReducer';
 import Axios from 'axios';
 import crypto from 'crypto';
 import { CommonContext } from '../../../context/CommonContext';
@@ -161,6 +162,7 @@ const MyInfoButtonGroupComponent = props => {
           console.log(data);
           if (data.data.result === 'success') {
             dispatch(setInit());
+            dispatch(setFarmInit());
 
             successSign.fire({
               icon: 'success',

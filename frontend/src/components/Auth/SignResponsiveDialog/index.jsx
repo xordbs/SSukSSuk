@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/reducers/AuthReducer';
+import { setFarm } from '../../../redux/reducers/FarmReducer';
 import crypto from 'crypto';
 import { ViewContext } from '../../../context/ViewContext';
 import { CommonContext } from '../../../context/CommonContext';
@@ -131,6 +132,18 @@ const SignInSection01 = () => {
         const login_user = data.data;
         if (login_user.status === 'login') {
           dispatch(setToken(login_user));
+          // 농장이 있는지 확인 후 redux에 저장
+          Axios.get(serverUrlBase + '/myfarm/list/', { params: { id } })
+            .then(data => {
+              if (data.status === 200) {
+                const farm = data.data.data[0];
+                dispatch(setFarm(farm));
+              }
+            })
+            .catch(e => {
+              console.log('login myfarm list error', e);
+            });
+
           setSignDialogOpen(false);
           setIsSignUp('SignIn');
           successSign.fire({

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInit } from '../../redux/reducers/AuthReducer';
+import { setFarmInit } from '../../redux/reducers/FarmReducer';
 
 import { CommonContext } from '../../context/CommonContext';
 import SignResponsiveDialog from '../../components/Auth/SignResponsiveDialog/';
@@ -63,6 +64,7 @@ const Header = props => {
   const onClickSignOutOpenHandler = () => {
     setDrawerOpen(false);
     dispatch(setInit());
+    dispatch(setFarmInit());
 
     alert('You are logged out.');
 

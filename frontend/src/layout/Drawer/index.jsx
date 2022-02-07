@@ -2,6 +2,7 @@ import React, { useContext, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInit } from '../../redux/reducers/AuthReducer';
+import { setFarmInit } from '../../redux/reducers/FarmReducer';
 import { CommonContext } from '../../context/CommonContext';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -44,6 +45,7 @@ const DrawerHeaderGroup = () => {
   const onClickSignOutOpenHandler = () => {
     setDrawerOpen(false);
     dispatch(setInit());
+    dispatch(setFarmInit());
 
     alert('You are logged out.');
 
