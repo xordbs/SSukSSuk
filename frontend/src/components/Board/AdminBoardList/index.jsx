@@ -171,6 +171,7 @@ const FadeMenu = props => {
     setAnchorEl(null);
   };
   const userId = props.checkId;
+  const getUserList = props.getUserList;
 
   // 무한? console.log(userId);
   const { serverUrlBase } = useContext(CommonContext);
@@ -180,6 +181,7 @@ const FadeMenu = props => {
     setAnchorEl(null);
     Axios.delete(serverUrlBase + `/admin/delete/` + userId)
       .then(data => {
+        getUserList();
         successSign.fire({
           icon: 'success',
           title: <strong>추방!</strong>,
@@ -199,6 +201,7 @@ const FadeMenu = props => {
       user_code: 'U01',
     })
       .then(data => {
+        getUserList();
         successSign.fire({
           icon: 'success',
           title: <strong>일반으로!</strong>,
@@ -218,6 +221,7 @@ const FadeMenu = props => {
       user_code: 'U02',
     })
       .then(data => {
+        getUserList();
         successSign.fire({
           icon: 'success',
           title: <strong>멘토로!</strong>,
@@ -237,6 +241,7 @@ const FadeMenu = props => {
       user_code: 'U03',
     })
       .then(data => {
+        getUserList();
         successSign.fire({
           icon: 'success',
           title: <strong>운영자로!</strong>,
@@ -256,6 +261,7 @@ const FadeMenu = props => {
       user_code: 'U04',
     })
       .then(data => {
+        getUserList();
         successSign.fire({
           icon: 'success',
           title: <strong>관리자로!</strong>,
@@ -341,6 +347,7 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = props => {
   const { numSelected } = props;
   const checkId = props.checkId;
+  const getUserList = props.getUserList;
   return (
     <Toolbar
       sx={{
@@ -374,7 +381,7 @@ const EnhancedTableToolbar = props => {
           회원 목록
         </Typography>
       )}
-      <FadeMenu checkId={checkId}></FadeMenu>
+      <FadeMenu checkId={checkId} getUserList={getUserList}></FadeMenu>
     </Toolbar>
   );
 };
@@ -472,12 +479,16 @@ const AdminBoardList = () => {
   // 1번인가? 여러번인가?
   useEffect(() => {
     getUserList();
-  });
+  }, []);
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar checkId={checkId} numSelected={selected.length} />
+        <EnhancedTableToolbar
+          checkId={checkId}
+          numSelected={selected.length}
+          getUserList={getUserList}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
