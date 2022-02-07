@@ -53,7 +53,7 @@ const CommunityUpdate = ({ match }) => {
     }
 
     Axios.defaults.headers.common['authorization'] = user.token;
-    Axios.put(serverUrlBase + `/community/update`, {
+    Axios.patch(serverUrlBase + `/community/update`, {
       community_title: title,
       community_content: content,
       community_no: no,

@@ -144,7 +144,7 @@ const CommunityDetail = ({ match }) => {
         </Grid>
         {/* 댓글 */}
         <Grid container direction="column" alignItems="center">
-          <Comment listType={'notice'} no={Community.community_no} />
+          <Comment listType={'community'} no={Community.community_no} />
         </Grid>
         <hr></hr>
         {/* 댓글 */}
