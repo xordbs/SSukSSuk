@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
@@ -43,6 +45,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const InfoCard = () => {
   const theme = useTheme();
+  const farm = useSelector(state => state.Farm.farm);
 
   return (
     <>
@@ -60,7 +63,7 @@ const InfoCard = () => {
                     mb: 0.5,
                   }}
                 >
-                  농장이름
+                  {farm.farm_name}
                 </Typography>
               </Grid>
             </Grid>
@@ -76,7 +79,7 @@ const InfoCard = () => {
                     mb: 0.75,
                   }}
                 >
-                  강원도에 마련한 첫번째 배추농장~~^^
+                  {farm.farm_text}
                 </Typography>
               </Grid>
             </Grid>

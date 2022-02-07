@@ -79,7 +79,6 @@ const SurveyList = () => {
           </Typography>
         </Stack>
       ))}
-      ;
     </>
   );
 };
