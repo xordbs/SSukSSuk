@@ -160,12 +160,6 @@ const App = () => {
             <Route exact path="/CommunityUpdate/:no" component={CommunityUpdate} />
             <Route exact path="/MyFarm" component={MyFarm} />
             <Route exact path="/Admin" component={Admin} />
-            <Route
-              exact
-              path="/CommunityDetail/:no"
-              component={CommunityDetail}
-            />
-            <Route exact path="/CommunityWrite" component={CommunityWrite} />
             <Redirect to="/not-found" />
           </Switch>
         </BrowserRouter>

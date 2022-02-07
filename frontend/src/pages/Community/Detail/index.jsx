@@ -24,7 +24,6 @@ const CommunityDetail = ({ match }) => {
   const getCommunity = async () => {
     try {
       const res = await Axios.get(serverUrlBase + `/community/detail/` + no);
-      console.log(res.data.data);
       setCommunity(res.data.data);
     } catch (e) {
       console.log('getCommunity error!!', e);

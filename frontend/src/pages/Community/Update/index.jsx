@@ -13,25 +13,27 @@ import Swal from 'sweetalert2';
 
 import { Grid, Button, InputBase } from '@mui/material';
 
-const NoticeWrite = ({ match }) => {
+const CommunityUpdate = ({ match }) => {
   const no = match.params.no;
   let history = useHistory();
 
   const { serverUrlBase } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
 
-  const [code, setCode] = React.useState('N02');
+  const [code, setCode]=useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const getNotice = async () => {
+  const getCommunity = async () => {
     try {
-      const res = await Axios.get(serverUrlBase + `/notice/detail/` + no);
+      const res = await Axios.get(serverUrlBase + `/community/detail/` + no);
       const data = res.data.data;
-      setTitle(data.notice_title);
-      setContent(data.notice_content);
+      
+      setCode(data.community_code);
+      setTitle(data.community_title);
+      setContent(data.community_content);
     } catch (e) {
-      console.log('getNotice error!!', e);
+      console.log('getCommunity error!!', e);
     }
   };
 
@@ -43,18 +45,18 @@ const NoticeWrite = ({ match }) => {
     setContent(e.target.value);
   };
 
-  const onClickNoticeUpdateHandler = () => {
+  const onClickCommunityUpdateHandler = () => {
     if (!user.status) {
       alert('회원정보 오류! 로그인을 확인해주세요');
-      history.push('/Notice');
+      history.push('/Community');
       return;
     }
 
     Axios.defaults.headers.common['authorization'] = user.token;
-    Axios.patch(serverUrlBase + `/notice/update`, {
-      notice_title: title,
-      notice_content: content,
-      notice_no: no,
+    Axios.put(serverUrlBase + `/community/update`, {
+      community_title: title,
+      community_content: content,
+      community_no: no,
     })
       .then(data => {
         if (data.status === 200) {
@@ -68,10 +70,10 @@ const NoticeWrite = ({ match }) => {
             title: '에러',
           });
         }
-        history.push('/Notice');
+        history.push('/Community');
       })
       .catch(function(error) {
-        console.log('notice regi error:' + error);
+        console.log('community regi error:' + error);
 
         Swal.fire({
           icon: 'error',
@@ -81,20 +83,14 @@ const NoticeWrite = ({ match }) => {
   };
 
   useEffect(() => {
-    getNotice();
+    getCommunity();
   }, []);
-
-  useEffect(() => {
-    if (user.user_code === 'U03' || user.user_code === 'U04') {
-      setCode('N01');
-    }
-  }, [code]);
 
   return (
     <Layout>
       <Wrapper>
         <Grid container>
-          <h2>문의사항 수정하기</h2>
+          <h2>글 수정하기</h2>
         </Grid>
 
         <Grid container className="root-box" direction="column">
@@ -110,7 +106,7 @@ const NoticeWrite = ({ match }) => {
                 분류
               </Grid>
               <Grid item className="body-content">
-                {code === 'N01' ? '공지사항' : '문의하기'}
+                {code === 'C01' ? '자유 게시판' : '멘토 게시판'}
               </Grid>
             </Grid>
             <Grid
@@ -160,7 +156,7 @@ const NoticeWrite = ({ match }) => {
           <Grid item>
             <Button
               className="write-button"
-              onClick={onClickNoticeUpdateHandler}
+              onClick={onClickCommunityUpdateHandler}
             >
               수정하기
             </Button>
@@ -171,4 +167,4 @@ const NoticeWrite = ({ match }) => {
   );
 };
 
-export default NoticeWrite;
+export default CommunityUpdate;
