@@ -67,6 +67,11 @@ const CommunityDetail = ({ match }) => {
             console.log('Community delete error', e);
           });
       }
+
+      Swal.fire({
+        icon: 'success',
+        title: '글이 삭제되었습니다',
+      });
     });
   };
 

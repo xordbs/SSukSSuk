@@ -83,6 +83,7 @@ const CommunityUpdate = ({ match }) => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getCommunity();
   }, []);
 
