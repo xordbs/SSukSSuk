@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 import Swal from 'sweetalert2';
 
-import { Grid, Button, InputBase } from '@mui/material';
+import { Grid, Button, InputBase, Paper } from '@mui/material';
 
 const CommunityDetail = ({ match }) => {
   const no = match.params.no;
@@ -139,18 +139,14 @@ const CommunityDetail = ({ match }) => {
               alignItems="center"
               className="text-box"
             >
-              <Grid item className="body-header">
+              <Grid item className="body-header" xs={2}>
                 내용
               </Grid>
-              <div className="body-content-text">
-                <Grid item className="body-content">
-                  <InputBase
-                    value={Community.community_content}
-                    multiline={true}
-                    className="body-content-input"
-                  />
+                <Grid item className="body-content body-content-text" xs={9}>
+                <Paper elevation={0}>
+                {Community.community_content}
+                </Paper>
                 </Grid>
-              </div>
             </Grid>
           </Grid>
         </Grid>
