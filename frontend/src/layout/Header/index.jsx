@@ -152,7 +152,7 @@ const Header = props => {
                     <Button
                       color="primary"
                       variant="contained"
-                      onClick={onClickRedirectPathHandler('/Notice')}
+                      onClick={onClickRedirectPathHandler('/MyFarm')}
                       className="display-none header-button"
                     >
                       내 농장
