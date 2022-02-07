@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import Layout from '../../layout/';
 import Wrapper from './styles';
-import FarmInfo from './FramInfo';
+import FarmInfo from './FarmInfo';
 import FarmStatus from './FarmStatus';
 import FarmHistory from './FarmHistory';
 
 const MyFarm = () => {
+  const farm = useSelector(state => state.Farm.farm);
   return (
     <Layout>
       <Wrapper>
