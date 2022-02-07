@@ -75,6 +75,13 @@ const CommunityDetail = ({ match }) => {
     });
   };
 
+  function parsingDate(date){
+    const day=date.substr(0,10)
+    const time=date.substr(11,5)
+
+    return day+" "+time;
+  }
+
   const onClickCommunityHandler = () => {
     history.goBack();
   };
@@ -102,7 +109,7 @@ const CommunityDetail = ({ match }) => {
                 {Community.community_title}
               </Grid>
               <Grid item className="body-content" xs={2}>
-                {Community.community_date}
+                {parsingDate(Community.community_date)}
               </Grid>
             </Grid>
             <Grid
