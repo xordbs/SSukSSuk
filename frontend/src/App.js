@@ -32,6 +32,7 @@ import CommunityWrite from './pages/CommunityWrite';
 
 // css
 // import './index.css';
+import './App.css';
 
 // const
 const defaultThumbnailImage = 'default_user.jpg';
@@ -42,20 +43,45 @@ const serverImgUrl = `https://ssafy-viba-s3.s3.ap-northeast-2.amazonaws.com/publ
 
 /// theme
 const theme = createTheme({
+  // fontFamily: `'Do Hyeon', sans-serif`,
   typography: {
-    fontFamily: ['Noto Sans KR'].join(','),
-    button: {
-      fontFamily: 'Noto Sans KR',
-    },
-    body1: {
-      fontWeight: 500,
-    },
+    // fontFamily: ['Noto Sans KR'].join(','),
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  Button: {
+    //fontFamily: 'Noto Sans KR',
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  body1: {
+    fontWeight: 500,
+  },
+  TableBody: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  TableCell: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  TableRow: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  TableContainer: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  TableHead: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  Grid: {
+    fontFamily: `'Do Hyeon', sans-serif`,
+  },
+  InputBase: {
+    fontFamily: `'Do Hyeon', sans-serif`,
   },
   overrides: {
     MuiCssBaseline: {
       '@global': {
         body: {
           backgroundColor: 'white',
+          fontFamily: `'Do Hyeon', sans-serif`,
         },
       },
     },
