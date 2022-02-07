@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Layout from '../../layout/';
+import Layout from '../../../layout';
 
 import Wrapper from './styles';
 import Axios from 'axios';
 
-import { CommonContext } from '../../context/CommonContext';
+import { CommonContext } from '../../../context/CommonContext';
 import { useSelector, useDispatch } from 'react-redux'
 
 import Swal from 'sweetalert2';
