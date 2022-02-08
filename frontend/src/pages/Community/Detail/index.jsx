@@ -18,7 +18,7 @@ const CommunityDetail = ({ match }) => {
   const no = match.params.no;
   let history = useHistory();
 
-  const { serverUrlBase } = useContext(CommonContext);
+  const { serverUrlBase,parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
   const [Community, setCommunity] = useState();
   const getCommunity = async () => {
@@ -74,13 +74,6 @@ const CommunityDetail = ({ match }) => {
       });
     });
   };
-
-  function parsingDate(date){
-    const day=date.substr(0,10)
-    const time=date.substr(11,5)
-
-    return day+" "+time;
-  }
 
   const onClickCommunityHandler = () => {
     history.goBack();

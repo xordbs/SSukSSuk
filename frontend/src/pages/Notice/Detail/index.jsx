@@ -18,7 +18,7 @@ const NoticeDetail = ({ match }) => {
   const no = match.params.no;
   let history = useHistory();
 
-  const { serverUrlBase } = useContext(CommonContext);
+  const { serverUrlBase,parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
   const [notice, setNotice] = useState();
   const getNotice = async () => {
@@ -73,13 +73,6 @@ const NoticeDetail = ({ match }) => {
   const onClickNoticeHandler = () => {
     history.goBack();
   };
-
-  function parsingDate(date){
-    const day=date.substr(0,10)
-    const time=date.substr(11,5)
-
-    return day+" "+time;
-  }
 
   if (!notice) return <>loading중..</>;
   return (

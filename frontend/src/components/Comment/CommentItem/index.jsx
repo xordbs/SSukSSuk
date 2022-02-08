@@ -29,10 +29,9 @@ const CommentItem = ({
   const [isVisible, setIsVisible] = useState('visible');
   const [isDoneVisible, setIsDoneVisible] = useState('hidden');
   const [newComment, setNewComment] = useState(comment);
-  const [saveComment, setSaveComment] = useState(comment);
   const [writterCode, setWritterCode]=useState('U02');
 
-  const { serverUrlBase } = useContext(CommonContext);
+  const { serverUrlBase, parsingDate } = useContext(CommonContext);
 
   const handleEditTextChange = e => {
     setNewComment({ ...newComment, comment_text: e.target.value });
@@ -42,24 +41,15 @@ const CommentItem = ({
     setIsEdit(false);
     setIsVisible('hidden');
     setIsDoneVisible('visible');
-
-    setSaveComment(comment);
   };
 
   const onUpdateCancelComment = () => {
-    setNewComment(saveComment);
+    setNewComment(comment);
 
     setIsEdit(true);
     setIsVisible('visible');
     setIsDoneVisible('hidden');
   };
-
-  function parsingDate(date) {
-    const day = date.substr(0, 10);
-    const time = date.substr(11, 5);
-
-    return day + ' ' + time;
-  }
 
   const getCommentList = async () => {
     try {
