@@ -89,6 +89,13 @@ const theme = createTheme({
   },
 });
 
+function parsingDate(date){
+  const day=date.substr(0,10)
+  const time=date.substr(11,5)
+
+  return day+" "+time;
+}
+
 // app
 const App = () => {
   const [user, setUser] = useLocalStorageSetState(
@@ -135,6 +142,7 @@ const App = () => {
         defaultThumbnailImage,
         isSignUp,
         setIsSignUp,
+        parsingDate,
       }}
     >
       <MuiThemeProvider theme={theme}>
