@@ -21,11 +21,14 @@ const FarmInfo = props => {
 
   const { serverUrlBase,parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
-  const farm = useSelector(state => state.Farm.farm);
+  // const farm = useSelector(state => state.Farm.farm);
+  const farm = props.farmNo;
 
   const [chartData,setChartData]=useState('');
   const [curSensorData,setCurSensorData]=useState(false)
   const [isGood,setIsGood]=useState(true)
+
+  console.log(farm)
 
   const calIsGood=(curSensorData)=>{
     // 12~2월 : 겨울 (10도 이하면 알람)
@@ -50,7 +53,7 @@ const FarmInfo = props => {
       params: {
         user_id: user.user_id,
         // farm_no: farm.farm_no,
-        farm_no: 2,
+        farm_no: farm,
       },
     })
       .then(data => {
@@ -77,7 +80,7 @@ const FarmInfo = props => {
       params: {
         user_id: user.user_id,
         // farm_no: farm.farm_no,
-        farm_no: 2,
+        farm_no: farm,
       },
     })
       .then(data => {
