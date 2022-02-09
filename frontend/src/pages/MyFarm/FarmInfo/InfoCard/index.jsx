@@ -1,8 +1,11 @@
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
+
+import { CommonContext } from '../../../../context/CommonContext';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 // project imports
 import MainCard from '../../../../components/Card/MainCard';
@@ -12,6 +15,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   color: '#424242',
   overflow: 'hidden',
   position: 'relative',
+  alignSelf: 'center',
   '&:after': {
     content: '""',
     position: 'absolute',
@@ -46,58 +50,57 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const InfoCard = () => {
   const theme = useTheme();
   const farm = useSelector(state => state.Farm.farm);
+  const { parsingDate } = useContext(CommonContext);
 
   return (
-    <>
-      <CardWrapper border={false} content={false}>
-        <Box sx={{ p: 2.25 }}>
-          <Grid item>
-            <Grid container>
-              <Grid item>
-                <Typography
-                  sx={{
-                    fontSize: '20px',
-                    fontWeight: 700,
-                    mr: 1,
-                    mt: 0.75,
-                    mb: 0.5,
-                  }}
-                >
-                  {farm.farm_name}
-                </Typography>
-              </Grid>
+    <CardWrapper border={false} content={false}>
+      <Box sx={{ p: 2.25 }}>
+        <Grid item>
+          <Grid container>
+            <Grid item>
+              <Typography
+                sx={{
+                  fontSize: '22px',
+                  fontWeight: 700,
+                  mr: 1,
+                  mt: 0.75,
+                  mb: 0.5,
+                }}
+              >
+                {farm.farm_name}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item>
-            <Grid container alignItems="center">
-              <Grid item>
-                <Typography
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    mr: 1,
-                    mb: 0.75,
-                  }}
-                >
-                  {farm.farm_text}
-                </Typography>
-              </Grid>
+        </Grid>
+        <Grid item>
+          <Grid container alignItems="center">
+            <Grid item>
+              <Typography
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  mr: 1,
+                  mb: 0.75,
+                }}
+              >
+                {farm.farm_text}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item sx={{ mb: 1 }}>
-            <Typography
-              sx={{
-                fontSize: '12px',
-                fontWeight: 500,
-                color: theme.palette.secondary[200],
-              }}
-            >
-              2022.02.07
-            </Typography>
-          </Grid>
-        </Box>
-      </CardWrapper>
-    </>
+        </Grid>
+        <Grid item sx={{ mb: 1 }}>
+          <Typography
+            sx={{
+              fontSize: '14px',
+              fontWeight: 500,
+              color: theme.palette.secondary[200],
+            }}
+          >
+            쑥쑥 시작일 : {parsingDate(farm.farm_regidate)}
+          </Typography>
+        </Grid>
+      </Box>
+    </CardWrapper>
   );
 };
 

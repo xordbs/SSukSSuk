@@ -1,41 +1,44 @@
-import React from 'react';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Axios from 'axios';
 import { styled, useTheme } from '@mui/material/styles';
 
 import MainCard from '../../../components/Card/MainCard';
 import InfoCard from './InfoCard';
 import CurrentImage from './CurrentImage';
+import FarmImage from './FarmImage';
 
-import { Grid } from '@mui/material';
+import { CommonContext } from '../../../context/CommonContext';
+
+import {
+  Avatar,
+  Box,
+  Grid,
+  Menu,
+  MenuItem,
+  Typography,
+  Button,
+  CardActionArea,
+} from '@mui/material';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: '#fafafa',
   position: 'relative',
-  // width: '100%',
-  // height: '330px',
+  justifyContent: 'center',
   border: 'none',
   margin: '30px 0px 40px 0px',
   padding: '5px 30px 5px 30px',
 }));
 // 캐러셀 참고 사이트
 // https://codesandbox.io/examples/package/react-material-ui-carousel
+
 const FarmPicture = () => {
   return (
     <CardWrapper>
-      <Grid container direction="row" spacing={2}>
-        <Grid
-          item
-          lg={8}
-          md={8}
-          sm={8}
-          xs={8}
-          style={{
-            backgroundImage: `url(https://blog.beautifulfund.org/wp-content/uploads/171111W012-1-720x405.jpg)`,
-            backgroundSize: 'cover',
-          }}
-        ></Grid>
-        <Grid item lg={4} md={4} sm={4} xs={4}>
+      <Grid container direction="row" spacing={1}>
+        <Grid item xs={7}>
+          <FarmImage />
+        </Grid>
+        <Grid item xs={5} alignSelf="center">
           <InfoCard />
           <CurrentImage />
         </Grid>
