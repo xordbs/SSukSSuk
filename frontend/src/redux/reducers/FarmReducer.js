@@ -1,12 +1,16 @@
 const SET_FARM = 'setFarm';
 const SET_FARM_INIT = 'setFarmInit';
+const SET_PATH = 'setPath';
 
 const FarmInitialState = {
   farm: {
     farm_no: '',
-    farm_id: '',
+    user_id: '',
+    serial_no: '',
     farm_name: '',
+    farm_regidate: '',
     farm_text: '',
+    file_path: '',
   },
 };
 
@@ -17,6 +21,11 @@ export const setFarm = farm => ({
 
 export const setFarmInit = () => ({
   type: SET_FARM_INIT,
+});
+
+export const setPath = file_path => ({
+  type: SET_PATH,
+  file_path,
 });
 
 export const FarmReducer = (state = FarmInitialState, action) => {
@@ -31,6 +40,9 @@ export const FarmReducer = (state = FarmInitialState, action) => {
         state,
         farm: FarmInitialState.user,
       };
+    case SET_PATH:
+      state.farm.file_path = action.file_path;
+      return { ...state };
     default:
       return state;
   }
