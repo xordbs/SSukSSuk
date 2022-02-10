@@ -62,6 +62,7 @@ const SignInSection01 = () => {
   let history = useHistory();
 
   const [disabled, setDisabled] = useState(true);
+
   const { signInUserData, setSignInUserData, setIsSignUp } = useContext(
     ViewContext,
   );
@@ -342,6 +343,9 @@ const SignUpSection01 = () => {
 
 const SignUpSection02 = () => {
   const [disabled, setDisabled] = useState(true);
+  const [emailDisabled, setEmailDisabled] = useState(true);
+  const [emailConfirm, setEmailConfirm] = useState(false);
+
   const { signUpUserData, setSignUpUserData, setIsSignUp } = useContext(
     ViewContext,
   );
@@ -457,6 +461,7 @@ const SignUpSection02 = () => {
           setSignUpEmaErr(true);
           setSignUpEmaErrMsg('이메일 형식에 맞게 작성 바람');
         } else {
+          setEmailDisabled(false);
           setSignUpEmaErr(false);
           setSignUpEmaErrMsg();
         }
@@ -554,11 +559,82 @@ const SignUpSection02 = () => {
       name: '',
       nickname: '',
       email: '',
+      emailConfirm: false,
       grade: '',
     });
   };
 
-  // value를 고치면 될 듯
+  // 이메일 인증 버튼 클릭
+  const onEmailConfirmHandler = () => {
+    var { email } = signUpUserData;
+    setEmailDisabled(true);
+    Axios.post(serverUrlBase + `/user/regi-email`, {
+      user_email: email,
+    })
+      .then(data => {
+        // && data.data.result === 'success'
+        if (data.status === 200 && data.data.result !== 'fail') {
+          Swal.fire({
+            target: document.querySelector('.MuiDialog-container'),
+            title: '이메일을 확인해 인증번호를 입력해주세요.',
+            input: 'text',
+            inputPlaceholder: '인증번호를 입력하세요',
+            inputAttributes: {
+              autocapitalize: 'off',
+            },
+            showCancelButton: true,
+            confirmButtonText: '완료',
+            showLoaderOnConfirm: true,
+            preConfirm: confirmNum => {
+              const query = 'user_email=' + email + '&authNum=' + confirmNum;
+              Axios.get(serverUrlBase + '/user/regi-email?' + query)
+                .then(data => {
+                  if (data.data.result === 'success') {
+                    setEmailConfirm(true);
+                  }
+                })
+                .catch(error => {
+                  setEmailDisabled(false);
+                  console.log('email confirm error', error);
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+          }).then(result => {
+            if (result.isConfirmed) {
+              setEmailConfirm(true);
+              Swal.fire({
+                target: document.querySelector('.MuiDialog-container'),
+                title: '인증완료',
+              });
+            }
+          });
+        } else {
+          setEmailDisabled(false);
+          if (data.data.result === 'fail') {
+            Swal.fire({
+              target: document.querySelector('.MuiDialog-container'),
+              icon: 'error',
+              title: data.data.msg,
+              footer: '<a href="">Why do I have this issue?</a>',
+              target: document.querySelector('.MuiDialog-root'),
+            });
+          } else {
+            Swal.fire({
+              target: document.querySelector('.MuiDialog-container'),
+              icon: 'error',
+              title: '이메일 전송 실패 관리자에게 문의하세요!',
+              footer: '<a href="">Why do I have this issue?</a>',
+              target: document.querySelector('.MuiDialog-root'),
+            });
+          }
+        }
+      })
+      .catch(function(error) {
+        setEmailDisabled(false);
+        console.log('email confirm error', error);
+      });
+  };
+
   const grades = [
     {
       value: 'U01',
@@ -584,7 +660,8 @@ const SignUpSection02 = () => {
       signUpPwdCfErr === false &&
       signUpNmErr === false &&
       signUpNnmErr === false &&
-      signUpEmaErr === false
+      signUpEmaErr === false &&
+      emailConfirm === true
     ) {
       setDisabled(false);
     }
@@ -601,7 +678,8 @@ const SignUpSection02 = () => {
       signUpPwdCfErr === true ||
       signUpNmErr === true ||
       signUpNnmErr === true ||
-      signUpEmaErr === true
+      signUpEmaErr === true ||
+      emailConfirm === false
     ) {
       setDisabled(true);
     }
@@ -619,6 +697,7 @@ const SignUpSection02 = () => {
     signUpNmErr,
     signUpNnmErr,
     signUpEmaErr,
+    emailConfirm,
   ]);
 
   return (
@@ -711,11 +790,12 @@ const SignUpSection02 = () => {
             onChange={OnChangeHandler('nickname')}
           />
         </Grid>
-        <Grid item xs={12} className="sign-up-grid">
+        <Grid item xs={8} className="sign-up-grid">
           <TextField
             required
             error={signUpEmaErr}
             helperText={signUpEmaErrMsg}
+            disabled={emailConfirm}
             id="outlined-required"
             label="이메일"
             defaultValue={signUpUserData.email}
@@ -725,6 +805,22 @@ const SignUpSection02 = () => {
             fullWidth={true}
             onChange={OnChangeHandler('email')}
           />
+        </Grid>
+        <Grid item xs={4} className="sign-up-grid">
+          <Button
+            disabled={emailDisabled}
+            variant="contained"
+            fullWidth={true}
+            onClick={onEmailConfirmHandler}
+            className="grid-item-button"
+            style={{
+              fontSize: 14,
+              fontFamily: 'Noto Sans KR',
+              fontWeight: 500,
+            }}
+          >
+            이메일 인증
+          </Button>
         </Grid>
         <Grid item xs={12} className="sign-up-grid">
           <TextField
@@ -1104,6 +1200,7 @@ const ResponsiveDialogSign = () => {
       }}
     >
       <Dialog
+        // disableEnfoceFocus={true}
         fullScreen={fullScreen}
         maxWidth={'xs'}
         open={signDialogOpen}
