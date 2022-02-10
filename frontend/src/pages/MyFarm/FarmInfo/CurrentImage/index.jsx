@@ -1,8 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { CommonContext } from '../../../../context/CommonContext';
+
+// firebase
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import firebaseInit from '../../../../firebaseInit';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -15,6 +20,7 @@ import {
   DialogTitle,
   Dialog,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 // project imports
@@ -24,16 +30,78 @@ const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 function SimpleDialog(props) {
   const { onClose, selectedValue, open } = props;
+  const { serverUrlBase } = useContext(CommonContext);
+  const farm = useSelector(state => state.Farm.farm);
+
+  const [farmImg, setFarmImg] = useState('');
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
+  const getFarmImg = async () => {
+    try {
+      const fileName = 'farm' + farm.farm_no + '.png';
+      await getDownloadURL(ref(firebaseInit, 'image_store/' + fileName))
+        .then(url => {
+          setFarmImg(url);
+        })
+        .catch(e => {
+          console.log('get url error', e);
+        });
+    } catch (e) {
+      console.log('firebase get url error', e);
+    }
+  };
+
+  const openImg = async () => {
+    try {
+      if (farmImg !== '') return;
+      await Axios.post(serverUrlBase + '/myfarm/live', {
+        farm_no: farm.farm_no,
+      }).then(data => {
+        if (data.data.result === 'success') {
+          getFarmImg();
+        }
+      });
+    } catch (e) {
+      console.log('openImg error', e);
+    }
+  };
+
+  const closeImg = async () => {
+    try {
+      await Axios.delete(serverUrlBase + '/myfarm/live', {
+        data: {
+          farm_no: farm.farm_no,
+        },
+      }).then(data => {
+        console.log(data.data.result);
+        if (data.data.result === 'success') {
+          setFarmImg('');
+        }
+      });
+    } catch (e) {
+      console.log('closeImg error', e);
+    }
+  };
+
+  if (open) {
+    openImg();
+  }
+  if (!open) {
+    closeImg();
+  }
+
   // Dialog
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>현재 농장 사진</DialogTitle>
-      사진보여주기~
+      {/* <DialogTitle>현재 농장 사진</DialogTitle> */}
+      {farmImg === '' ? (
+        <CircularProgress />
+      ) : (
+        <img src={farmImg} alt="실시간 이미지"></img>
+      )}
     </Dialog>
   );
 }
@@ -91,7 +159,7 @@ const CurrentImage = () => {
                         fontWeight: 700,
                       }}
                     >
-                      실시간 농장 사진
+                      실시간 농장 확인하기
                     </Typography>
                   </Grid>
                 </Grid>
