@@ -13,7 +13,7 @@ class ScatterPlot extends React.Component {
     return (
         <ResponsiveScatterPlotCanvas
         data={data}
-        margin={{ top: 5, right: 80, bottom: 35, left: 45 }}
+        margin={{ top: 5, right: 70, bottom: 35, left: 45 }}
         xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
         xFormat=" >-.2f"
         yScale={{ type: 'linear', min: 0, max: 'auto' }}
