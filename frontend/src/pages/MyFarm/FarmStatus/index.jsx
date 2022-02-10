@@ -23,26 +23,6 @@ const FarmInfo = props => {
 
   const [chartData, setChartData] = useState('');
   const [curSensorData, setCurSensorData] = useState(false);
-  const [isGood, setIsGood] = useState('');
-
-  const calIsGood = curSensorData => {
-    // 12~2월 : 겨울 (10도 이하면 알람)
-    // 3 ~ 5월 / 9 ~ 11월 : 봄가을 (18 ~ 24도 벗어나면 알람)
-    // 6 ~ 8월 : 여름 (25도 넘으면 알람)
-    // 우선은 간단하게 10도미만 25도 이상이면 나쁨으로 함
-
-    const date = curSensorData.sensor_date;
-    const temp = curSensorData.temp;
-    const humi = curSensorData.humi;
-
-    if (parseFloat(temp) < 10 || parseFloat(temp) >= 25) {
-      setIsGood(2);
-    } else {
-      setIsGood(1);
-    }
-
-    console.log(parseFloat(temp));
-  };
 
   const getFarmChartData = () => {
     const parsingdata = [[], [], []];
@@ -90,6 +70,7 @@ const FarmInfo = props => {
     })
       .then(data => {
         const list = data.data.data[0];
+        console.log(list.sensor_date)
         const result = {
           humi: list.humidity,
           temp: list.temperature,
@@ -111,7 +92,6 @@ const FarmInfo = props => {
 
     // Status card
     setCurSensorData(getFarmSensorData());
-    calIsGood(curSensorData);
 
     let timer = setTimeout(() => {
       alertSet(true);
@@ -137,7 +117,7 @@ const FarmInfo = props => {
               {!alert && <Loader type="spin" color="#3e7925" />}
             </Grid>
             <Grid item md={4}>
-              <Grid container direction="column" xs={12}>
+              <Grid container direction="column">
                 <Grid item>
                   <Grid container direction="row" justify-content="space-between" >
                   <Typography
@@ -152,8 +132,8 @@ const FarmInfo = props => {
                   </Grid>
                 </Grid>
                 <Grid item alignSelf="center">
-                  {curSensorData && isGood && (
-                    <Status curSensorData={curSensorData} isGood={isGood} />
+                  {curSensorData && (
+                    <Status curSensorData={curSensorData}/>
                   )}
                 </Grid>
               </Grid>

@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const Wrapper = styled.div`
   .chart-grid{
-    height:200px;
+    height:190px;
   }
 
   .status-card{
