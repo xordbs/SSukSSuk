@@ -21,14 +21,12 @@ const FarmInfo = props => {
 
   const { serverUrlBase,parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
-  // const farm = useSelector(state => state.Farm.farm);
-  const farm = props.farmNo;
+  const farm = useSelector(state => state.Farm.farm);
+  console.log(farm)
 
   const [chartData,setChartData]=useState('');
   const [curSensorData,setCurSensorData]=useState(false)
-  const [isGood,setIsGood]=useState(true)
-
-  console.log(farm)
+  const [isGood,setIsGood]=useState('')
 
   const calIsGood=(curSensorData)=>{
     // 12~2월 : 겨울 (10도 이하면 알람)
@@ -42,8 +40,13 @@ const FarmInfo = props => {
     
     if(temp<10||temp>=25)
     {
-      setIsGood(false);
+      setIsGood(1);
     }
+    else{
+      setIsGood(2);
+    }
+
+    console.log(isGood);
   }
 
   const getFarmChartData = () => {
@@ -52,8 +55,8 @@ const FarmInfo = props => {
     Axios.get(serverUrlBase + `/myfarm_survey/graph`, {
       params: {
         user_id: user.user_id,
-        // farm_no: farm.farm_no,
-        farm_no: farm,
+        farm_no: farm.farm_no,
+        // farm_no: farm,
       },
     })
       .then(data => {
@@ -79,8 +82,8 @@ const FarmInfo = props => {
     Axios.get(serverUrlBase + `/myfarm_survey/status`, {
       params: {
         user_id: user.user_id,
-        // farm_no: farm.farm_no,
-        farm_no: farm,
+        farm_no: farm.farm_no,
+        // farm_no: farm,
       },
     })
       .then(data => {
@@ -117,8 +120,7 @@ const FarmInfo = props => {
               {!alert&&<Loader type="spin" color="#3e7925" />}
             </Grid>
             <Grid item lg={4} md={4} sm={12} xs={12}>
-              {/* {curSensorData && <StatusCard curSensorData={curSensorData}/>} */}
-              {curSensorData && <Status curSensorData={curSensorData} isGood={isGood}/>}
+              {curSensorData &&isGood && <Status curSensorData={curSensorData} isGood={isGood}/>}
             </Grid>
           </Grid>
         </Grid>
