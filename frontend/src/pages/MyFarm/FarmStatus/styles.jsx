@@ -7,7 +7,14 @@ const Wrapper = styled.div`
 
   .status-card{
     Background:#FFF56E;
-    borderRadius: 100px;
+    border-radius: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    box-shadow:0px 1px 2px #868e96
+  }
+
+  .emoji_img{
+    height:80px;
+    width:80px;
   }
 `;
 

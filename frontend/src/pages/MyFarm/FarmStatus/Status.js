@@ -12,14 +12,21 @@ class Status extends React.Component {
 
     return (
       <>
-        <Grid className='status-card'>
+        <div className='status-card'>
           <Box sx={{ p: 2.25 }}>
             <Grid container direction="row">
               <Grid item>
                 <Grid container justifyContent="space-between">
                   <Grid item>
-                    {isGood&&"좋음 이미지"}
-                    {!isGood&&"나쁨 이미지"}
+                    <img
+                    className="emoji_img"
+                    src={
+                    (isGood==1)
+                      ? 'images/smile.png'
+                      : 'images/bad.png'
+                  }
+                  alt="logo"
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -52,7 +59,7 @@ class Status extends React.Component {
               <Typography>{sensor_date}</Typography>
             </Grid>
           </Box>
-        </Grid>
+        </div>
       </>
     );
   }
