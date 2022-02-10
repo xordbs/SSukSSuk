@@ -22,7 +22,7 @@ const FarmInfo = props => {
   const { serverUrlBase,parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
   const farm = useSelector(state => state.Farm.farm);
-  console.log(farm)
+  // console.log(farm)
 
   const [chartData,setChartData]=useState('');
   const [curSensorData,setCurSensorData]=useState(false)
@@ -66,7 +66,7 @@ const FarmInfo = props => {
         if (list.list_cnt!=0) {
           list.map((cur, index, source) => {
             // console.log(cur)
-            parsingdata[cur.survey_result].push({"x":cur.humidity,"y":cur.temperature});
+            parsingdata[cur.survey_result].push({"y":cur.humidity,"x":cur.temperature});
           });
         }
       })
