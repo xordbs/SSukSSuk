@@ -30,7 +30,7 @@ const FarmInfo = props => {
         const list = data.data.data;
 
         if (list.list_cnt != 0) {
-          list.map((cur, index, source) => {
+          list.forEach((cur, index, source) => {
             parsingdata[cur.survey_result].push({
               y: cur.humidity,
               x: cur.temperature,
@@ -78,7 +78,7 @@ const FarmInfo = props => {
     setChartData(result);
     setCurSensorData(getFarmSensorData());
 
-    let timer = setTimeout(() => {
+    setTimeout(() => {
       alertSet(true);
     }, 1000);
   }, []);
