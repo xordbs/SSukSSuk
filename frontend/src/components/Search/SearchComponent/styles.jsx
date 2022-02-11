@@ -53,7 +53,7 @@ const Wrapper = styled.div`
     }
   }
   .select-box{
-    width:100px;
+    width:125px;
     height:40px;
   }
   & .MuiOutlinedInput-root {
