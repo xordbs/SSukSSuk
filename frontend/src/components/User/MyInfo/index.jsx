@@ -1,27 +1,11 @@
-import React, {
-  useState,
-  useEffect,
-  Fragment,
-  useCallback,
-  useContext,
-} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setInit } from '../../../redux/reducers/AuthReducer';
-import store from 'store';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
-import { useDropzone } from 'react-dropzone';
 import { CommonContext } from '../../../context/CommonContext';
 import { ViewContext } from '../../../context/ViewContext';
 
-import {
-  Avatar,
-  TextField,
-  Button,
-  Grid,
-  Typography,
-  Fab,
-} from '@material-ui/core';
+import { TextField, Grid, Typography, Fab } from '@material-ui/core';
 import Wrapper from './styles';
 import { setNickname } from '../../../redux/reducers/AuthReducer';
 
@@ -223,8 +207,7 @@ const MyInfo = () => {
     user_email: '',
     user_code: '',
   });
-  let err = false;
-  let errMsg = '';
+
   useEffect(() => {
     Axios.get(serverUrlBase + '/user/myInfo/' + user.user_id)
       .then(data => {
