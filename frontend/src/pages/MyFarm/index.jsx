@@ -23,16 +23,20 @@ const MyFarm = () => {
   const { setRegiIotDialogOpen } = useContext(CommonContext);
 
   const farm = useSelector(state => state.Farm.farm);
-  // let history = useHistory();
+  let history = useHistory();
 
   useEffect(() => {
     if (!farm) {
+      // 농장 iot 신청 여부 조사
+
+      // 신청 했으면
       // Swal.fire({
-      //   icon: 'warning',
-      //   title: '농장 데이터가 없습니다',
-      //   text: '내 농장 서비스를 이용하시려면 IoT 기기를 신청해주세요',
+      //   title: '기기등록이 되지 않았습니다',
+      //   text: 'IoT에서 농장등록을 먼저 해주세요',
       // });
       // history.push('./')
+
+      // 신청 안했으면
       setRegiIotDialogOpen(true);
     }
   });

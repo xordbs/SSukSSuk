@@ -149,7 +149,7 @@ const Header = props => {
                     문의사항
                   </Button>
                 </Grid>
-                {user.status === 'login' && (
+                {/* {user.status === 'login' && ( */}
                   <Grid item>
                     <Button
                       color="primary"
@@ -160,7 +160,7 @@ const Header = props => {
                       내 농장
                     </Button>
                   </Grid>
-                )}
+                {/* )} */}
               </Grid>
             </Grid>
 
