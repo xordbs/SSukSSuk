@@ -9,6 +9,10 @@ import { Grid, Typography } from '@mui/material';
 import ScatterPlot from './ScatterPlot';
 import Loader from './Loader';
 
+import '../../../App.css';
+
+
+
 const FarmInfo = props => {
   const { serverUrlBase, parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
@@ -92,8 +96,9 @@ const FarmInfo = props => {
               <Typography
                 sx={{
                   fontSize: '20px',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   padding: '0px 20px',
+                  fontFamily: `'Do Hyeon', sans-serif`,
                 }}
               >
                 차트
@@ -112,8 +117,9 @@ const FarmInfo = props => {
                     <Typography
                       sx={{
                         fontSize: '20px',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         padding: '0px 30px 10px 30px',
+                        fontFamily: `'Do Hyeon', sans-serif`,
                       }}
                     >
                       현재 온/습도
@@ -121,7 +127,9 @@ const FarmInfo = props => {
                   </Grid>
                 </Grid>
                 <Grid item alignSelf="center">
-                  {curSensorData && <Status curSensorData={curSensorData} />}
+                  {/* {curSensorData && */}
+                     <Status curSensorData={curSensorData}/>
+                  {/* } */}
                 </Grid>
               </Grid>
             </Grid>
