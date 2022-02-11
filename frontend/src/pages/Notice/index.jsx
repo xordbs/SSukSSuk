@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
 
+import '../../App.css';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -180,7 +182,10 @@ const Notice = () => {
                   textColor="primary"
                 >
                   <Tab
-                    className="tab-style"
+                    sx={{
+                      fontSize: 20,
+                      fontFamily: `'Do Hyeon', sans-serif`,
+                    }}
                     label={'전체 게시판 (' + noticeLen + ')'}
                   />
                 </Tabs>
@@ -188,6 +193,7 @@ const Notice = () => {
             </ThemeProvider>
             <Grid item>
               <Button
+                sx={{fontFamily: `'Do Hyeon', sans-serif`,}}
                 className="write-button"
                 onClick={onClickNoticeWriteHandler}
               >

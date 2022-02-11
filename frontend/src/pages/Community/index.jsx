@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
 
+import '../../App.css';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -203,19 +205,22 @@ const Community = () => {
                 >
                   <Tab
                     sx={{
-                      fontSize: 18,
+                      fontSize: 20,
+                      fontFamily: `'Do Hyeon', sans-serif`,
                     }}
                     label={'전체 게시판 (' + (freeLen + mentoLen) + ')'}
                   />
                   <Tab
                     sx={{
-                      fontSize: 18,
+                      fontSize: 20,
+                      fontFamily: `'Do Hyeon', sans-serif`,
                     }}
                     label={'자유 게시판 (' + freeLen + ')'}
                   />
                   <Tab
                     sx={{
-                      fontSize: 18,
+                      fontSize: 20,
+                      fontFamily: `'Do Hyeon', sans-serif`,
                     }}
                     label={'멘토링 게시판 (' + mentoLen + ')'}
                   />
@@ -224,6 +229,7 @@ const Community = () => {
             </ThemeProvider>
             <Grid item>
               <Button
+                sx={{fontFamily: `'Do Hyeon', sans-serif`,}}
                 className="write-button"
                 onClick={onClickCommunityWriteHandler}
               >
