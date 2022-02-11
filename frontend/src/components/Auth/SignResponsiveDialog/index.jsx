@@ -507,12 +507,22 @@ const SignUpSection02 = () => {
             },
             allowOutsideClick: () => !Swal.isLoading(),
           }).then(result => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed && emailConfirm) {
               setEmailConfirm(true);
               Swal.fire({
                 target: document.querySelector('.MuiDialog-container'),
                 title: '인증완료',
               });
+            } else if (result.isConfirmed && !emailConfirm) {
+              setEmailConfirm(false);
+              setEmailDisabled(false);
+              Swal.fire({
+                target: document.querySelector('.MuiDialog-container'),
+                title: '인증실패',
+              });
+            } else {
+              setEmailConfirm(false);
+              setEmailDisabled(false);
             }
           });
         } else {
