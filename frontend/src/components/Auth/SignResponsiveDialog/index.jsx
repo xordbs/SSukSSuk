@@ -837,7 +837,7 @@ const SignUpSection02 = () => {
             fullWidth={true}
           >
             {grades.map(option => (
-              <MenuItem key={option.id} value={option.value}>
+              <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}
