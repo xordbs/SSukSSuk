@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -130,7 +130,6 @@ const SignInSection01 = () => {
             footer: '<a href="">Why do I have this issue?</a>',
             target: document.querySelector('.MuiDialog-root'),
           });
-          // alert(login_user.msg);
         }
       })
       .catch(function(error) {
@@ -139,8 +138,6 @@ const SignInSection01 = () => {
   };
 
   useEffect(() => {
-    // console.log(signInUserData);
-
     if (signInUserData.id.length === 0) {
       setsSgnInIdErr(false);
       setSingInidErrMsg();
@@ -217,14 +214,6 @@ const SignInSection01 = () => {
             onChange={OnChangeHandler('id')}
             onFocus={event => {
               setIsShowKeyborad(true);
-              // 아이콘 양식
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <PersonIcon />
-              //     </InputAdornment>
-              //   ),
-              // }}
             }}
           />
         </Grid>
@@ -381,15 +370,7 @@ const SignUpSection02 = () => {
 
   // 회원가입 버튼 클릭시
   const onSignUpHandler = async () => {
-    var {
-      id,
-      password,
-      passwordConfirmation,
-      name,
-      nickname,
-      email,
-      grade,
-    } = signUpUserData;
+    var { id, password, name, nickname, email, grade } = signUpUserData;
 
     if (signUpUserData.password !== signUpUserData.passwordConfirmation) {
       Swal.fire({
@@ -464,7 +445,6 @@ const SignUpSection02 = () => {
       user_email: email,
     })
       .then(data => {
-        // && data.data.result === 'success'
         if (data.status === 200 && data.data.result !== 'fail') {
           Swal.fire({
             target: document.querySelector('.MuiDialog-container'),
@@ -518,7 +498,6 @@ const SignUpSection02 = () => {
               icon: 'error',
               title: data.data.msg,
               footer: '<a href="">Why do I have this issue?</a>',
-              target: document.querySelector('.MuiDialog-root'),
             });
           } else {
             Swal.fire({
@@ -526,7 +505,6 @@ const SignUpSection02 = () => {
               icon: 'error',
               title: '이메일 전송 실패 관리자에게 문의하세요!',
               footer: '<a href="">Why do I have this issue?</a>',
-              target: document.querySelector('.MuiDialog-root'),
             });
           }
         }
@@ -717,7 +695,6 @@ const SignUpSection02 = () => {
         justifyContent="center"
         alignItems="center"
         spacing={1}
-        // style={{ marginLeft: 4 }}
         className="grid"
       >
         <Grid item xs={12} className="sign-up-grid">
@@ -848,7 +825,6 @@ const SignUpSection02 = () => {
             variant="contained"
             disabled={disabled}
             fullWidth={true}
-            // color="primary"
             onClick={onSignUpHandler}
             className="grid-item-button"
             style={{
@@ -957,200 +933,6 @@ const SignUpGroupComponent = () => {
   );
 };
 
-////////////////////////////////////////////////////////////////////////////////
-
-// ForgotPw
-const ForgotPwGroupComponent = () => {
-  const { serverUrl } = useContext(CommonContext);
-  const { recoverPwUserData, setRecoverPwUserData } = useContext(ViewContext);
-  const { setIsSignUp } = useContext(ViewContext);
-
-  const inputRef = useRef('');
-
-  const onClickHandler = whichGroup => {
-    setIsSignUp(whichGroup);
-  };
-  const sendSearchWordHandler = async searchWord => {
-    // if (!regEma.test(searchWord)) {
-    //   alert('The email format is invalid.');
-    //   return;
-    // } else {
-    //   alert('Not implemented yet.');
-    //   // setRecoverPwUserData({ ...recoverPwUserData, email: searchWord });
-    //   // alert('Authentication code has been sent to you by email');
-    //   // setIsSignUp('RecoverPw');
-    // }
-  };
-  return (
-    <Wrapper>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-        className="forgot-pw"
-      >
-        <h2>비밀번호를 잊어버리셨나요?</h2>
-        <h3>아이디를 입력하시면 등록된 이메일로 인증번호가 발송됩니다.</h3>
-        <input type="text" placeholder="아이디" ref={inputRef} />
-        <button
-          type="button"
-          className="btn-link"
-          onClick={() => {
-            sendSearchWordHandler(inputRef.current.value);
-          }}
-        >
-          인증번호 발송
-        </button>
-        <Grid item xs={12}>
-          <h3>계정이 없다면 바로 가입하세요!</h3>
-        </Grid>
-        <Grid item xs={12}>
-          <IconButton
-            className="sign-in-butoon grid-item-icon-button"
-            onClick={() => {
-              onClickHandler(`SignUp`);
-            }}
-          >
-            <Typography className="grid-item-typography3">
-              {'회원가입'}
-            </Typography>
-          </IconButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            fullWidth={true}
-            onClick={() => {
-              onClickHandler(`SignIn`);
-            }}
-            className="grid2-item-button"
-          >
-            {`로그인`}
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <div>&nbsp;</div>
-        </Grid>
-      </Grid>
-    </Wrapper>
-  );
-};
-
-////////////////////////////////////////////////////////////////////////////////
-
-// RecoverPw
-const RecoverPwGroupComponent = () => {
-  const { serverUrl } = useContext(CommonContext);
-  const { recoverPwUserData, setRecoverPwUserData, setIsSignUp } = useContext(
-    ViewContext,
-  );
-  const emailRef = useRef('');
-  const verificationCodeRef = useRef('');
-  const newPasswordRef = useRef('');
-
-  const sendRecoverPw = async () => {
-    const user_id = emailRef.current.value;
-    const code = verificationCodeRef.current.value;
-    const pwd = newPasswordRef.current.value;
-
-    if (code === '') {
-      alert('Please enter the verification code');
-      return;
-    } else if (pwd === '') {
-      alert('Please enter a new password');
-      return;
-    } else {
-      let hashedPassword = '';
-      try {
-        hashedPassword = crypto
-          .createHash('sha512')
-          .update(pwd)
-          .digest('hex');
-      } catch (error) {
-        console.log('PPAP: signInHandler -> error', error);
-      }
-
-      alert('Not implemented yet.');
-      // setIsSignUp('SignIn');
-    }
-  };
-
-  const sendSearchWordHandler = async searchWord => {
-    console.log({ searchWord });
-
-    if (searchWord === '') {
-      alert('Please enter your e-mail');
-      return;
-    } else {
-      alert('Not implemented yet.');
-      // setRecoverPwUserData({ ...recoverPwUserData, email: searchWord });
-    }
-  };
-
-  return (
-    <Wrapper>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-        className="recover-box-wrap"
-      >
-        <Grid item xs={12} className="recover-box">
-          <h2>Reset your password</h2>
-          <h3>
-            Enter the code you received from Amazon and set a new password.
-          </h3>
-          <Grid className="input-box">
-            <h2>E-mail</h2>
-            <input
-              type="text"
-              value={recoverPwUserData.email}
-              ref={emailRef}
-              readOnly
-            />
-          </Grid>
-          <Grid className="input-box">
-            <h2>Verification Code</h2>
-            <input
-              type="text"
-              placeholder="enter code"
-              ref={verificationCodeRef}
-            />
-          </Grid>
-          <Grid className="input-box">
-            <h2>New Password</h2>
-            <input
-              type="password"
-              placeholder="Enter new password"
-              ref={newPasswordRef}
-            />
-          </Grid>
-          <Grid className="btn_box">
-            <Grid
-              className="Text"
-              onClick={() => {
-                sendSearchWordHandler(emailRef.current.value);
-              }}
-            >
-              Resend Code
-            </Grid>
-            <Grid className="btn">
-              <button type="button" onClick={sendRecoverPw}>
-                VERIFY
-              </button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Wrapper>
-  );
-};
-
-////////////////////////////////////////////////////////////////////////////////
-
 const ResponsiveDialogSign = () => {
   const fullScreen = useMediaQuery(theme => theme.breakpoints.down('xs'));
   let history = useHistory();
@@ -1158,7 +940,6 @@ const ResponsiveDialogSign = () => {
   const {
     signDialogOpen,
     setSignDialogOpen,
-    serverImgUrl,
     isSignUp,
     setIsSignUp,
   } = useContext(CommonContext);
@@ -1169,7 +950,6 @@ const ResponsiveDialogSign = () => {
     history.goBack();
   };
 
-  // const [isSignUp, setIsSignUp] = useState('SignIn');
   const [signInUserData, setSignInUserData] = useState({
     id: '',
     password: '',
@@ -1215,14 +995,6 @@ const ResponsiveDialogSign = () => {
             boxShadow: 'none',
           },
         }}
-        // BackdropProps={{
-        //   style: {
-        //     boxShadow: 'none',
-        //     backgroundImage: `url(${serverImgUrl}thumb-1920-731946.jpg)`,
-        //     backgroundSize: 'cover',
-        //     filter: 'brightness(0.4)',
-        //   },
-        // }}
       >
         <Grid
           container
@@ -1237,8 +1009,6 @@ const ResponsiveDialogSign = () => {
             <DialogContent>
               {isSignUp === 'SignUp' && <SignUpGroupComponent />}
               {isSignUp === 'SignIn' && <SignInGroupComponent />}
-              {isSignUp === 'ForgotPw' && <ForgotPwGroupComponent />}
-              {isSignUp === 'RecoverPw' && <RecoverPwGroupComponent />}
             </DialogContent>
           </Grid>
         </Grid>
