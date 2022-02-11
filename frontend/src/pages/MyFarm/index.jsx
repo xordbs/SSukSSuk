@@ -1,3 +1,4 @@
+import React, { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -13,7 +14,6 @@ import FarmStatus from './FarmStatus';
 import FarmHistory from './FarmHistory';
 
 import RegiIot from '../../components/RegiIoT';
-
 
 import Swal from 'sweetalert2';
 
@@ -43,7 +43,7 @@ const MyFarm = () => {
   if (!farm)
     return (
       <Layout>
-        <RegiIot/>
+        <RegiIot />
       </Layout>
     );
   return (
