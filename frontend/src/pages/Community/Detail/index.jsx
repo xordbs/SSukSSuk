@@ -1,17 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import Layout from '../../../layout/';
 import Comment from '../../../components/Comment';
-
 import Wrapper from './styles';
 import Axios from 'axios';
-
 import { CommonContext } from '../../../context/CommonContext';
 import { useSelector } from 'react-redux';
-
 import Swal from 'sweetalert2';
-
 import { Grid, Button, InputBase, Paper } from '@mui/material';
 
 const CommunityDetail = ({ match }) => {
@@ -145,12 +140,10 @@ const CommunityDetail = ({ match }) => {
             </Grid>
           </Grid>
         </Grid>
-        {/* 댓글 */}
         <Grid container direction="column" alignItems="center">
           <Comment listType={'community'} no={Community.community_no} />
         </Grid>
         <hr></hr>
-        {/* 댓글 */}
         <Grid container direction="column" alignItems="center">
           <Grid item>
             <Button className="write-button" onClick={onClickCommunityHandler}>

@@ -1,28 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import Layout from '../../../layout';
-
 import Wrapper from './styles';
 import Axios from 'axios';
-
 import { CommonContext } from '../../../context/CommonContext';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-
 import {
   Grid,
   Button,
   FormControl,
-  Select,
-  MenuItem,
   RadioGroup,
   FormControlLabel,
   Radio,
   InputBase,
-  Container,
-  Box,
 } from '@mui/material';
 
 const CommunityWrite = () => {
@@ -106,15 +97,6 @@ const CommunityWrite = () => {
               </Grid>
               <Grid item className="body-content">
                 <FormControl>
-                  {/* <Select
-                    value={category}
-                    onChange={handleChange}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value={'C01'}>자유 게시판</MenuItem>
-                    <MenuItem value={'C02'}>멘토 게시판</MenuItem>
-                  </Select> */}
                   <RadioGroup
                     row
                     value={code}

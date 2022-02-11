@@ -76,16 +76,6 @@ const InputComponent = props => {
     } else {
       props.setDisabled(true);
     }
-    // console.log(!!!!inputValue['현재 비밀번호']);
-
-    // if (
-    //   inputValue['현재 비밀번호'] === '' ||
-    //   inputValue['새 비밀번호'] === '' ||
-    //   inputValue['새 비밀번호 확인'] === '' ||
-    //   inputPwdErr === true
-    // ) {
-    //   props.setDisabled(true);
-    // }
   }, [
     inputValue['현재 비밀번호'],
     inputValue['새 비밀번호'],
@@ -237,18 +227,6 @@ const MyInfoButtonGroupComponent = props => {
       .catch(error => {
         console.log(error);
       });
-
-    // var body = {
-    //   new_pwd: hashPassword,
-    //   before_pwd: hashBeforePwd,
-    //   user_id: user.user_id,
-    // };
-
-    // if (respone['status'] === 200) {
-    //   alert('Has changed.');
-    // } else {
-    //   alert('Change failed.');
-    // }
   };
 
   return (

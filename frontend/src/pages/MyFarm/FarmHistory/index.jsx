@@ -1,11 +1,6 @@
 import React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import Axios from 'axios';
-import { styled, useTheme } from '@mui/material/styles';
-
+import { styled } from '@mui/material/styles';
 import SurveyList from './SurveyList';
-
-import { Grid } from '@mui/material';
 import MainCard from '../../../components/Card/MainCard';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({

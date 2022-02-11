@@ -2,12 +2,11 @@ import { useContext } from 'react';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Typography } from '@mui/material';
 
 // project imports
 import MainCard from '../../../../components/Card/MainCard';
 import { CommonContext } from '../../../../context/CommonContext';
-
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: '#FFE57F',
@@ -48,11 +47,11 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const StatusCard = props => {
   const theme = useTheme();
 
-  const {parsingDate } = useContext(CommonContext);
+  const { parsingDate } = useContext(CommonContext);
 
-  const temp=props.curSensorData.temp;
-  const humi=props.curSensorData.humi;
-  const sensor_date=props.curSensorData.sensor_date;
+  const temp = props.curSensorData.temp;
+  const humi = props.curSensorData.humi;
+  const sensor_date = props.curSensorData.sensor_date;
 
   return (
     <>
@@ -67,7 +66,6 @@ const StatusCard = props => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
-                      // backgroundColor: theme.palette.secondary[800],
                       mt: 1,
                     }}
                   ></Avatar>

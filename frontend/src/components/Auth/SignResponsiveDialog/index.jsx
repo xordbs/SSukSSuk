@@ -359,21 +359,6 @@ const SignUpSection02 = () => {
   // 변화가 일어날 때마다 (값)
   const OnChangeHandler = name => e => {
     setSignUpUserData({ ...signUpUserData, [name]: e.target.value });
-    if (name === 'email') {
-      if (e.target.value.length === 0) {
-        setSignUpEmaErr(false);
-        setSignUpEmaErrMsg();
-      } else {
-        if (!regEma.test(signUpUserData.email)) {
-          setSignUpEmaErr(true);
-          setSignUpEmaErrMsg('이메일 형식에 맞게 작성 바람');
-        } else {
-          setEmailDisabled(false);
-          setSignUpEmaErr(false);
-          setSignUpEmaErrMsg();
-        }
-      }
-    }
   };
 
   const [signUpIdErr, setSignUpIdErr] = useState(false);
@@ -507,12 +492,22 @@ const SignUpSection02 = () => {
             },
             allowOutsideClick: () => !Swal.isLoading(),
           }).then(result => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed && emailConfirm) {
               setEmailConfirm(true);
               Swal.fire({
                 target: document.querySelector('.MuiDialog-container'),
                 title: '인증완료',
               });
+            } else if (result.isConfirmed && !emailConfirm) {
+              setEmailConfirm(false);
+              setEmailDisabled(false);
+              Swal.fire({
+                target: document.querySelector('.MuiDialog-container'),
+                title: '인증실패',
+              });
+            } else {
+              setEmailConfirm(false);
+              setEmailDisabled(false);
             }
           });
         } else {
@@ -646,13 +641,16 @@ const SignUpSection02 = () => {
     }
 
     if (signUpUserData.email.length === 0) {
+      setEmailDisabled(true);
       setSignUpEmaErr(false);
       setSignUpEmaErrMsg();
     } else {
       if (!regEma.test(signUpUserData.email)) {
+        setEmailDisabled(true);
         setSignUpEmaErr(true);
         setSignUpEmaErrMsg('이메일 형식에 맞게 작성 바람');
       } else {
+        setEmailDisabled(false);
         setSignUpEmaErr(false);
         setSignUpEmaErrMsg();
       }
@@ -711,16 +709,9 @@ const SignUpSection02 = () => {
     emailConfirm,
   ]);
 
-  const onSignUpEnter = e => {
-    if (e.key === 'Enter') {
-      onSignUpHandler();
-    }
-  };
-
   return (
     <Wrapper>
       <Grid
-        onKeyPress={onSignUpEnter}
         container
         direction="row"
         justifyContent="center"

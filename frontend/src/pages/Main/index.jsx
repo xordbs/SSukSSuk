@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { styled } from '@mui/material/styles';
 import { Box, Grid, Container, Button, Typography } from '@mui/material';
 import Layout from '../../layout';
-
 import Wrapper from './styles';
 
 const item = {
@@ -59,7 +57,7 @@ const Main = () => {
           </Typography>
           <Background
             sx={{
-              backgroundColor: '#FBF7F2', // Average color of the background image.
+              backgroundColor: '#FBF7F2',
               backgroundPosition: 'center',
             }}
           />

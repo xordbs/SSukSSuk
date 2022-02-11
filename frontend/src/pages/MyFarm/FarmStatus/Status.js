@@ -1,5 +1,4 @@
 import React from 'react';
-import { useContext, useEffect, useState } from 'react';
 
 // material-ui
 import { Box, Grid, Typography } from '@mui/material';
@@ -8,25 +7,20 @@ const calIsGood = (temp, humi, date) => {
   // 12~2월 : 겨울 (10도 이하면 알람)
   // 3 ~ 5월 / 9 ~ 11월 : 봄가을 (18 ~ 24도 벗어나면 알람)
   // 6 ~ 8월 : 여름 (25도 넘으면 알람)
-  
-  // 우선은 간단하게 10도미만 25도 이상이면 나쁨으로 함
 
   if (parseFloat(temp) < 10 || parseFloat(temp) >= 25) {
-    return false
+    return false;
   } else {
-    return true
+    return true;
   }
-
 };
 
-
 class Status extends React.Component {
-  
   render() {
     const temp = this.props.curSensorData.temp;
     const humi = this.props.curSensorData.humi;
     const sensor_date = this.props.curSensorData.sensor_date;
-    const isGood = calIsGood(temp,humi,sensor_date)
+    const isGood = calIsGood(temp, humi, sensor_date);
 
     return (
       <Box sx={{ px: 2 }}>
@@ -86,10 +80,10 @@ class Status extends React.Component {
               fontWeight: 50,
               color: '#555555',
               mt: 0.75,
-              mr: 1
+              mr: 1,
             }}
           >
-            측정 시간 : {sensor_date} 
+            측정 시간 : {sensor_date}
           </Typography>
         </Grid>
       </Box>

@@ -2,16 +2,10 @@ import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
-
-import StatusCard from './StatusCard';
 import Status from './Status';
 import { CommonContext } from '../../../context/CommonContext';
-
 import Wrapper from './styles';
-
 import { Grid, Typography } from '@mui/material';
-
-// import dumpData from './dump.json';
 import ScatterPlot from './ScatterPlot';
 import Loader from './Loader';
 
@@ -19,7 +13,6 @@ const FarmInfo = props => {
   const { serverUrlBase, parsingDate } = useContext(CommonContext);
   const user = useSelector(state => state.Auth.user);
   const farm = useSelector(state => state.Farm.farm);
-  // console.log(farm)
 
   const [chartData, setChartData] = useState('');
   const [curSensorData, setCurSensorData] = useState(false);
@@ -31,16 +24,13 @@ const FarmInfo = props => {
       params: {
         user_id: user.user_id,
         farm_no: farm.farm_no,
-        // farm_no: farm,
       },
     })
       .then(data => {
-        // console.log(data.data.data);
         const list = data.data.data;
 
         if (list.list_cnt != 0) {
-          list.map((cur, index, source) => {
-            // console.log(cur)
+          list.forEach((cur, index, source) => {
             parsingdata[cur.survey_result].push({
               y: cur.humidity,
               x: cur.temperature,
@@ -65,19 +55,17 @@ const FarmInfo = props => {
       params: {
         user_id: user.user_id,
         farm_no: farm.farm_no,
-        // farm_no: farm,
       },
     })
       .then(data => {
         const list = data.data.data[0];
-        console.log(list.sensor_date)
+        console.log(list.sensor_date);
         const result = {
           humi: list.humidity,
           temp: list.temperature,
           sensor_date: parsingDate(list.sensor_date),
         };
         setCurSensorData(result);
-        // console.log(result)
       })
       .catch(function(error) {
         console.log('sensor data error: ' + error);
@@ -86,14 +74,11 @@ const FarmInfo = props => {
 
   let [alert, alertSet] = useState(false);
   useEffect(() => {
-    // graph
     const result = getFarmChartData();
     setChartData(result);
-
-    // Status card
     setCurSensorData(getFarmSensorData());
 
-    let timer = setTimeout(() => {
+    setTimeout(() => {
       alertSet(true);
     }, 1000);
   }, []);
@@ -119,22 +104,24 @@ const FarmInfo = props => {
             <Grid item md={4}>
               <Grid container direction="column">
                 <Grid item>
-                  <Grid container direction="row" justify-content="space-between" >
-                  <Typography
-                    sx={{
-                      fontSize: '20px',
-                      fontWeight: 600,
-                      padding: '0px 30px 10px 30px',
-                    }}
+                  <Grid
+                    container
+                    direction="row"
+                    justify-content="space-between"
                   >
-                    현재 온/습도
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        fontWeight: 600,
+                        padding: '0px 30px 10px 30px',
+                      }}
+                    >
+                      현재 온/습도
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item alignSelf="center">
-                  {curSensorData && (
-                    <Status curSensorData={curSensorData}/>
-                  )}
+                  {curSensorData && <Status curSensorData={curSensorData} />}
                 </Grid>
               </Grid>
             </Grid>

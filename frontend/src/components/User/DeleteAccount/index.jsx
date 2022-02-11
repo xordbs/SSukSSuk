@@ -17,8 +17,6 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Wrapper from './styles';
 
-import store from 'store';
-
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 

@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
-import { CommonContext } from '../../context/CommonContext';
 import { Grid } from '@material-ui/core';
 import Wrapper from './styles';
 import { useHistory } from 'react-router-dom';
 
 const Footer = () => {
-  const { drawerOpen } = useContext(CommonContext);
   const history = useHistory();
   return (
     <Wrapper>
