@@ -86,7 +86,7 @@ const Community = () => {
         tf = tm = 0;
 
         const cnt_data = data.data.data;
-        cnt_data.map(cur => {
+        cnt_data.forEach(cur => {
           if (cur.community_code === 'C01') tf = cur.list_cnt;
           else if (cur.community_code === 'C02') tm = cur.list_cnt;
         });
@@ -114,7 +114,7 @@ const Community = () => {
     })
       .then(data => {
         const tempList = [];
-        data.data.data.map(row => {
+        data.data.data.forEach(row => {
           if (row.community_author) {
             tempList.push(
               createData(
@@ -191,15 +191,21 @@ const Community = () => {
                   textColor="primary"
                 >
                   <Tab
-                    className="tab-style"
+                    sx={{
+                      fontSize: 18,
+                    }}
                     label={'전체 게시판 (' + (freeLen + mentoLen) + ')'}
                   />
                   <Tab
-                    className="tab-style"
+                    sx={{
+                      fontSize: 18,
+                    }}
                     label={'자유 게시판 (' + freeLen + ')'}
                   />
                   <Tab
-                    className="tab-style"
+                    sx={{
+                      fontSize: 18,
+                    }}
                     label={'멘토링 게시판 (' + mentoLen + ')'}
                   />
                 </Tabs>

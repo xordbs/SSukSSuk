@@ -80,7 +80,7 @@ const Notice = () => {
       .then(data => {
         let total = 0;
         const cnt_data = data.data.data;
-        cnt_data.map(cur => {
+        cnt_data.forEach(cur => {
           if (cur.notice_code === 'N01') total += cur.list_cnt;
           else if (cur.notice_code === 'N02') total += cur.list_cnt;
         });
@@ -102,7 +102,7 @@ const Notice = () => {
     })
       .then(data => {
         const tempList = [];
-        data.data.data.map(row => {
+        data.data.data.forEach(row => {
           if (row.notice_author) {
             tempList.push(
               createData(
