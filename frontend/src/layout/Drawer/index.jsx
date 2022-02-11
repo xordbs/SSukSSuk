@@ -4,22 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setInit } from '../../redux/reducers/AuthReducer';
 import { setFarmInit } from '../../redux/reducers/FarmReducer';
 import { CommonContext } from '../../context/CommonContext';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {
   Button,
   Grid,
-  Avatar,
   Divider,
   Drawer,
   List,
   ListItem,
   ListItemText,
-  IconButton,
 } from '@mui/material';
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Wrapper from './styles';
 
 const DrawerHeaderGroup = () => {
@@ -28,15 +23,6 @@ const DrawerHeaderGroup = () => {
   const user = useSelector(state => state.Auth.user);
 
   const { setDrawerOpen } = useContext(CommonContext);
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
-
-  const onClickRedirectPathHandler = name => () => {
-    setDrawerOpen(false);
-    history.push(name);
-  };
 
   const handleSignInDialogOpen = () => {
     history.push('/Auth');
@@ -86,26 +72,9 @@ const DrawerHeaderGroup = () => {
 
 const DrawerListGroup = () => {
   let history = useHistory();
-  const dispatch = useDispatch();
   const user = useSelector(state => state.Auth.user);
 
-  const {
-    setUserDetailDialogOpen,
-    setUserDialogIndex,
-    setDrawerOpen,
-  } = useContext(CommonContext);
-
-  const onClickEditProfileOpenHandler = () => {
-    setDrawerOpen(false);
-    setUserDialogIndex(0);
-    setUserDetailDialogOpen(true);
-  };
-
-  const onClickChangePasswordOpenHandler = () => {
-    setDrawerOpen(false);
-    setUserDialogIndex(1);
-    setUserDetailDialogOpen(true);
-  };
+  const { setDrawerOpen } = useContext(CommonContext);
 
   const onClickRedirectPathHandler = name => () => {
     setDrawerOpen(false);

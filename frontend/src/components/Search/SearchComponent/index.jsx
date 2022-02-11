@@ -1,21 +1,16 @@
 import React, { useContext, useState } from 'react';
 
 import { Grid, TextField, Button } from '@material-ui/core';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { Select, MenuItem } from '@mui/material';
 
-import SearchIcon from '@material-ui/icons/Search';
 import Wrapper from './styles';
 
 import { ViewContext } from '../../../context/ViewContext';
 
 const SearchComponent = () => {
-  const {
-    searchValue,
-    setSearchValue,
-    searchCategory,
-    setSearchCategory,
-    // setIsSearch,
-  } = useContext(ViewContext);
+  const { setSearchValue, searchCategory, setSearchCategory } = useContext(
+    ViewContext,
+  );
 
   const handleChange = event => {
     setSearchCategory(event.target.value);
@@ -52,7 +47,6 @@ const SearchComponent = () => {
               <Select
                 value={searchCategory}
                 onChange={handleChange}
-                // autoWidth="false"
                 displayEmpty
                 className="select-box"
               >
@@ -62,8 +56,6 @@ const SearchComponent = () => {
             <Grid item>
               <TextField
                 value={value}
-                // placeholder="찾고싶은 내용을 입력하세요"
-                // autoFocus={true}
                 variant="outlined"
                 size="small"
                 onChange={onChangeSearchValueHandler}

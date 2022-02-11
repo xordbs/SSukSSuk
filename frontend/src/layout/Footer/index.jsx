@@ -5,7 +5,6 @@ import Wrapper from './styles';
 import { useHistory } from 'react-router-dom';
 
 const Footer = () => {
-  const { drawerOpen } = useContext(CommonContext);
   const history = useHistory();
   return (
     <Wrapper>
