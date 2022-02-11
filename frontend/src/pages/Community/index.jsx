@@ -1,23 +1,17 @@
-// import { Grid, Button } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import Axios from 'axios';
-
 import { Grid, Button, Pagination, Tabs, Tab } from '@mui/material';
-
 import BoardList from '../../components/Board/BoardList/';
 import { useHistory } from 'react-router-dom';
 import SearchComponent from '../../components/Search/SearchComponent';
-
 import Layout from '../../layout/';
-
 import { CommonContext } from '../../context/CommonContext';
 import { ViewContext } from '../../context/ViewContext';
 import Wrapper from './styles';
-
 import { useSelector } from 'react-redux';
-
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@emotion/react';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -65,8 +59,6 @@ const Community = () => {
   const onClickCommunityWriteHandler = () => {
     if (!user.status) {
       alert('로그인이 필요합니다');
-      // setIsSignUp('SignIn');
-      // history.push('/Auth');
     } else {
       history.push('/CommunityWrite');
     }
@@ -143,7 +135,6 @@ const Community = () => {
       });
   };
 
-  // useEffect를 3개로 나눠놓으니까 처음 실행할 때 서버에 3번 연결하네;;;;;
   useEffect(() => {
     getCommunityListCnt();
     setPageLen();
@@ -167,7 +158,7 @@ const Community = () => {
 
   useEffect(() => {
     readCommunityList();
-    window.scrollTo(0, 0); // 스크롤 맨 위로 이동
+    window.scrollTo(0, 0);
   }, [page]);
 
   setPageLen();
@@ -223,7 +214,6 @@ const Community = () => {
               </Button>
             </Grid>
           </Grid>
-          {/* {searchValue && <div className="result">{searchValue} 검색 결과</div>} */}
           <BoardList listType={'Community'} listData={listData} />
 
           <Grid

@@ -2,14 +2,11 @@ import React, { useContext, useEffect, useState, useCallback } from 'react';
 import Axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
-
 import { CommonContext } from '../../../../context/CommonContext';
-import { ViewContext } from '../../../../context/ViewContext';
-
 import { setPath } from '../../../../redux/reducers/FarmReducer';
 
 // material-ui
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { CardActionArea, CardMedia } from '@mui/material';
 
 // project imports
@@ -36,7 +33,7 @@ const FarmImage = () => {
 
     getList(formData);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const getList = async formData => {
     console.log('image', formData);
@@ -63,11 +60,6 @@ const FarmImage = () => {
           justifyContent: 'center',
         }}
       >
-        {/* {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <p>Drag 'n' drop some files here, or click to select files</p>
-          )} */}
         <CardActionArea {...getRootProps()}>
           <input {...getInputProps()} />
           <CardMedia

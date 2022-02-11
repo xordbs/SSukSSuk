@@ -1,23 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import { CommonContext } from '../../../../context/CommonContext';
 
 // firebase
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { ref, getDownloadURL } from 'firebase/storage';
 import firebaseInit from '../../../../firebaseInit';
 
 // material-ui
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import {
   Avatar,
   Box,
   Grid,
   Typography,
   CardActionArea,
-  DialogTitle,
   Dialog,
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -93,10 +91,8 @@ function SimpleDialog(props) {
     closeImg();
   }
 
-  // Dialog
   return (
     <Dialog onClose={handleClose} open={open}>
-      {/* <DialogTitle>현재 농장 사진</DialogTitle> */}
       {farmImg === '' ? (
         <CircularProgress />
       ) : (
@@ -120,8 +116,6 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const CurrentImage = () => {
-  const theme = useTheme();
-
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(emails[1]);
 

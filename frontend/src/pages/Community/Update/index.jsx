@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import Layout from '../../../layout/';
-
 import Wrapper from './styles';
 import Axios from 'axios';
-
 import { CommonContext } from '../../../context/CommonContext';
 import { useSelector } from 'react-redux';
-
 import Swal from 'sweetalert2';
-
 import { Grid, Button, InputBase } from '@mui/material';
 
 const CommunityUpdate = ({ match }) => {

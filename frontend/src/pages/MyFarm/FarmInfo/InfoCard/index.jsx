@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
-
 import { CommonContext } from '../../../../context/CommonContext';
 
 // material-ui
