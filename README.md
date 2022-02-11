@@ -16,7 +16,7 @@
   - [x] 회원정보 수정
   - [x] 회원정보 탈퇴
   - [x] 회원정보 비밀번호 변경
-- [x]] 커뮤니티 페이지
+- [x] 커뮤니티 페이지
 - [x] 문의사항 페이지
 - [x] 게시판 기능
   - [x] 게시글 리스트
@@ -81,7 +81,7 @@
 
 
 - [x] 회원가입
-  - [x] **`index.js:1 Warning: Each child in a list should have a unique "key" prop`** [??]
+  - [x] **`index.js:1 Warning: Each child in a list should have a unique "key" prop`**
   - [x] 유효성 검사 1글자씩 모자람 : 해결
   - [x] 이름 & 별명 중복체크
     - [x] 한글만 되게 하고 싶은데... (숫자/영어 안됨)
@@ -114,18 +114,18 @@
 - [ ] 버그
   - [x] **`Board/MyFarmBoardList`** 
     - [x] 필요없는 props 제거
-  - [ ] **`Auty/SignResponsiveDialog`**
+  - [x] **`Auty/SignResponsiveDialog`**
     - [x] `justify`를 `justifycontent`로
     - [x] `<SignUpSection02>`에서 각 `TextField`들 id 중복되지 않게 숫자 부여 (별거아닌듯)
-  - [ ] **`Search/SearchComponent`**
+  - [x] **`Search/SearchComponent`**
     - [x] `justify`를 `justifycontent`로
-  - [ ] **`User/ChangePassword, DeleteAccount, MyInfo`**
+  - [x] **`User/ChangePassword, DeleteAccount, MyInfo`**
     - [x] `justify`를 `justifycontent`로
-  - [ ] **`layout/Drawer,Header`**
+  - [x] **`layout/Drawer,Header`**
     - [x] `justify`를 `justifycontent`로
-  - [ ] **`Community/Detail, Update, Write`**
+  - [x] **`Community/Detail, Update, Write`**
     - [x] `justify`를 `justifycontent`로
-  - [ ] **`Notice/Detail, Update, Write`**
+  - [x] **`Notice/Detail, Update, Write`**
     - [x] `justify`를 `justifycontent`로
   - [x] 문의사항 페이지
     - [x] 공지 and 문의 둘다
@@ -142,3 +142,8 @@
 - [x] tree 구조
   - [x] 참고하여 쓸모없는 폴더 다 제거
   - [x] 관련하여 `header`와 `App.js`에서도 없어졌으니까 그것들 제거 [필요없는거]
+
+
+
+- [x] Pages [Community / FarmStatus / Notice]
+  - [x] map을 forEach로 바꿈 [map은 반환값이 필요하지만, forEach는 필요가 없기 때문에]
