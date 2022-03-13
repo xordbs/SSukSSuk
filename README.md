@@ -1,4 +1,4 @@
-#  SSAFY 공통 PJT [Web-IoT]
+#PJT [Web-IoT]
 
 [[_TOC_]]
 
