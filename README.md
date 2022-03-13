@@ -1,4 +1,4 @@
-#PJT [Web-IoT]
+# PJT 쑥쑥
 
 [[_TOC_]]
 
