@@ -10,6 +10,7 @@ const cors = require("cors");
 const { swaggerUi, specs } = require("./swagger");
 const nodemailer = require('nodemailer');
 // --------------------------------------------
+
 // env
 const envJson = require(`${__dirname}/env/env.json`);
 const uploadFilePath = envJson.uploadFilePath;
@@ -54,7 +55,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.get("/", function (req, res) {
-  res.send("Hello node.js");
+  res.send("Hello SS");
 });
 
 //----------------------------------
